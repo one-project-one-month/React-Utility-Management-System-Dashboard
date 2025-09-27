@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router"
-import { useRoutes } from "./hooks/useRoutes"
+import { useRoutes } from "@/hooks/useRoutes"
 import { Suspense } from "react"
 
 function App() {
