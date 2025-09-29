@@ -6,6 +6,6 @@ const BillingPage = lazy(() => import('@/page/Billing'))
 export const useRoutes = () => {
     return [
         {title: 'Components', path: '/', element: <HomePage />},
-        {title: '', path: '/billing', element: <BillingPage />},
+        {title: '', path: '/billing/create', element: <BillingPage />},
     ]
 }
