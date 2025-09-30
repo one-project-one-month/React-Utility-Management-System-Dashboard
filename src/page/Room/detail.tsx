@@ -32,7 +32,7 @@ export default function RoomDetailPage() {
     }
 
     const getStatusColor = (status: string) => {
-        switch (roomData.status.toLowerCase()) {
+        switch (status.toLowerCase()) {
             case "available": return 'bg-green-400';
             case "occupied": return 'bg-amber-400';
             case "reserved": return 'bg-purple-400';
@@ -86,60 +86,6 @@ export default function RoomDetailPage() {
                         MMK {roomData.sellingPrice.toFixed(2)}
                     </h2>
                 </div>
-
-                {/*<div className={"flex flex-wrap gap-3"}>
-                    <Chip
-                        variant="bordered"
-                        startContent={<Bed size={18} />}
-                        className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                    >
-                        <span className="font-medium">{roomData.noOfBedRoom} Bedrooms</span>
-                    </Chip>
-                    <Chip
-                        variant="bordered"
-                        startContent={<Bath size={18} />}
-                        className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                    >
-                        <span className="font-medium">{roomData.noOfBathRoom} Bathrooms</span>
-                    </Chip>
-                    <Chip
-                        variant="bordered"
-                        startContent={<Layers size={18} />}
-                        className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                    >
-                        <span className="font-medium">Floor {roomData.floor}</span>
-                    </Chip>
-                    <Chip
-                        variant="bordered"
-                        startContent={<Maximize2 size={18} />}
-                        className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                    >
-                        <span className="font-medium">{roomData.dimension}</span>
-                    </Chip>
-                    <Chip
-                        variant="bordered"
-                        startContent={<Users size={18} />}
-                        className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                    >
-                        <span className="font-medium">Max {roomData.maxNoPeople} People</span>
-                    </Chip>
-                    <Chip
-                        variant="bordered"
-                        startContent={<Calendar size={18} />}
-                        className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                    >
-                        <span className="font-medium">{roomData.createdDate}</span>
-                    </Chip>
-                    {roomData.tenant && (
-                        <Chip
-                            variant="bordered"
-                            startContent={<User size={18} />}
-                            className="flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-3 py-2 bg-white"
-                        >
-                            <span className="font-medium">{roomData.tenant}</span>
-                        </Chip>
-                    )}
-                </div>*/}
 
                 <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
                     <Card className={"rounded-3xl shadow-none"}>
