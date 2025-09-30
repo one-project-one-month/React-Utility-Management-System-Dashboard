@@ -26,6 +26,7 @@ export default function RoomPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [filterBathrooms, setFilterBathrooms] = useState<string>("");
     const [filterBedrooms, setFilterBedrooms] = useState<string>("");
+    const [filterFloor, setFilterFloor] = useState<string>("");
     const [filterStatus, setFilterStatus] = useState<string>("all");
     const [filterPrice, setFilterPrice] = useState<string>("");
 
@@ -56,6 +57,10 @@ export default function RoomPage() {
             filtered = filtered.filter(room => room.bedrooms === parseInt(filterBedrooms));
         }
 
+        if (filterFloor) {
+            filtered = filtered.filter(room => room.floor === parseInt(filterFloor));
+        }
+
         if (filterStatus && filterStatus !== "all") {
             filtered = filtered.filter(room => room.status === filterStatus);
         }
@@ -68,7 +73,7 @@ export default function RoomPage() {
         filtered.sort((a, b) => a.roomNo.localeCompare(b.roomNo));
 
         return filtered;
-    }, [rooms, searchTerm, filterBathrooms, filterBedrooms, filterStatus, filterPrice]);
+    }, [rooms, searchTerm, filterBathrooms, filterBedrooms, filterFloor, filterStatus, filterPrice]);
 
     const handleApplyFilters = () => {
         console.log('Filters applied');
@@ -78,6 +83,7 @@ export default function RoomPage() {
         setSearchTerm("");
         setFilterBathrooms("");
         setFilterBedrooms("");
+        setFilterFloor("");
         setFilterStatus("all");
         setFilterPrice("");
     };
@@ -120,6 +126,23 @@ export default function RoomPage() {
             <div className="flex flex-col sm:flex-row gap-2">
                 <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 flex-1">
                     <Select
+                        key={"bedrooms"}
+                        label="Bedrooms"
+                        labelPlacement={"outside"}
+                        placeholder="---"
+                        variant={"bordered"}
+                        selectedKeys={filterBedrooms ? [filterBedrooms] : []}
+                        onSelectionChange={(keys) => setFilterBedrooms(Array.from(keys)[0] as string)}
+                        classNames={{
+                            trigger: "border-[0.5px] ",
+                            value: "text-black",
+                        }}
+                    >
+                        <SelectItem key="1">1</SelectItem>
+                        <SelectItem key="2">2</SelectItem>
+                        <SelectItem key="3">3</SelectItem>
+                    </Select>
+                    <Select
                         key={"bathrooms"}
                         label="Bathrooms"
                         labelPlacement={"outside"}
@@ -137,13 +160,13 @@ export default function RoomPage() {
                         <SelectItem key="3">3</SelectItem>
                     </Select>
                     <Select
-                        key={"bedrooms"}
-                        label="Bedrooms"
+                        key={"floor"}
+                        label="Floor"
                         labelPlacement={"outside"}
                         placeholder="---"
                         variant={"bordered"}
-                        selectedKeys={filterBedrooms ? [filterBedrooms] : []}
-                        onSelectionChange={(keys) => setFilterBedrooms(Array.from(keys)[0] as string)}
+                        selectedKeys={filterFloor ? [filterFloor] : []}
+                        onSelectionChange={(keys) => setFilterFloor(Array.from(keys)[0] as string)}
                         classNames={{
                             trigger: "border-[0.5px] ",
                             value: "text-black",
