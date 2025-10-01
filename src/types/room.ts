@@ -10,6 +10,8 @@ export interface Room {
     createdDate: string;
     tenant: string;
     price: number;
+    maxNoPeople?: number;
+    description?: string;
 }
 
-export type RoomStatus = 'available' | 'occupied' | 'reserved';
+export type RoomStatus = 'available' | 'rented' | 'purchased' | 'maintenance';
