@@ -20,7 +20,7 @@ createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <HeroUIProvider>
-          <main className="purple-dark text-foreground bg-background">
+          <main className=" text-foreground bg-background">
             <App />
           </main>
         </HeroUIProvider>
