@@ -6,54 +6,57 @@ import {
     Trash2,
 } from "lucide-react";
 import {Button} from "@heroui/button";
-import {Chip} from "@heroui/react";
-import {Card, CardBody} from "@heroui/card";
-import {useNavigate} from "react-router";
+import {useNavigate, useParams} from "react-router";
+import {RoomChip} from "@/components/Room/room-chip.tsx";
+import {roomMockData} from "@/constants/roomMockData.ts";
+import { InfoRow } from "@/components/Room/room-info";
+import {RoomCard} from "@/components/Room/room-card.tsx";
+
+function formatCurrency(amount: number, currency = "MMK") {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency,
+        minimumFractionDigits: 2,
+    }).format(amount);
+}
 
 export default function RoomDetailPage() {
+    const { id } = useParams();
     const navigate = useNavigate();
-    const roomData = {
-        roomNo: 100,
-        floor: 1,
-        dimension: "1200x2400sqft",
-        noOfBedRoom: 2,
-        noOfBathRoom: 2,
-        status: "Occupied",
-        sellingPrice: 2200000,
-        maxNoPeople: 5,
-        description: "Welcome to Oceanview Retreat, an exquisite beachfront property located in the vibrant city of Miami, Florida. Situated along the pristine shores of the Atlantic Ocean, this luxurious estate offers a truly unparalleled coastal living experience. With breathtaking panoramic views of the ocean and direct access to a private white sandy beach, Oceanview Retreat is a haven for relaxation and rejuvenation. Immerse yourself in the soothing sounds of the waves and indulge in the serenity of the surroundings",
-        address: "969 Tha Khin Rd. Yangon, Myanmar 96900",
-        createdDate: "Oct 18, 2024",
-        tenant: "Bhone Wai",
+
+    const room = roomMockData.find(r => r.id === id);
+
+    if (!room) {
+        return (
+            <div className="p-8">
+                <div className="text-center">
+                    <h1 className="text-2xl font-semibold mb-4">Room Not Found</h1>
+                    <Button onPress={() => navigate('/room')}>
+                        Back to Rooms
+                    </Button>
+                </div>
+            </div>
+        )
     }
 
     const handleEditRoom = () => {
-        navigate('/room/edit')
-    }
-
-    const getStatusColor = (status: string) => {
-        switch (status.toLowerCase()) {
-            case "available": return 'bg-green-400';
-            case "occupied": return 'bg-amber-400';
-            case "reserved": return 'bg-purple-400';
-            default: return "bg-gray-400";
-        }
+        navigate(`/room/${id}/edit`)
     }
 
     return (
         <div className={"p-8 space-y-4"}>
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div>
-                    <h1 className={"text-2xl font-semibold"}>Room {roomData.roomNo}</h1>
+                    <h1 className={"text-2xl font-semibold"}>Room {room.roomNo}</h1>
                     <div className={"flex items-start gap-1 text-sm text-default-500 mt-1"}>
                         <MapPin size={16} />
-                        <span>{roomData.address}</span>
+                        <span>{room.address}</span>
                     </div>
                 </div>
 
                 <div className={"flex gap-2"}>
                     <Button
-                        onClick={handleEditRoom}
+                        onPress={handleEditRoom}
                         variant={"bordered"}
                         className={"border-[0.5px]"}
                         startContent={<Pencil size={16} />}
@@ -72,79 +75,31 @@ export default function RoomDetailPage() {
 
             <div className={"bg-gray-200/20 rounded-2xl p-4 md:p-7 space-y-6"}>
                 <div className={"flex justify-between items-center"}>
-                    <Chip
-                        size={"sm"}
-                        variant={"flat"}
-                        color={"default"}
-                        startContent={
-                            <div className={`w-2 h-2 rounded-full ${getStatusColor(roomData.status)}`} />
-                        }
-                    >
-                        {roomData.status}
-                    </Chip>
+                    <RoomChip mode={"status"} room={room} />
                     <h2 className={"text-2xl font-semibold"}>
-                        MMK {roomData.sellingPrice.toFixed(2)}
+                        MMK {room.price.toFixed(2)}
                     </h2>
                 </div>
 
                 <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
-                    <Card className={"rounded-3xl shadow-none"}>
-                        <CardBody className={"p-6"}>
-                            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                                <Home size={20} className="text-default-500" />
-                                Description
-                            </h3>
-                            <p className="text-default-600 leading-relaxed">
-                                {roomData.description}
-                            </p>
-                        </CardBody>
-                    </Card>
-
-                    <Card className={"rounded-3xl shadow-none"}>
-                        <CardBody className={"p-6"}>
-                            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                                <Layers size={20} className="text-default-500" />
-                                Room Information
-                            </h3>
-                            <div className={"space-y-3"}>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Room Number</span>
-                                    <span className={"text-default-700 font-medium"}>{roomData.roomNo}</span>
-                                </div>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Floor</span>
-                                    <span className={"text-default-700 font-medium"}>{roomData.floor}</span>
-                                </div>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Dimension</span>
-                                    <span className={"text-default-700 font-medium"}>{roomData.dimension}</span>
-                                </div>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Bedrooms</span>
-                                    <span className={"text-default-700 font-medium"}>{roomData.noOfBedRoom}</span>
-                                </div>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Bathrooms</span>
-                                    <span className={"text-default-700 font-medium"}>{roomData.noOfBathRoom}</span>
-                                </div>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Max Occupancy</span>
-                                    <span className={"text-default-700 font-medium"}>{roomData.maxNoPeople}</span>
-                                </div>
-                                <div className={"flex justify-between py-2 border-b border-default-100"}>
-                                    <span className={"text-default-500"}>Monthly Rate</span>
-                                    <span className={"text-default-700 font-medium"}>
-                                        MMK {roomData.sellingPrice.toFixed(2)}
-                                    </span>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
+                    <RoomCard title={"Description"} icon={Home}>
+                        <p className="text-default-600 leading-relaxed">{room.description}</p>
+                    </RoomCard>
+                    
+                    <RoomCard title={"Room Information"} icon={Layers}>
+                        <InfoRow label={"Row Number"} value={room.roomNo} />
+                        <InfoRow label={"BedRooms"} value={room.bedrooms} />
+                        <InfoRow label={"BathRooms"} value={room.bathrooms} />
+                        <InfoRow label={"Floor"} value={room.floor} />
+                        <InfoRow label={"Dimension"} value={room.dimension} />
+                        <InfoRow label={"Max Occupancy"} value={room.maxNoPeople} />
+                        <InfoRow label={"Monthly Rate"} value={formatCurrency(room.price)} />
+                    </RoomCard>
                 </div>
 
                 <div className={"flex flex-col sm:flex-row gap-3 pt-4"}>
                     <Button
-                        className={"bg-foreground text-white flex-1"}
+                        className={"bg-primary flex-1"}
                         size={"lg"}
                         startContent={<Download size={18} />}
                     >
@@ -153,8 +108,8 @@ export default function RoomDetailPage() {
                     <Button
                         variant="bordered"
                         size="lg"
-                        className="flex-1 border-[0.5px]"
-                        onClick={() => navigate(`/room/${roomData.roomNo}/utilities`)}
+                        className="flex-1 border-[0.5px] border-gray-400"
+                        onPress={() => navigate(`/room/${room.id}/utilities`)}
                     >
                         View Utility History
                     </Button>
