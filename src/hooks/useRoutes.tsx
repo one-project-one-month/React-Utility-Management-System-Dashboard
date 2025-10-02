@@ -1,11 +1,13 @@
-import { lazy } from "react"
+import { lazy } from "react";
 
-const HomePage = lazy(() => import('@/page/Dashboard'))
-const BillingPage = lazy(() => import('@/page/Billing'))
+const LoginPage = lazy(() => import("@/page/Auth"));
+const HomePage = lazy(() => import("@/page/Dashboard"));
+const BillingPage = lazy(() => import("@/page/Billing"));
 
 export const useRoutes = () => {
-    return [
-        {title: 'Components', path: '/', element: <HomePage />},
-        {title: '', path: '/billing/create', element: <BillingPage />},
-    ]
-}
+  return [
+    { title: "", path: "/login,", element: <LoginPage /> },
+    { title: "Components", path: "/", element: <HomePage /> },
+    { title: "", path: "/billing/create", element: <BillingPage /> },
+  ];
+};
