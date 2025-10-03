@@ -3,18 +3,18 @@ import SideBar from "@/components/Sidebar/sidebar";
 import { Outlet } from "react-router";
 import { useEffect } from "react";
 import { Navigate } from "react-router";
-import useCookie from "react-use-cookie";
+import Cookies from "js-cookie";
 
 export default function PageLayout() {
-  const [accessToken] = useCookie("token");
-  const [user, setUser] = useCookie("user");
+  const accessToken = Cookies.get("token");
+  const user = Cookies.get("user");
 
   if (!accessToken) {
     return <Navigate to="login" />;
   }
 
   useEffect(() => {
-    setUser(JSON.stringify(user));
+    Cookies.set("user", JSON.stringify(user));
   }, [accessToken]);
 
   return (

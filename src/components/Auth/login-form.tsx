@@ -8,7 +8,7 @@ import { loginSchema, type TLoginSchema } from "@/types/auth";
 import { Spinner } from "@heroui/react";
 import useAuth from "@/hooks/useAuth";
 import { Navigate } from "react-router";
-import useCookie from "react-use-cookie";
+import Cookies from "js-cookie";
 
 export default function LoginForm() {
   const {
@@ -19,11 +19,9 @@ export default function LoginForm() {
 
   const { mutate, isPending } = useAuth();
 
+  const accessToken = Cookies.get("token");
 
-  const [storeAccessToken] = useCookie("token");
-  const [_storeUserToken] = useCookie("user");
-
-  if (storeAccessToken) {
+  if (accessToken) {
     return <Navigate to="/" />;
   }
 

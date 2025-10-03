@@ -4,17 +4,15 @@ import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { setAccessToken, setUser } from "@/store/features/auth/authSlice";
 import { useDispatch } from "react-redux";
-import useCookie from "react-use-cookie";
 import { addToast } from "@heroui/react";
 import { useNavigate } from "react-router";
+import Cookies from 'js-cookie'
 
 const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [, setStoreAccessToken] = useCookie("token");
-  const [, setStoreUserToken] = useCookie("user");
-
+ 
   return useMutation<
     LoginResponse,
     AxiosError<{ message: string }>,
@@ -24,8 +22,8 @@ const useAuth = () => {
     onSuccess: (data) => {
       dispatch(setAccessToken(data.content.accessToken));
       dispatch(setUser(data.content.user));
-      setStoreAccessToken(data.content.accessToken);
-      setStoreUserToken(JSON.stringify(data.content.user));
+      Cookies.set("token", data.content.accessToken);
+      Cookies.set("user", JSON.stringify(data.content.user));
       addToast({
         title: data.message,
         color: "success",

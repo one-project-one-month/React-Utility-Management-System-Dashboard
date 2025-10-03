@@ -1,7 +1,7 @@
 import type { User } from "@/types/auth";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 import { redirect } from "react-router";
-import { removeCookie } from "react-use-cookie";
 
 type InitialState = {
   accessToken: string | null;
@@ -17,7 +17,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-   
     setAccessToken: (state, action: PayloadAction<string | null>) => {
       state.accessToken = action.payload;
     },
@@ -29,8 +28,8 @@ const authSlice = createSlice({
     logout: (state) => {
       state.accessToken = null;
       state.user = null;
-      removeCookie("token");
-      removeCookie("user");
+      Cookies.remove("token");
+      Cookies.remove("user");
       redirect("/login");
     },
   },

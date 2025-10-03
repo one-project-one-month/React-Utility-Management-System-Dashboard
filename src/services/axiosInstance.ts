@@ -2,8 +2,7 @@ import { logout, setAccessToken } from "@/store/features/auth/authSlice";
 import { store } from "@/store/store";
 import type { RefreshTokenResponse } from "@/types/auth";
 import axios from "axios";
-import { getCookie } from "react-use-cookie";
-import { setCookie } from "react-use-cookie";
+import Cookies from 'js-cookie'
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -13,7 +12,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-const accessToken = getCookie("token");
+const accessToken = Cookies.get("token");
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -53,7 +52,7 @@ axiosInstance.interceptors.response.use(
         }
 
         store.dispatch(setAccessToken(newAccessToken));
-        setCookie("token", newAccessToken);
+        Cookies.set("token", newAccessToken);
 
         error.config.headers.Authorization = `Bearer ${newAccessToken}`;
         return axiosInstance.request(error.config);
