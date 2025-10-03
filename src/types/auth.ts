@@ -34,8 +34,8 @@ export type LoginResponse = {
   status: number;
 };
 
-type refreshTokenWithoutUser = Omit<LoginResponse["content"], "user">;
+type RefreshTokenWithoutUser = Omit<LoginResponse["content"], "user">;
 
 export type RefreshTokenResponse = Omit<LoginResponse, "content"> & {
-  content: refreshTokenWithoutUser;
+  content: RefreshTokenWithoutUser;
 };
