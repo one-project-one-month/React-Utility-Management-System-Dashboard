@@ -12,3 +12,30 @@ export const loginSchema = z.object({
 });
 
 export type TLoginSchema = z.infer<typeof loginSchema>;
+
+export type User = {
+  id: string;
+  email: string;
+  user_name: string;
+  role: string;
+  tenent_id: null | string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+export type LoginResponse = {
+  success: boolean;
+  message: string;
+  content: {
+    accessToken: string;
+    refreshToken: string;
+    user: User;
+  };
+  status: number;
+};
+
+type refreshTokenWithoutUser = Omit<LoginResponse["content"], "user">;
+
+export type RefreshTokenResponse = Omit<LoginResponse, "content"> & {
+  content: refreshTokenWithoutUser;
+};

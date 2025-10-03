@@ -1,6 +1,9 @@
 import { Button } from "@heroui/react";
 
+
 export default function HomePage() {
+ 
+
   return (
     <div>
       <Button color="primary" variant="solid">
@@ -9,5 +12,5 @@ export default function HomePage() {
       <p>content of the main pge</p>
       <p>content of the main pge</p>
     </div>
-  )
+  );
 }
