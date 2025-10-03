@@ -1,5 +1,6 @@
-import { lazy } from "react"
+import { lazy } from "react";
 
+const LoginPage = lazy(() => import("@/page/Auth"));
 const HomePage = lazy(() => import('@/page/Dashboard'))
 const BillingPage = lazy(() => import('@/page/Billing'))
 const RoomPage = lazy(() => import('@/page/Room'))
@@ -8,6 +9,7 @@ const EditRoomPage = lazy(() => import('@/page/Room/edit'))
 
 export const useRoutes = () => {
     return [
+        { title: "", path: "/login,", element: <LoginPage /> },
         {title: 'Components', path: '/', element: <HomePage />},
         {title: '', path: '/billing', element: <BillingPage />},
         {title: '', path: '/room', element: <RoomPage />},
