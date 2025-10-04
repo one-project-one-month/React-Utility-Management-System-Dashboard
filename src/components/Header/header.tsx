@@ -23,11 +23,15 @@ import {
 } from "lucide-react";
 import ThemeToggle from "@/components/theme-toggle";
 import useLogout from "@/hooks/useLogout";
+import LoadingSpinner from "../Auth/loading-spinner";
 
 export default function Header() {
-  const { mutate } = useLogout();
+  const { mutate,isPending } = useLogout();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  
+
 
   const handleLogoutBtn = () => {
     onOpen();
@@ -37,6 +41,7 @@ export default function Header() {
     mutate();
     onClose();
   };
+
 
   return (
     <header className="flex items-center gap-4 px-6 border-b h-14 border-border bg-card">
@@ -131,6 +136,7 @@ export default function Header() {
             )}
           </ModalContent>
         </Modal>
+        {isPending && <LoadingSpinner />}
       </div>
     </header>
   );
