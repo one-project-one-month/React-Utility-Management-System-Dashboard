@@ -8,16 +8,17 @@ import { type SidebarLink } from "@/constants/sidebarLinks";
 export default function SidebarItem({
   item,
   isMinimized,
-  pathName
+  pathName,
 }: {
   item: SidebarLink;
   isMinimized: boolean;
-  pathName: string
+  pathName: string;
 }) {
-
   const [isOpen, setIsOpen] = useState(false);
 
-  const isActive = pathName === item.href || pathName.startsWith(item.href);
+  const isActive =
+    pathName === item.href ||
+    (item.href !== "/" && pathName.startsWith(item.href));
 
   if (item.children) {
     return (
@@ -32,12 +33,14 @@ export default function SidebarItem({
             isMinimized && "justify-center px-2",
             isActive
               ? "bg-primary text-sidebar-primary-foreground"
-              : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
           )}
           title={isMinimized ? item.title : undefined}
         >
           <item.icon className="h-4 w-4 flex-shrink-0" />
-          {!isMinimized && <span className="flex-1 text-left">{item.title}</span>}
+          {!isMinimized && (
+            <span className="flex-1 text-left">{item.title}</span>
+          )}
           {!isMinimized &&
             (isOpen ? (
               <ChevronDown className="h-4 w-4 ml-auto" />
@@ -62,7 +65,7 @@ export default function SidebarItem({
                     "justify-start gap-2 font-normal",
                     childActive
                       ? "bg-primary text-sidebar-primary-foreground"
-                      : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                      : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                   )}
                 >
                   <child.icon className="h-4 w-4 flex-shrink-0" />
@@ -86,9 +89,9 @@ export default function SidebarItem({
       className={cn(
         "justify-start gap-2 font-normal",
         isMinimized && "justify-center px-2",
-        pathName === item.href
+        isActive
           ? "bg-primary text-sidebar-primary-foreground"
-          : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
       )}
       title={isMinimized ? item.title : undefined}
     >

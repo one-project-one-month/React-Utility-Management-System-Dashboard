@@ -12,7 +12,7 @@ export default function PageLayout() {
 
                 {/* Main content area */}
                 <main
-                    className={`flex-1 px-6 pt-3 pb-6 bg-[#F9FAFB] transition-all duration-300 ease-in-out`}
+                    className={`flex-1 px-6 pt-3 pb-6  transition-all duration-300 ease-in-out`}
                 >
                     <Outlet />
                 </main>
