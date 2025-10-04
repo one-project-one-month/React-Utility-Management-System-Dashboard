@@ -8,7 +8,7 @@ import {
   Users,
   Zap,
   FileSpreadsheet,
-  Headphones
+  Headphones,
 } from "lucide-react";
 
 export type SidebarLink = {

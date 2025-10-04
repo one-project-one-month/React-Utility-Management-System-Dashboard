@@ -9,13 +9,13 @@ export default function PageLayout() {
   const accessToken = Cookies.get("token");
   const user = Cookies.get("user");
 
-  if (!accessToken) {
-    return <Navigate to="login" />;
-  }
-
   useEffect(() => {
     Cookies.set("user", JSON.stringify(user));
   }, [accessToken]);
+
+  if (!accessToken) {
+    return <Navigate to="login" />;
+  }
 
   return (
     <div className="flex flex-col w-full min-h-screen overflow-visible dark:bg-neutral-800">
@@ -26,7 +26,7 @@ export default function PageLayout() {
 
         {/* Main content area */}
         <main
-          className={`flex-1 px-6 pt-3 pb-6 transition-all duration-300 ease-in-out`}
+          className={`flex-1 px-6 pt-3 pb-6  transition-all duration-300 ease-in-out`}
         >
           <Outlet />
         </main>
