@@ -12,8 +12,8 @@ export const useRoutes = () => {
         { title: "", path: "/login,", element: <LoginPage /> },
         {title: 'Components', path: '/', element: <HomePage />},
         {title: '', path: '/billing', element: <BillingPage />},
-        {title: '', path: '/room', element: <RoomPage />},
-        {title: '', path: '/room/:id', element: <RoomDetailPage />},
-        { title: '', path: '/room/:id/edit', element: <EditRoomPage />  }
+        {title: '', path: '/rooms', element: <RoomPage />},
+        {title: '', path: '/rooms/:id', element: <RoomDetailPage />},
+        { title: '', path: '/rooms/:id/edit', element: <EditRoomPage />  }
     ]
 }
