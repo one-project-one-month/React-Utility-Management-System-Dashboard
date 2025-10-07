@@ -6,6 +6,8 @@ const BillingPage = lazy(() => import('@/page/Billing'))
 const RoomPage = lazy(() => import('@/page/Room'))
 const RoomDetailPage = lazy(() => import('@/page/Room/detail'))
 const EditRoomPage = lazy(() => import('@/page/Room/edit'))
+const CustomerSupportPage = lazy(() => import('@/page/CustomerSupport'))
+const CustomerServiceEditPage = lazy(() => import('@/page/CustomerSupport/edit'))
 
 export const useRoutes = () => {
     return [
@@ -14,6 +16,9 @@ export const useRoutes = () => {
         {title: '', path: '/billing', element: <BillingPage />},
         {title: '', path: '/rooms', element: <RoomPage />},
         {title: '', path: '/rooms/:id', element: <RoomDetailPage />},
-        { title: '', path: '/rooms/:id/edit', element: <EditRoomPage />  }
+        { title: '', path: '/rooms/:id/edit', element: <EditRoomPage />  },
+        { title: '', path: '/customer-service', element: <CustomerSupportPage /> },
+        { title: '', path: '/customer-service/:id/edit', element: <CustomerServiceEditPage /> },
+        
     ]
 }
