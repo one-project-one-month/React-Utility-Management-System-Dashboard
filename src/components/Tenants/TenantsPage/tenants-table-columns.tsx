@@ -9,11 +9,11 @@ import type { TenantType } from "@/types/tenants/tenantType.ts";
 const columnHelper = createColumnHelper<TenantTableColumnsType | TenantType>();
 
 interface Props {
-  onEdit: () => void;
-  onDetails: () => void;
+  onEdit: (tenantId: string) => void;
+  onDetails: (tenantId: string) => void;
 }
 
-export const tenantTableColumns = ({ onEdit, onDetails }: Props) => [
+export const tenantsTableColumns = ({ onEdit, onDetails }: Props) => [
   columnHelper.accessor("no", {
     header: "No.",
     cell: (info) => info.getValue(),
@@ -32,15 +32,19 @@ export const tenantTableColumns = ({ onEdit, onDetails }: Props) => [
   columnHelper.accessor("email", {
     header: "Email",
   }),
-  columnHelper.accessor("emergencyNo", {
-    header: "Emergency No",
+  // columnHelper.accessor("emergencyNo", {
+  //   header: "Emergency No",
+  // }),
+
+  columnHelper.accessor("contractType", {
+    header: "Contract Type",
   }),
 
   columnHelper.accessor("roomNo", {
     header: "Room No",
   }),
-  columnHelper.accessor("residentsCount", {
-    header: "No of Residents",
+  columnHelper.accessor("occupantsCount", {
+    header: "No of Occupants",
   }),
 
   columnHelper.display({
@@ -48,6 +52,7 @@ export const tenantTableColumns = ({ onEdit, onDetails }: Props) => [
     header: "Actions",
     cell: ({ row }) => {
       const tenant = row.original;
+      const tenantId = "id" in tenant ? tenant.id : "";
       console.log("tenant is", tenant);
       return (
         <div className="flex justify-center gap-3">
@@ -57,7 +62,7 @@ export const tenantTableColumns = ({ onEdit, onDetails }: Props) => [
               variant="light"
               color="primary"
               radius="full"
-              onPress={() => onEdit()}
+              onPress={() => onEdit(tenantId)}
             >
               <Pencil size={18} />
             </Button>
@@ -69,7 +74,7 @@ export const tenantTableColumns = ({ onEdit, onDetails }: Props) => [
               variant="light"
               color="default"
               radius="full"
-              onPress={() => onDetails()}
+              onPress={() => onDetails(tenantId)}
             >
               <Eye size={18} />
             </Button>

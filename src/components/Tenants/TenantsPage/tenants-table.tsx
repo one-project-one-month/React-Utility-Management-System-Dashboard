@@ -4,25 +4,26 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-import { tenantTableColumns } from "@/components/Tenants/TenantTable/tenantTableColumns";
+import { tenantsTableColumns } from "@/components/Tenants/TenantsPage/tenants-table-columns.tsx";
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 import clsx from "clsx";
 import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
 import { useNavigate } from "react-router";
 import type { TenantType } from "@/types/tenants/tenantType.ts";
+import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
 
 export default function TenantsTable() {
   const navigate = useNavigate();
 
-  const handleEdit = () => {
-    navigate("/tenants/update/1");
+  const handleEdit = (tenantId: string) => {
+    navigate(`/tenants/update/${tenantId}`);
   };
 
-  const handleDetails = () => {
-    console.log("Details button clicked");
+  const handleDetails = (tenantId: string) => {
+    navigate(`/tenants/details/${tenantId}`);
   };
 
-  const columns = tenantTableColumns({
+  const columns = tenantsTableColumns({
     onEdit: handleEdit,
     onDetails: handleDetails,
   });
@@ -38,11 +39,11 @@ export default function TenantsTable() {
     name: "w-[10%]",
     email: "w-[15%]",
     phoneNo: "w-[15%]",
-    emergencyNo: "w-[15%]",
+    // emergencyNo: "w-[15%]",
+    contractType: "w-[15%]",
     nrc: "w-[20%]",
     roomNo: "w-[10%]",
-    residentsCount: "w-[10%]",
-
+    occupantsCount: "w-[10%]",
     actions: "w-[13%]",
   };
 
@@ -87,6 +88,15 @@ export default function TenantsTable() {
                   cell.column.id === "roomNo" && "roomId" in row.original
                     ? mockRooms.find((room) => room.id === tenant.roomId)
                     : null;
+
+                const contract =
+                  cell.column.id === "contractType" &&
+                  "contractId" in row.original
+                    ? mockContracts.find(
+                        (contract) => contract.id === tenant.contractId,
+                      )
+                    : null;
+
                 return (
                   <td
                     key={cell.id}
@@ -94,16 +104,18 @@ export default function TenantsTable() {
                   >
                     {cell.column.id === "no"
                       ? row.index + 1
-                      : cell.column.id === "residentsCount"
+                      : cell.column.id === "occupantsCount"
                         ? (row.original?.name?.length ?? 0)
                         : cell.column.id === "name"
                           ? (row.original?.name[0] ?? "")
-                          : cell.column.id === "roomNo"
-                            ? room?.roomNo
-                            : flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )}
+                          : cell.column.id === "contractType"
+                            ? contract?.contractName
+                            : cell.column.id === "roomNo"
+                              ? room?.roomNo
+                              : flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext(),
+                                )}
                   </td>
                 );
               })}

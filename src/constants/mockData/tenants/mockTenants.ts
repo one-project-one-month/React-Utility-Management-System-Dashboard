@@ -3,21 +3,23 @@ import type { TenantType } from "@/types/tenants/tenantType.ts";
 export const mockTenants: TenantType[] = [
   {
     id: "t1",
-    name: ["Alice Johnson"],
+    name: ["Alice Johnson", "Sherlock Holmes"],
     nrc: ["12/ABC(N)123456"],
     email: "alice@example.com",
     phoneNo: "0912345678",
     emergencyNo: "0991112233",
     roomId: "r1",
+    contractId: "c1",
   },
   {
     id: "t2",
-    name: ["Bob Smith", "Linda Smith"],
+    name: ["Bob Smith", "Linda Smith", "Shin Thant Kyaw"],
     nrc: ["5/XYZ(N)654321", "5/XYZ(N)654322"],
     email: "bob@example.com",
     phoneNo: "0923456789",
     emergencyNo: "0945678901",
     roomId: "r2",
+    contractId: "c2",
   },
   {
     id: "t3",
@@ -27,6 +29,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0941234567",
     emergencyNo: "0954321987",
     roomId: "r3",
+    contractId: "c3",
   },
   {
     id: "t4",
@@ -36,6 +39,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0938765432",
     emergencyNo: "0923344556",
     roomId: "r4",
+    contractId: "c4",
   },
   {
     id: "t5",
@@ -45,6 +49,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0998877665",
     emergencyNo: "0971239876",
     roomId: "r5",
+    contractId: "c5",
   },
   {
     id: "t6",
@@ -54,6 +59,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0911223344",
     emergencyNo: "0919988776",
     roomId: "r6",
+    contractId: "c6",
   },
   {
     id: "t7",
@@ -63,6 +69,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0956677889",
     emergencyNo: "0912233445",
     roomId: "r7",
+    contractId: "c7",
   },
   {
     id: "t8",
@@ -72,6 +79,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0945566778",
     emergencyNo: "0932211445",
     roomId: "r8",
+    contractId: "c8",
   },
   {
     id: "t9",
@@ -81,6 +89,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0912341122",
     emergencyNo: "0998877554",
     roomId: "r9",
+    contractId: "c9",
   },
   {
     id: "t10",
@@ -90,6 +99,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0932112233",
     emergencyNo: "0923344112",
     roomId: "r10",
+    contractId: "c10",
   },
   {
     id: "t11",
@@ -99,6 +109,7 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0922113344",
     emergencyNo: "0951122334",
     roomId: "r11",
+    contractId: "c11",
   },
   {
     id: "t12",
@@ -108,5 +119,6 @@ export const mockTenants: TenantType[] = [
     phoneNo: "0944433221",
     emergencyNo: "0917766554",
     roomId: "r12",
+    contractId: "c12",
   },
 ];

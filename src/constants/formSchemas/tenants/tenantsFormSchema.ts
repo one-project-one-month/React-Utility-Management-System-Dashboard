@@ -8,11 +8,11 @@ const phoneSchema = z
 
 const nrcPattern = /^([1-9]|1[0-4])\/[A-Z]{1,3}\(Naing\)\d{1,10}$/;
 
-export const residentSchema = z.object({
+export const occupantSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "Resident name is required")
+    .min(1, "Occupant name is required")
     .max(200, "Name is too long"),
   nrc: z
     .string()
@@ -23,18 +23,15 @@ export const residentSchema = z.object({
 });
 
 export const tenantFormSchema = z.object({
-  residents: z
-    .array(residentSchema)
-    .min(1, "At least one resident is required"),
+  occupants: z
+    .array(occupantSchema)
+    .min(1, "At least one occupant is required"),
   phoneNo: phoneSchema,
   email: z
     .string()
     .trim()
-    .nullable()
-    .refine(
-      (val) => !val || z.string().email().safeParse(val).success,
-      "Invalid email address",
-    ),
+    .min(1, "Email is required")
+    .email("Invalid email address"),
   emergencyNo: phoneSchema,
   roomId: z.string().trim().min(1, "Room must be selected"),
   contractId: z.string().trim().min(1, "Contract must be selected"),

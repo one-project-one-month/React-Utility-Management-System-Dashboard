@@ -5,6 +5,7 @@ export interface TenantTableColumnsType {
   phoneNo: string;
   emergencyNo: string;
   nrc: string[];
+  contractType: string;
   roomNo: number;
-  residentsCount: string;
+  occupantsCount: string;
 }
