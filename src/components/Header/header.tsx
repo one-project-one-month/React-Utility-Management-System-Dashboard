@@ -4,16 +4,22 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownItem,
-  Avatar
+  Avatar,
 } from '@heroui/react'
 import { Search, User, Settings, LogOutIcon } from 'lucide-react'
 import ThemeToggle from '@/components/theme-toggle'
+import Logo from '@/assets/logo.png'
 
 export default function Header() {
   return (
-    <header className="flex h-14 items-center gap-4 border-b border-border bg-card px-6">
+    <header className="flex h-14 items-center gap-4 bg-card p-6">
       <div>
-        <h1>NestFlow</h1>
+        <img 
+          src={Logo}
+          width={40}
+          height={40}
+          loading="lazy"
+        />
       </div>
 
       <div className="flex flex-1 items-center gap-4">

@@ -1,31 +1,30 @@
-import { BrowserRouter, Route, Routes } from "react-router"
+import { Route, Routes, useNavigate, useHref } from "react-router"
+import { HeroUIProvider } from '@heroui/react'
 import { useRoutes } from "@/hooks/useRoutes"
 import { Suspense } from "react"
-import PageLayout from "./layout/PageLayout"
+import PageLayout from "@/layout/PageLayout"
+import NotFound from "@/page/NotFound"
 
 function App() {
   const routes = useRoutes()
+  const navigate = useNavigate()
+
 
   return (
-    <>
-      <BrowserRouter>
+    <HeroUIProvider navigate={navigate} useHref={useHref}>
+      <main className="font-roboto text-foreground bg-background">
         <Suspense fallback={null}>
           <Routes>
             <Route element={<PageLayout />}>
               {routes.map(({ path, element }, index) => (
-                <Route
-                  key={index}
-                  path={path}
-                  element={element}
-                />
+                <Route key={index} path={path} element={element} />
               ))}
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
-          {/* <Route path="*" element={<NotFound />} /> */}
-
         </Suspense>
-      </BrowserRouter>
-    </>
+      </main>
+    </HeroUIProvider>
   )
 }
 
