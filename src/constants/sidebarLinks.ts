@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import {Grid, type LucideIcon} from "lucide-react";
 import {
   Home,
   CreditCard,
@@ -99,6 +99,12 @@ const sidebarLinks: SidebarLink[] = [
     icon: Headphones,
     order: 9,
   },
+  {
+    href: "/room",
+    title: "Rooms",
+    icon: Grid,
+    order: 9,
+  }
 ];
 
 export default sidebarLinks;
