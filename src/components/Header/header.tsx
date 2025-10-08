@@ -6,6 +6,9 @@ import {
   DropdownSection,
   DropdownItem,
   Avatar,
+} from '@heroui/react'
+import ThemeToggle from '@/components/theme-toggle'
+import Logo from '@/assets/logo.png'
   Modal,
   ModalContent,
   ModalHeader,
@@ -21,7 +24,6 @@ import {
   LogOutIcon,
   LucideTriangleAlert,
 } from "lucide-react";
-import ThemeToggle from "@/components/theme-toggle";
 import useLogout from "@/hooks/useLogout";
 import LoadingSpinner from "../Auth/loading-spinner";
 
@@ -44,9 +46,14 @@ export default function Header() {
 
 
   return (
-    <header className="flex items-center gap-4 px-6 border-b h-14 border-border bg-card">
+    <header className="flex h-14 items-center gap-4 bg-card p-6">
       <div>
-        <h1>NestFlow</h1>
+        <img 
+          src={Logo}
+          width={40}
+          height={40}
+          loading="lazy"
+        />
       </div>
 
       <div className="flex items-center flex-1 gap-4">
