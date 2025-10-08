@@ -6,9 +6,6 @@ import {
   DropdownSection,
   DropdownItem,
   Avatar,
-} from '@heroui/react'
-import ThemeToggle from '@/components/theme-toggle'
-import Logo from '@/assets/logo.png'
   Modal,
   ModalContent,
   ModalHeader,
@@ -16,7 +13,10 @@ import Logo from '@/assets/logo.png'
   ModalFooter,
   Button,
   useDisclosure,
-} from "@heroui/react";
+} from '@heroui/react'
+import ThemeToggle from '@/components/theme-toggle'
+import Logo from '@/assets/logo.png'
+
 import {
   Search,
   User,
@@ -28,12 +28,9 @@ import useLogout from "@/hooks/useLogout";
 import LoadingSpinner from "../Auth/loading-spinner";
 
 export default function Header() {
-  const { mutate,isPending } = useLogout();
+  const { mutate, isPending } = useLogout();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  
-
 
   const handleLogoutBtn = () => {
     onOpen();
@@ -48,7 +45,7 @@ export default function Header() {
   return (
     <header className="flex h-14 items-center gap-4 bg-card p-6">
       <div>
-        <img 
+        <img
           src={Logo}
           width={40}
           height={40}
