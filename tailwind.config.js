@@ -4,7 +4,7 @@ const {heroui} = require("@heroui/react");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./node_modules/@heroui/theme/dist/components/(button|input|popover|ripple|spinner|form).js"
+    "./node_modules/@heroui/theme/dist/components/(button|card|input|tabs|popover|ripple|spinner|form).js"
 ],
   plugins: [
     heroui({

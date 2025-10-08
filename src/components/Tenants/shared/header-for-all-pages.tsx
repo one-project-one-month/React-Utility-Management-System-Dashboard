@@ -1,11 +1,11 @@
 import { Button } from "@heroui/button";
-import { ArrowLeft, Pencil, UserRound } from "lucide-react";
+import { ChevronLeft, Pencil, UserRound } from "lucide-react";
 import { useNavigate } from "react-router";
 
 interface Props {
-  action: "create" | "update";
+  action: "create" | "update" | "viewDetails";
 }
-export default function TenantsFormHeader({ action }: Props) {
+export default function HeaderForAllPages({ action }: Props) {
   const navigate = useNavigate();
   return (
     <div className="flex-shrink-0 px-4 pt-4 pb-3">
@@ -17,10 +17,10 @@ export default function TenantsFormHeader({ action }: Props) {
           onPress={() => navigate("/tenants")}
           className="hover:bg-slate-100"
         >
-          <ArrowLeft size={20} className="text-slate-600" />
+          <ChevronLeft size={40} className="text-slate-600" />
         </Button>
         <div className="p-2 bg-blue-500 rounded-xl shadow-lg">
-          {action === "create" ? (
+          {action === "create" || action === "viewDetails" ? (
             <UserRound className="w-6 h-6 text-white" />
           ) : action === "update" ? (
             <Pencil className="w-6 h-6 text-white" />
@@ -34,14 +34,18 @@ export default function TenantsFormHeader({ action }: Props) {
               ? "Tenant Registration"
               : action === "update"
                 ? "Update Tenant"
-                : ""}
+                : action === "viewDetails"
+                  ? "Tenant Details"
+                  : ""}
           </h1>
           <p className="text-slate-500 text-sm">
             {action === "create"
               ? "Register new tenant and assign to room"
               : action === "update"
                 ? "Update tenant information "
-                : ""}
+                : action === "viewDetails"
+                  ? "View and manage tenant's personal and contract information."
+                  : ""}
           </p>
         </div>
       </div>{" "}

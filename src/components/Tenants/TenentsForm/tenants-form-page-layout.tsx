@@ -1,4 +1,4 @@
-import TenantsFormHeader from "@/components/Tenants/TenentsForm/tenants-form-header.tsx";
+import HeaderForAllPages from "@/components/Tenants/shared/header-for-all-pages.tsx";
 import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
 import OccupantsInfoSection from "@/components/Tenants/TenentsForm/FormSections/occupants -info-section.tsx";
 import ContactInfoSection from "@/components/Tenants/TenentsForm/FormSections/contact-info-section.tsx";
@@ -18,7 +18,7 @@ export default function TenantsFormPageLayout({
 }: Props) {
   return (
     <div className="h-[84vh] min-w-[65vw] flex flex-col">
-      <TenantsFormHeader action={action} />
+      <HeaderForAllPages action={action} />
 
       <TenantsFormContainer>
         <form onSubmit={onSubmit} className="space-y-6">

@@ -4,12 +4,11 @@ import { Plus, Search } from "lucide-react";
 import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 
-export default function TenantsPageHeader() {
+export default function TenantsListHeader() {
   const navigate = useNavigate();
   return (
-    <div className="h-[80px] flex justify-between items-center gap-5 p-6 border-b rounded-t-xl border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] ">
+    <div className="h-[80px] flex justify-between items-center gap-5   bg-white dark:border-white/[0.05] dark:bg-white/[0.03] ">
       <div className="flex justify-start w-[80%] gap-5 items-center">
-        <h1 className="font-roboto font-semibold text-lg">Tenants</h1>
         <Input
           placeholder="Search"
           variant="bordered"
