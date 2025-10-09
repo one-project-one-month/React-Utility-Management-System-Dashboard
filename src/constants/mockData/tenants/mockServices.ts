@@ -1,4 +1,14 @@
-export const mockServices = [
+export interface Service {
+  caseId: string;
+  roomId: number;
+  category: "Complain" | "Maintenance" | "Other";
+  description: string;
+  status: "Pending" | "Ongoing" | "Resolved";
+  priorityLevel: "Low" | "Medium" | "High";
+  issuedDate: string;
+}
+
+export const mockServices: Service[] = [
   {
     caseId: "s1",
     roomId: 101,

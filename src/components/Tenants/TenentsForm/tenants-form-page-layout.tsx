@@ -17,7 +17,7 @@ export default function TenantsFormPageLayout({
   tenantsFormSectionProps,
 }: Props) {
   return (
-    <div className="h-[84vh] min-w-[65vw] flex flex-col">
+    <div className="h-[calc(100vh-30px)] min-w-[65vw] flex flex-col">
       <HeaderForAllPages action={action} />
 
       <TenantsFormContainer>

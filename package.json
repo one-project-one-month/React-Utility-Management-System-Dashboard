@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroui/autocomplete": "^2.3.29",
     "@heroui/button": "^2.2.26",
     "@heroui/card": "^2.2.25",
     "@heroui/input": "^2.4.27",

@@ -1,9 +1,10 @@
 import { type Control, Controller } from "react-hook-form";
-import { Select, SelectItem } from "@heroui/select";
 import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
 import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 import { mockContracts } from "@/constants/mockData/tenants/mockContracts";
+import { Autocomplete } from "@heroui/autocomplete";
+import { AutocompleteItem } from "@heroui/react";
 
 interface Props {
   label: string;
@@ -32,37 +33,32 @@ export default function SelectField({
         control={control}
         name={fieldName}
         render={({ field }) => (
-          <Select
-            selectedKeys={field.value ? [field.value] : []}
-            onSelectionChange={(keys) => {
-              const value = Array.from(keys)[0] as string;
-              field.onChange(value);
-            }}
+          <Autocomplete
+            selectedKey={field.value}
+            onSelectionChange={(key) => field.onChange(key || "")}
             errorMessage={errorMessage}
             isInvalid={isInvalid}
             placeholder={placeholder}
             size="sm"
             variant="bordered"
-            classNames={{
-              trigger: "bg-white",
-            }}
           >
             {items.map((item) => {
               const roomNo = "roomNo" in item ? item.roomNo : null;
               const contractName =
                 "contractName" in item ? item.contractName : null;
+
+              const textValue = roomNo
+                ? `Room ${roomNo}`
+                : contractName
+                  ? contractName
+                  : "";
               return (
-                <SelectItem
-                  key={item.id}
-                  textValue={
-                    roomNo ? `Room ${roomNo}` : contractName ? contractName : ""
-                  }
-                >
-                  {roomNo ? `Room ${roomNo}` : contractName ? contractName : ""}
-                </SelectItem>
+                <AutocompleteItem key={item.id} textValue={textValue}>
+                  {textValue}
+                </AutocompleteItem>
               );
             })}
-          </Select>
+          </Autocomplete>
         )}
       />
     </div>

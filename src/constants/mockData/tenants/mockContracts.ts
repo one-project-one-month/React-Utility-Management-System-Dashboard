@@ -1,4 +1,12 @@
-export const mockContracts = [
+export interface Contract {
+  id: string;
+  contractName: string;
+  monthlyRentFee: number;
+  startDate: string;
+  endDate: string;
+}
+
+export const mockContracts: Contract[] = [
   {
     id: "c1",
     contractName: "Standard 1-Year Contract",

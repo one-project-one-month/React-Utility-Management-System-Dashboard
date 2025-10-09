@@ -6,36 +6,44 @@ import { Select, SelectItem } from "@heroui/select";
 
 export default function TenantsListHeader() {
   const navigate = useNavigate();
+  const occupancyOptions = [
+    { key: "1", label: "Single Occupancy" },
+    { key: "2", label: "Double Occupancy" },
+    { key: "3", label: "(3-4) Occupancy" },
+    { key: "4", label: "(5+) Occupancy" },
+  ];
   return (
-    <div className="h-[80px] flex justify-between items-center gap-5   bg-white dark:border-white/[0.05] dark:bg-white/[0.03] ">
+    <div className="h-[80px] flex justify-between items-center gap-5    dark:border-white/[0.05] dark:bg-white/[0.03] ">
       <div className="flex justify-start w-[80%] gap-5 items-center">
         <Input
           placeholder="Search"
           variant="bordered"
           // value={searchTerm}
           // onValueChange={setSearchTerm}
+
           startContent={<Search size={18} className="text-default-400" />}
           classNames={{
-            base: " w-[300px]",
-            inputWrapper: "border-[0.5px]",
+            base: " w-[300px] border-[0.5px] bg-background text-foreground rounded-xl",
+            inputWrapper: "border-[0.5px] rounded-xl",
           }}
         />
 
         <Select
           key={"noOfOccupants"}
-          placeholder="No Of Occupants"
+          placeholder="Select Ouucpancy"
           variant={"bordered"}
           // selectedKeys={}
           // onSelectionChange={}
           classNames={{
-            base: "max-w-[150px]",
-            trigger: "border-[0.5px] ",
-            value: "text-black",
+            base: " w-[165px] border-[0.5px] bg-background text-foreground rounded-xl",
+            trigger: "border-[0.5px]  rounded-xl ",
+            value: "text-foreground ",
+            popoverContent: "w-auto min-w-[185px]  max-w-[300px]",
           }}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((no, index) => (
-            <SelectItem key={index} textValue={no.toString()}>
-              {no}
+          {occupancyOptions.map((o) => (
+            <SelectItem key={o.key} textValue={o.label}>
+              {o.label}
             </SelectItem>
           ))}
         </Select>
@@ -45,7 +53,7 @@ export default function TenantsListHeader() {
         onPress={() => {
           navigate("/tenants/create");
         }}
-        className={"hover:bg-[#668EFF] aria-pressed:bg-[#1955FF]"}
+        className={"hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"}
       >
         {" "}
         <Plus /> Register New Tenant

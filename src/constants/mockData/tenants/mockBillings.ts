@@ -1,4 +1,21 @@
-export const mockBillings = [
+export interface Billing {
+  id: string;
+  roomNo: number;
+  rentalFee: number;
+  electricityFee: number;
+  waterFee: number;
+  fineFee?: number;
+  serviceFee: number;
+  groundFee: number;
+  carParkingFee?: number;
+  wifiFee?: number;
+  totalAmount: number;
+  dueDate: string;
+  createdDate: string;
+  status: "Paid" | "Pending" | "Overdue";
+}
+
+export const mockBillings: Billing[] = [
   {
     id: "b1",
     roomNo: 101,

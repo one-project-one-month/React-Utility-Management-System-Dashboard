@@ -1,4 +1,16 @@
-export const mockRooms = [
+export interface Room {
+  id: string;
+  roomNo: number;
+  floor: number;
+  dimension: string;
+  noOfBedRoom: number;
+  status: "Rented" | "Available" | "Reserved";
+  sellingPrice: number;
+  maxNoPeople: number;
+  description: string;
+}
+
+export const mockRooms: Room[] = [
   {
     id: "r1",
     roomNo: 101,

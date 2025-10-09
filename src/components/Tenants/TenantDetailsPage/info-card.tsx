@@ -6,22 +6,23 @@ interface Props {
   header: string;
   obj: object;
 }
+
 export default function InfoCard({ header, obj }: Props) {
   return (
-    <Card className="pb-6 shadow-md border   border-slate-200 rounded-2xl">
-      <CardHeader className="pb-2">
-        <h1 className="text-lg font-semibold text-slate-800 tracking-tight">
+    <Card className="pb-3 shadow-sm border border-slate-200 rounded-xl">
+      <CardHeader className="pb-1 pt-3 px-4">
+        <h1 className="text-base font-semibold text-slate-800 tracking-tight">
           {header}
         </h1>
       </CardHeader>
 
-      <CardBody className="mt-1 space-y-1">
+      <CardBody className="mt-0 space-y-1 px-4">
         {Object.entries(obj).map(([label, value], index, arr) => (
           <div key={label}>
-            <div className="flex justify-between items-center py-2 px-1">
+            <div className="flex justify-between items-center py-1.5">
               <span
                 className={clsx(
-                  " font-medium",
+                  "text-sm font-medium",
                   label === "Total Rent Fee"
                     ? "text-primary"
                     : "text-slate-500",
@@ -31,10 +32,10 @@ export default function InfoCard({ header, obj }: Props) {
               </span>
               <span
                 className={clsx(
-                  "font-semibold",
+                  "text-sm font-semibold",
                   label === "Total Rent Fee"
                     ? "text-primary"
-                    : "text-slate-900",
+                    : "text-slate-800",
                 )}
               >
                 {value || "—"}

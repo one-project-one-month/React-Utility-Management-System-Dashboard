@@ -1,7 +1,7 @@
 import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
-import { Pencil } from "lucide-react";
+import { FileSignature, History, Pencil } from "lucide-react";
 import type { TenantType } from "@/types/tenants/tenantType.ts";
 import { useNavigate } from "react-router";
 
@@ -15,7 +15,7 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
       <div className="flex items-center">
         <Image
           src={"/images/tenantPic.jpg"}
-          className="object-cover w-20 h-20 rounded-full"
+          className="object-cover w-17 h-17 rounded-full"
         />
         <div className="flex flex-col">
           <h1 className="text-lg font-semibold">{tenant?.name[0]}</h1>
@@ -24,12 +24,12 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
       </div>
 
       <div className="flex gap-5">
-        <Button variant="solid" color={"primary"}>
-          See Contract
-        </Button>
-        <Button variant="ghost" color={"primary"}>
-          New Contract
-        </Button>
+        {/*<Button variant="solid" color={"primary"}>*/}
+        {/*  See Contract*/}
+        {/*</Button>*/}
+        {/*<Button variant="ghost" color={"primary"}>*/}
+        {/*  New Contract*/}
+        {/*</Button>*/}
         <Tooltip content="Edit tenant info" placement="top">
           <Button
             isIconOnly
@@ -40,6 +40,30 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
             }}
           >
             <Pencil size={25} />
+          </Button>
+        </Tooltip>
+        <Tooltip content="See contract" placement="top">
+          <Button
+            isIconOnly
+            variant={"light"}
+            color="primary"
+            onPress={() => {
+              navigate(`/contracts/details/1`);
+            }}
+          >
+            <FileSignature size={25} />
+          </Button>
+        </Tooltip>{" "}
+        <Tooltip content="See activities history" placement="top">
+          <Button
+            isIconOnly
+            variant={"light"}
+            color="primary"
+            onPress={() => {
+              navigate(`/tenants/${tenant?.id}/activities`);
+            }}
+          >
+            <History size={25} />
           </Button>
         </Tooltip>
       </div>
