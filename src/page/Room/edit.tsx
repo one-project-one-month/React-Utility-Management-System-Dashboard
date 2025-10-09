@@ -91,7 +91,7 @@ export default function RoomEditPage() {
     }
 
     const handleCancel = () => {
-        navigate(`/room/${id}`)
+        navigate(`/rooms/${id}`)
     }
 
     const onSubmit = (data: RoomEditFormData) => {

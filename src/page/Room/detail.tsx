@@ -40,7 +40,7 @@ export default function RoomDetailPage() {
     }
 
     const handleEditRoom = () => {
-        navigate(`/room/${id}/edit`)
+        navigate(`/rooms/${id}/edit`)
     }
 
     return (

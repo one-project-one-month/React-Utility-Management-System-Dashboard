@@ -36,11 +36,11 @@ export default function RoomPage() {
     const [filters, setFilters] = useState(INIT_FILTERS);
 
     const handleViewRoom = (roomId: string) => {
-        navigate(`/room/${roomId}`);
+        navigate(`/rooms/${roomId}`);
     }
 
     const handleEditRoom = (roomId: string) => {
-        navigate(`/room/${roomId}/edit`);
+        navigate(`/rooms/${roomId}/edit`);
     };
 
     const handleDeleteRoom = (roomId: string) => {
