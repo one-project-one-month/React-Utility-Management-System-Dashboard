@@ -100,7 +100,7 @@ const sidebarLinks: SidebarLink[] = [
     order: 9,
   },
   {
-    href: "/room",
+    href: "/rooms",
     title: "Rooms",
     icon: Grid,
     order: 9,
