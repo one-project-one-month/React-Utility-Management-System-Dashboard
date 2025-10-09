@@ -97,6 +97,9 @@ export default function HomePage() {
         <SkeletonLoader />  {/* default 6rem height */}
         <SkeletonLoader height="3rem" width="50%" />
         <SkeletonLoader height="10rem" rounded="rounded-xl" className="mt-4" />
+        <p>
+          You can also use it as a text loader
+        </p>
       </div>
       <div className="col-span-2">
         <DataTableExample />
