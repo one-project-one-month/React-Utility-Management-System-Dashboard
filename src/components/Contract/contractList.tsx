@@ -1,5 +1,4 @@
 import {
-    createColumnHelper,
     flexRender,
     getCoreRowModel,
     useReactTable,
@@ -29,7 +28,6 @@ const contracts: Contract[] = [
     { id: 4, name: "Enterprise Plan", duration: "Yearly", price: 499.99, facilities: ["Facility A", "Facility B", "Facility C", "Facility D", "Facility E"] },
 ];
 
-const columnHelper = createColumnHelper<Contract>()
 export default function ContractList() {
 
     const columns = [
