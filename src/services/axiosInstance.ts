@@ -2,7 +2,7 @@ import { logout, setAccessToken } from "@/store/features/auth/authSlice";
 import { store } from "@/store/store";
 import type { RefreshTokenResponse } from "@/types/auth";
 import axios from "axios";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -46,13 +46,12 @@ axiosInstance.interceptors.response.use(
         const newAccessToken = res.data.content.accessToken;
 
         if (!newAccessToken) {
-          console.log("error");
           store.dispatch(logout());
           return Promise.reject(error);
         }
 
         store.dispatch(setAccessToken(newAccessToken));
-        Cookies.set("token", newAccessToken);
+        Cookies.set("token", newAccessToken, { expires: 7 });
 
         error.config.headers.Authorization = `Bearer ${newAccessToken}`;
         return axiosInstance.request(error.config);
