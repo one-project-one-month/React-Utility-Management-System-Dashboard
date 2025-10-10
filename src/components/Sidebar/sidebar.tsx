@@ -6,6 +6,7 @@ import { useState } from "react";
 import SidebarItem from "./sidebar-item";
 import { useLocation } from "react-router";
 
+
 export default function SideBar() {
     const [isMinimized, setIsMinimized] = useState(false)
     const { pathname } = useLocation()
