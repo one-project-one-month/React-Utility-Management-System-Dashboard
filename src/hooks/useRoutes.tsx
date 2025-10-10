@@ -20,10 +20,14 @@ const UpdateTenantsPage = lazy(
 );
 const TenantDetailsPage = lazy(()=>import("@/page/Tenants/tenant-details-page"),)
 const TenantActivitiesHistoryPage = lazy(()=>import("@/page/Tenants/tenant-activities-history-page"),)
+const UtilityUnitPage = lazy(() => import("@/page/UtilityUnits"));
+const UtilityUnitDetailPage = lazy(
+  () => import("@/page/UtilityUnits/unit-detail")
+);
 
 export const useRoutes = () => {
   return [
-    { title: "", path: "/login", element: <LoginPage /> }, // 🔹 removed extra comma in path
+    { title: "", path: "/login,", element: <LoginPage /> },
     { title: "Components", path: "/components", element: <Components /> },
     { title: "Home", path: "/", element: <HomePage /> },
     { title: "", path: "/billing", element: <BillingPage /> },
@@ -40,7 +44,17 @@ export const useRoutes = () => {
     { title: "", path: "/rooms", element: <RoomPage /> },
     { title: "", path: "/rooms/:id", element: <RoomDetailPage /> },
     { title: "", path: "/rooms/:id/edit", element: <EditRoomPage /> },
-    { title: '', path: '/customer-service', element: <CustomerSupportPage /> },
-    { title: '', path: '/customer-service/:id/edit', element: <CustomerServiceEditPage /> },
+    { title: "", path: "/customer-service", element: <CustomerSupportPage /> },
+    {
+      title: "",
+      path: "/customer-service/:id/edit",
+      element: <CustomerServiceEditPage />,
+    },
+    { title: "", path: "/utility-units", element: <UtilityUnitPage /> },
+    {
+      title: "",
+      path: "/utility-units/:id",
+      element: <UtilityUnitDetailPage />,
+    },
   ];
-}
+};
