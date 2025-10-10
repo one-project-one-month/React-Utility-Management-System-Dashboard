@@ -101,8 +101,6 @@ const TenantsTablePresentation = <TData, TValue>({
           .flatMap((headerGroup) => headerGroup.headers)}
       >
         {(header) => {
-          console.log("id is", header.column.id);
-          console.log("w is", columnWidths[header.column.id]);
           return (
             <TableColumn
               key={header.id}
