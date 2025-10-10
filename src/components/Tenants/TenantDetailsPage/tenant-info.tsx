@@ -37,7 +37,7 @@ export default function TenantInfo({ tenant }: Props) {
   }));
 
   return (
-    <div className="h-[calc(100vh-220px)] pb-4 pr-2 mt-4 rounded-2xl flex flex-col gap-5 overflow-y-auto custom-scrollbar">
+    <div className="h-[calc(100vh-260px)] pb-4 pr-2 mt-4 rounded-2xl flex flex-col gap-5 overflow-y-auto custom-scrollbar">
       <div className="w-full grid grid-cols-2 gap-8 mt-6">
         <InfoCard
           header={"  Personal & Contact Information"}
