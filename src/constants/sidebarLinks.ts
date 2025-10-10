@@ -74,18 +74,18 @@ const sidebarLinks: SidebarLink[] = [
     title: "Utility Units",
     icon: Zap,
     order: 7,
-    children: [
-      {
-        href: "/utility-units/electricity",
-        title: "Electricity",
-        icon: Zap,
-      },
-      {
-        href: "/utility-units/water",
-        title: "Water",
-        icon: FilePlus,
-      },
-    ],
+    // children: [
+    //   {
+    //     href: "/utility-units/electricity",
+    //     title: "Electricity",
+    //     icon: Zap,
+    //   },
+    //   {
+    //     href: "/utility-units/water",
+    //     title: "Water",
+    //     icon: FilePlus,
+    //   },
+    // ],
   },
   {
     href: "/invoice",
