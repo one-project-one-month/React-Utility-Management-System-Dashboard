@@ -6,7 +6,9 @@ import {
   billMockData,
   utilityUnitMockData,
 } from "@/constants/utilityUnitMockData";
-import { PencilIcon } from "lucide-react";
+import EditForm from "./edit-form";
+import { Link } from "react-router";
+import { EyeIcon } from "lucide-react";
 
 export default function UnitList() {
   const [data, _setData] = useState<UtilityUnit[]>(utilityUnitMockData);
@@ -77,11 +79,19 @@ export default function UnitList() {
     {
       id: "action",
       header: "Action",
-      cell: () => (
-        <div className="flex justify-center">
-          <PencilIcon size={14} />
-        </div>
-      ),
+      cell: (info) => {
+        return (
+          <div className="flex items-center gap-x-1">
+            <EditForm id={info.row.original.id} />
+            <Link
+              to={`/utility-units/${info.row.original.id}`}
+              className="px-3 py-2 border rounded border-neutral-200"
+            >
+              <EyeIcon size={12} />
+            </Link>
+          </div>
+        );
+      },
     },
   ];
 
