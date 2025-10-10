@@ -1,15 +1,42 @@
+import { Pencil, UserRound, History, ChevronLeft } from "lucide-react";
+
+import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import { Button } from "@heroui/button";
-import { ChevronLeft, Pencil, UserRound, History } from "lucide-react";
 import { useNavigate } from "react-router";
 
 interface Props {
+  tenantId?: string;
   action: "create" | "update" | "viewDetails" | "viewActivities";
 }
-export default function HeaderForAllPages({ action }: Props) {
+export default function HeaderForAllPages({ tenantId, action }: Props) {
   const navigate = useNavigate();
+
+  const items = {
+    create: [{ label: "Tenant Registration", href: "/tenants/create" }],
+    update: [{ label: "Update Tenant", href: `/tenants/update/${tenantId}` }],
+    viewDetails: [
+      { label: "Tenant Details", href: `/tenants/${tenantId}/details` },
+    ],
+    viewActivities: [
+      { label: "Tenant Details", href: `/tenants/${tenantId}/details` },
+      {
+        label: "Tenant Activities History",
+        href: `/tenants/${tenantId}/activities`,
+      },
+    ],
+  };
+
+  const currentItems = items[action];
   return (
     <div className="flex-shrink-0   pb-3">
-      <div className="flex items-center gap-3 mb-2">
+      <NavigationBreadCrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Tenants", href: "/tenants" },
+          ...currentItems,
+        ]}
+      />
+      <div className="flex items-center gap-3 mb-2 mt-4">
         <Button
           isIconOnly
           variant="light"

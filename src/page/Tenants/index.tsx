@@ -9,7 +9,7 @@ export default function TenantsPage() {
         <NavigationBreadCrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Tenants", href: "tenants" },
+            { label: "Tenants", href: "/tenants" },
           ]}
         />
         <TenantsListHeader />

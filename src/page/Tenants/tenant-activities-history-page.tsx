@@ -26,7 +26,7 @@ export default function TenantActivitiesHistoryPage() {
     <div>
       <Card className="p-6 h-[calc(100vh-30px)] ">
         <div className="flex flex-col gap-1">
-          <HeaderForAllPages action={"viewActivities"} />
+          <HeaderForAllPages action={"viewActivities"} tenantId={id} />
 
           <h2 className="text-lg font-semibold text-foreground-400 tracking-tight">
             Tenant Name:{" "}
@@ -37,7 +37,7 @@ export default function TenantActivitiesHistoryPage() {
             <Tabs aria-label="Dynamic tabs" items={tabs} color="primary">
               {(item) => (
                 <Tab key={item.id} title={item.label}>
-                  <div className=" gap-5 mt-3 h-[calc(100vh-290px)]  overflow-y-auto custom-scrollbar pr-2">
+                  <div className=" gap-5 mt-3 h-[calc(100vh-310px)]  overflow-y-auto custom-scrollbar pr-2">
                     {item.content.map((c, index) => (
                       <ActivityCard activity={c} key={index} />
                     ))}

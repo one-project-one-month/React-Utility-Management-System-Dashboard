@@ -1,5 +1,23 @@
 import type { TenantType } from "@/types/tenants/tenantType.ts";
 
+type Occupant = {
+  name: string;
+  nrc: string;
+  relationshipToTenant: string;
+};
+
+type TenantTypes = {
+  id: string;
+  name: string;
+  nrc: string;
+  occupants: Occupant[];
+  email: string;
+  phoneNo: string;
+  emergencyNo: string;
+  roomId: string;
+  contractId: string;
+};
+
 export const mockTenants: TenantType[] = [
   {
     id: "t1",

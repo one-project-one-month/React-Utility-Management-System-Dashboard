@@ -19,7 +19,7 @@ export default function TenantsTableContainer() {
   };
 
   const handleDetails = (tenantId: string) => {
-    navigate(`/tenants/details/${tenantId}`);
+    navigate(`/tenants/${tenantId}/details`);
   };
 
   const columns = tenantsTableColumns({
