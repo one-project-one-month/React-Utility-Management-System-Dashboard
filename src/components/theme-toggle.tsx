@@ -24,10 +24,10 @@ export default function ThemeToggle() {
 
   return (
     <Button
-      variant="ghost"
+      variant="light"
+      size="sm"
       onPress={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="transition-colors duration-300 
-                 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 
+      className="transition-colors duration-300 bg-transparent 
                  dark:hover:bg-neutral-600"
     >
       {theme === "dark" ? (

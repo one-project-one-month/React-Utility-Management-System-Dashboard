@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import {Grid, type LucideIcon} from "lucide-react";
 import {
   Home,
   CreditCard,
@@ -8,7 +8,8 @@ import {
   Users,
   Zap,
   FileSpreadsheet,
-  Headphones
+  Headphones,
+  Command
 } from "lucide-react";
 
 export type SidebarLink = {
@@ -21,16 +22,22 @@ export type SidebarLink = {
 
 const sidebarLinks: SidebarLink[] = [
   {
+    href: "/components",
+    title: "Components",
+    icon: Command,
+    order: 1,
+  },
+  {
     href: "/",
     title: "Dashboard",
     icon: Home,
-    order: 1,
+    order: 2,
   },
   {
     href: "/billing",
     title: "Billing",
     icon: CreditCard,
-    order: 2,
+    order: 3,
     children: [
       {
         href: "/billing/create",
@@ -48,50 +55,56 @@ const sidebarLinks: SidebarLink[] = [
     href: "/contract",
     title: "Contracts",
     icon: FileText,
-    order: 3,
+    order: 4,
   },
   {
     href: "/tenants",
     title: "Tenants",
     icon: Users,
-    order: 4,
+    order: 5,
   },
   {
     href: "/user-management",
     title: "User Management",
     icon: Users,
-    order: 5,
+    order: 6,
   },
   {
     href: "/utility-units",
     title: "Utility Units",
     icon: Zap,
-    order: 6,
-    children: [
-      {
-        href: "/utility-units/electricity",
-        title: "Electricity",
-        icon: Zap,
-      },
-      {
-        href: "/utility-units/water",
-        title: "Water",
-        icon: FilePlus,
-      },
-    ],
+    order: 7,
+    // children: [
+    //   {
+    //     href: "/utility-units/electricity",
+    //     title: "Electricity",
+    //     icon: Zap,
+    //   },
+    //   {
+    //     href: "/utility-units/water",
+    //     title: "Water",
+    //     icon: FilePlus,
+    //   },
+    // ],
   },
   {
     href: "/invoice",
     title: "Invoices",
     icon: FileSpreadsheet,
-    order: 7,
+    order: 8,
   },
   {
     href: "/customer-service",
     title: "Customer Support",
     icon: Headphones,
-    order: 8,
+    order: 9,
   },
+  {
+    href: "/rooms",
+    title: "Rooms",
+    icon: Grid,
+    order: 9,
+  }
 ];
 
 export default sidebarLinks;
