@@ -35,7 +35,7 @@ export const useTenantToTenantTableData: (p: Props) => TenantTableData[] = ({
       navigate(`/tenants/update/${tenantId}`);
     };
     const onDetailsHandler = (tenantId: string) => {
-      navigate(`/tenants/details/${tenantId}`);
+      navigate(`/tenants/${tenantId}/details`);
     };
 
     const actions = {

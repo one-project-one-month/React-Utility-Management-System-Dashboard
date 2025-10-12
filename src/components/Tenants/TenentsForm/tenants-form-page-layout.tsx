@@ -19,18 +19,20 @@ export default function TenantsFormPageLayout({
   tenantsFormSectionProps,
 }: Props) {
   return (
-    <div className="h-[calc(100vh-30px)] min-w-[65vw] flex flex-col">
-      <HeaderForAllPages action={action} tenantId={tenantId} />
+    <div className="h-[calc(100vh-70px)] overflow-y-auto custom-scrollbar-3">
+      <div className="h-[calc(100vh-30px)] min-w-[65vw] flex flex-col">
+        <HeaderForAllPages action={action} tenantId={tenantId} />
 
-      <TenantsFormContainer>
-        <form onSubmit={onSubmit} className="space-y-6">
-          <OccupantsInfoSection {...tenantsFormSectionProps} />
-          <ContactInfoSection {...tenantsFormSectionProps} />
-          <RoomAndContractSection {...tenantsFormSectionProps} />
+        <TenantsFormContainer>
+          <form onSubmit={onSubmit} className="space-y-6">
+            <OccupantsInfoSection {...tenantsFormSectionProps} />
+            <ContactInfoSection {...tenantsFormSectionProps} />
+            <RoomAndContractSection {...tenantsFormSectionProps} />
 
-          <FormActionButtons action={action} />
-        </form>
-      </TenantsFormContainer>
+            <FormActionButtons action={action} />
+          </form>
+        </TenantsFormContainer>
+      </div>
     </div>
   );
 }

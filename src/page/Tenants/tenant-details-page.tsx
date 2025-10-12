@@ -11,10 +11,12 @@ export default function TenantDetailsPage() {
   if (!tenant) return <div>Tenant not found</div>;
 
   return (
-    <div className="h-[calc(100vh-30px)]">
-      <HeaderForAllPages action={"viewDetails"} tenantId={id} />
-      <TenantDetailsPageHeader tenant={tenant} />
-      <TenantInfo tenant={tenant} />
+    <div className="h-[calc(100vh-70px)] overflow-y-auto custom-scrollbar-3">
+      <div className="h-[calc(100vh-30px)]">
+        <HeaderForAllPages action={"viewDetails"} tenantId={id} />
+        <TenantDetailsPageHeader tenant={tenant} />
+        <TenantInfo tenant={tenant} />
+      </div>
     </div>
   );
 }
