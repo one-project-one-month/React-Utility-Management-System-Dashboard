@@ -16,8 +16,8 @@ import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
 import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
-import DetailsModalHeader from "@/components/Billings/BillingDetails/modal-header.tsx";
-import DetailsModalBody from "@/components/Billings/BillingDetails/model-body.tsx";
+import DetailsModalHeader from "@/components/Billings/BillingDetails/details-modal-header.tsx";
+import DetailsModalBody from "@/components/Billings/BillingDetails/details-model-body.tsx";
 
 interface Props {
   billingId: string;
