@@ -63,6 +63,7 @@ export default function UpdateTenantsPage() {
 
   return (
     <TenantsFormPageLayout
+      tenantId={id}
       action={"update"}
       onSubmit={handleSubmit(onSubmit)}
       tenantsFormSectionProps={tenantsFormSectionProps}

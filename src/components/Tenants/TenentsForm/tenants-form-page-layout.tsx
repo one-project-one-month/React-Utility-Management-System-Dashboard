@@ -7,18 +7,20 @@ import FormActionButtons from "@/components/Tenants/TenentsForm/form-action-butt
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 
 interface Props {
+  tenantId?: string;
   action: "create" | "update";
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   tenantsFormSectionProps: TenantFormSectionProps;
 }
 export default function TenantsFormPageLayout({
+  tenantId,
   action,
   onSubmit,
   tenantsFormSectionProps,
 }: Props) {
   return (
     <div className="h-[calc(100vh-30px)] min-w-[65vw] flex flex-col">
-      <HeaderForAllPages action={action} />
+      <HeaderForAllPages action={action} tenantId={tenantId} />
 
       <TenantsFormContainer>
         <form onSubmit={onSubmit} className="space-y-6">
