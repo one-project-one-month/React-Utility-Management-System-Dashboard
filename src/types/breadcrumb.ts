@@ -1,6 +1,6 @@
 export type BreadCrumbItem = {
     label: string
-    href: string
+    href: string | null
 }
 
 export type BreadCrumbs = {
