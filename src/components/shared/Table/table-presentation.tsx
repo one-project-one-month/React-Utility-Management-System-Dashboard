@@ -16,10 +16,10 @@ import {
 } from "@tanstack/react-table";
 import { SkeletonLoader } from "@/components/skeleton-loader.tsx";
 import clsx from "clsx";
-import { columnWidths } from "@/components/Tenants/TenantsPage/tenants-table-columns.tsx";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
+  columnWidths: Record<string, string>;
   data: TData[];
   isManualPagination: boolean;
   isLoading?: boolean;
@@ -29,8 +29,9 @@ type DataTableProps<TData, TValue> = {
   onPageChange?: (newPage: number) => void;
 };
 
-const TenantsTablePresentation = <TData, TValue>({
+const TablePresentation = <TData, TValue>({
   columns,
+  columnWidths,
   data,
   isManualPagination,
   isLoading = false,
@@ -106,7 +107,9 @@ const TenantsTablePresentation = <TData, TValue>({
               key={header.id}
               className={clsx(
                 columnWidths[header.column.id] || "w-auto",
-                header.column.id === "actions" && "text-center",
+                (header.column.id === "actions" ||
+                  header.column.id === "billingIdForAction") &&
+                  "text-center",
               )}
             >
               <div className="whitespace-normal break-words max-w-[200px]">
@@ -143,7 +146,9 @@ const TenantsTablePresentation = <TData, TValue>({
                     key={cell.id}
                     className={clsx(
                       columnWidths[cell.column.id] || "w-auto",
-                      cell.column.id === "actions" && "text-center",
+                      (cell.column.id === "actions" ||
+                        cell.column.id === "billingIdForAction") &&
+                        "text-center",
                     )}
                   >
                     <div className="whitespace-normal break-words max-w-[200px]">
@@ -161,4 +166,4 @@ const TenantsTablePresentation = <TData, TValue>({
   );
 };
 
-export default TenantsTablePresentation;
+export default TablePresentation;

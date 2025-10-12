@@ -31,6 +31,52 @@
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: rgba(156, 163, 175, 0.7);
     }
+
+    /* custom scrollbar 2 */
+    .custom-scrollbar-2 {
+        scrollbar-width: none;
+    }
+
+    .custom-scrollbar-2:hover {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(156, 163, 175, 0.15) transparent;
+    }
+
+    .custom-scrollbar-2::-webkit-scrollbar {
+        width: 2px;
+        height: 2px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .custom-scrollbar-2:hover::-webkit-scrollbar {
+        opacity: 1;
+    }
+
+    .custom-scrollbar-2::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 1px;
+    }
+
+    .custom-scrollbar-2::-webkit-scrollbar-thumb {
+        background: rgba(156, 163, 175, 0.15);
+        border-radius: 1px;
+    }
+
+    .custom-scrollbar-2::-webkit-scrollbar-thumb:hover {
+        background: rgba(156, 163, 175, 0.25);
+    }
+
+
+    /* custom scrollbar 3*/
+    .custom-scrollbar-3 {
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .custom-scrollbar-3::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+    }
 }
 
 @layer base {

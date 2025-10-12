@@ -21,15 +21,17 @@ export default function PageLayout() {
   }
 
   return (
-    <div className="flex max-h-screen w-full flex-col dark:bg-neutral-800 overflow-hidden">
-      <Header />
-      <Divider />
-      <div className="flex flex-1">
+    <div className="flex h-screen w-full flex-col dark:bg-neutral-800 ">
+      <div className="flex-shrink-0">
+        <Header />
+        <Divider />
+      </div>
+      <div className="flex flex-1 min-h-0">
         {/* Sidebar fixed width */}
         <SideBar />
 
         {/* Main content area */}
-        <main className=" flex-1 px-6 pt-12 pb-6 transition-all duration-300 ease-in-out max-h-screen overflow-auto">
+        <main className=" flex-1 px-6 pt-12 pb-6 transition-all duration-300 ease-in-out max-h-screen overflow-hidden">
           <Outlet />
         </main>
       </div>

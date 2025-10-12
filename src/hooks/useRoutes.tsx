@@ -31,7 +31,7 @@ export const useRoutes = () => {
     { title: "Components", path: "/components", element: <Components /> },
     { title: "Home", path: "/", element: <HomePage /> },
     { title: "", path: "/billing", element: <BillingPage /> },
-    { title: "", path: "/billing/create", element: <BillingPage /> },
+    // { title: "", path: "/billing", element: <BillingPage /> },
     { title: "", path: "/tenants", element: <TenantsPage /> },
     { title: "", path: "/tenants/create", element: <CreateTenantsPage /> },
     { title: "", path: "/tenants/update/:id", element: <UpdateTenantsPage /> },
