@@ -8,7 +8,7 @@ import {
 
 export default function BillingPage() {
   return (
-    <div className="h-[84vh] px-2 overflow-y-auto custom-scrollbar">
+    <div className="h-[84vh] px-2 overflow-y-auto custom-scrollbar-3">
       <div className="min-h-[90vh]  rounded-xl    dark:border-white/[0.05] dark:bg-white/[0.03]">
         <NavigationBreadCrumbs
           items={[
