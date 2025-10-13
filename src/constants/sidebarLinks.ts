@@ -1,4 +1,4 @@
-import { Grid, type LucideIcon } from "lucide-react";
+import {FileStack, Grid, SquareUser, type LucideIcon} from "lucide-react";
 import {
   Home,
   CreditCard,
@@ -66,6 +66,18 @@ const sidebarLinks: SidebarLink[] = [
     title: "Contracts",
     icon: FileText,
     order: 4,
+    children: [
+      {
+        href: "/contract/contract-type",
+        title: "Contract Type",
+        icon: FileStack
+      },
+      {
+        href: "/contract/contract-tenants",
+        title: "Tenants' Contract",
+        icon: SquareUser
+      },
+    ]
   },
   {
     href: "/tenants",
