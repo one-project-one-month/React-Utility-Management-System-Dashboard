@@ -10,7 +10,7 @@ const NavigationBreadCrumbs = ({ items }: Props) => {
     return (
         <Breadcrumbs>
             {items.map((item) => (
-                <BreadcrumbItem href={item.href}>{item.label}</BreadcrumbItem>
+                <BreadcrumbItem href={item.href ?? undefined}>{item.label}</BreadcrumbItem>
             ))}
         </Breadcrumbs>
     )
