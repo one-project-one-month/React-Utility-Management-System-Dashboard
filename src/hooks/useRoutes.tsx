@@ -1,3 +1,5 @@
+import ContractTypePage from "@/page/Contract/ContractTypes";
+import TenantContractPage from "@/page/Contract/TenantsContracts";
 import { lazy } from "react";
 
 const LoginPage = lazy(() => import("@/page/Auth"));
@@ -8,57 +10,57 @@ const RoomPage = lazy(() => import("@/page/Room"));
 const RoomDetailPage = lazy(() => import("@/page/Room/detail"));
 const EditRoomPage = lazy(() => import("@/page/Room/edit"));
 const CustomerSupportPage = lazy(() => import("@/page/CustomerSupport"));
-const CustomerServiceEditPage = lazy(
-  () => import("@/page/CustomerSupport/edit"),
-);
+const CustomerServiceEditPage = lazy(() => import("@/page/CustomerSupport/edit"));
 const TenantsPage = lazy(() => import("@/page/Tenants"));
-const CreateTenantsPage = lazy(
-  () => import("@/page/Tenants/create-tenants-page"),
-);
-const UpdateTenantsPage = lazy(
-  () => import("@/page/Tenants/update-tenants-page"),
-);
-const TenantDetailsPage = lazy(
-  () => import("@/page/Tenants/tenant-details-page"),
-);
-const TenantActivitiesHistoryPage = lazy(
-  () => import("@/page/Tenants/tenant-activities-history-page"),
-);
+const CreateTenantsPage = lazy(() => import("@/page/Tenants/create-tenants-page"));
+const UpdateTenantsPage = lazy(() => import("@/page/Tenants/update-tenants-page"));
+const TenantDetailsPage = lazy(() => import("@/page/Tenants/tenant-details-page"));
+const TenantActivitiesHistoryPage = lazy(() => import("@/page/Tenants/tenant-activities-history-page"));
 const UtilityUnitPage = lazy(() => import("@/page/UtilityUnits"));
-const UtilityUnitDetailPage = lazy(
-  () => import("@/page/UtilityUnits/unit-detail"),
-);
+const UtilityUnitDetailPage = lazy(() => import("@/page/UtilityUnits/unit-detail"))
 
 export const useRoutes = () => {
   return [
-    { title: "", path: "/login,", element: <LoginPage /> },
+    { title: "Login", path: "/login,", element: <LoginPage /> },
     { title: "Components", path: "/components", element: <Components /> },
     { title: "Home", path: "/", element: <HomePage /> },
-    { title: "", path: "/billing", element: <BillingPage /> },
-    { title: "", path: "/billing/create", element: <BillingPage /> },
-    { title: "", path: "/tenants", element: <TenantsPage /> },
-    { title: "", path: "/tenants/create", element: <CreateTenantsPage /> },
-    { title: "", path: "/tenants/update/:id", element: <UpdateTenantsPage /> },
-    { title: "", path: "/tenants/:id/details", element: <TenantDetailsPage /> },
+    { title: "Billing", path: "/billing", element: <BillingPage /> },
+    { title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
+    { title: "Tenants", path: "/tenants", element: <TenantsPage /> },
+    { title: "Create Tenants", path: "/tenants/create", element: <CreateTenantsPage /> },
+    { title: "Update Tenants", path: "/tenants/update/:id", element: <UpdateTenantsPage /> },
+    { title: "Tenants Details", path: "/tenants/:id/details", element: <TenantDetailsPage /> },
     {
-      title: "",
+      title: "Tenants Activites",
       path: "/tenants/:id/activities",
       element: <TenantActivitiesHistoryPage />,
     },
-    { title: "", path: "/rooms", element: <RoomPage /> },
-    { title: "", path: "/rooms/:id", element: <RoomDetailPage /> },
-    { title: "", path: "/rooms/:id/edit", element: <EditRoomPage /> },
-    { title: "", path: "/customer-service", element: <CustomerSupportPage /> },
+    { title: "Rooms", path: "/rooms", element: <RoomPage /> },
+    { title: "Single Room", path: "/rooms/:id", element: <RoomDetailPage /> },
+    { title: "Update Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
+    { title: "Customer Service", path: "/customer-service", element: <CustomerSupportPage /> },
     {
-      title: "",
+      title: "Update Customer Service",
       path: "/customer-service/:id/edit",
       element: <CustomerServiceEditPage />,
     },
-    { title: "", path: "/utility-units", element: <UtilityUnitPage /> },
+    { title: "Utility Units", path: "/utility-units", element: <UtilityUnitPage /> },
     {
-      title: "",
+      title: "Single Utility Unit",
       path: "/utility-units/:id",
       element: <UtilityUnitDetailPage />,
+    },
+
+    // Contract Modules
+    {
+      title: "Contract Type",
+      path: "/contract/contract-type",
+      element: <ContractTypePage />
+    },
+    {
+      title: "Tenants' Contract",
+      path: "/contract/contract-tenants",
+      element: <TenantContractPage />
     },
   ];
 };
