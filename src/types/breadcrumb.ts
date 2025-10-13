@@ -1,8 +1,8 @@
 export type BreadCrumbItem = {
-    label: string
-    href: string
-}
+	label: string;
+	href: string;
+};
 
 export type BreadCrumbs = {
-    [key: string]: BreadCrumbItem[]
-}
+	[key: string]: BreadCrumbItem[];
+};

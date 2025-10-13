@@ -9,8 +9,8 @@ const RoomDetailPage = lazy(() => import('@/page/Room/detail'))
 const EditRoomPage = lazy(() => import('@/page/Room/edit'))
 const CustomerSupportPage = lazy(() => import('@/page/CustomerSupport'))
 const CustomerServiceEditPage = lazy(() => import('@/page/CustomerSupport/edit'))
-const ContractPage = lazy(() => import('@/page/Contract'))
-const ContractListPage = lazy(() => import('@/page/Contract/History'))
+// const ContractPage = lazy(() => import('@/page/Contract/ContractTypes'))
+const ContractTypePage = lazy(() => import('@/page/Contract/ContractTypes'))
 
 export const useRoutes = () => {
     return [
@@ -23,7 +23,7 @@ export const useRoutes = () => {
         { title: '', path: '/rooms/:id/edit', element: <EditRoomPage /> },
         { title: '', path: '/customer-service', element: <CustomerSupportPage /> },
         { title: '', path: '/customer-service/:id/edit', element: <CustomerServiceEditPage /> },
-        { title: '', path: '/contracts', element: <ContractPage /> },
-        { title: '', path: '/contracts/history', element: <ContractListPage /> },
+        // { title: '', path: '/contracts', element: <ContractPage /> },
+        { title: '', path: '/contracts/contract-type', element: <ContractTypePage /> },
     ]
 }

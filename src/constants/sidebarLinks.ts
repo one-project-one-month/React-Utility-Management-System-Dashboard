@@ -3,7 +3,9 @@ import {
 	Home,
 	CreditCard,
 	FilePlus,
+	FileStack,
 	History,
+	SquareUser,
 	FileText,
 	Users,
 	Zap,
@@ -52,10 +54,22 @@ const sidebarLinks: SidebarLink[] = [
 		],
 	},
 	{
-		href: "/contract",
+		href: "/contracts",
 		title: "Contracts",
 		icon: FileText,
 		order: 4,
+		children: [
+			{
+				href: "/contracts/contract-type",
+				title: "Contract Type",
+				icon: FileStack,
+			},
+			{
+				href: "/contract/contract-tenants",
+				title: "Tenants' Contract",
+				icon: SquareUser,
+			},
+		],
 	},
 	{
 		href: "/tenants",
