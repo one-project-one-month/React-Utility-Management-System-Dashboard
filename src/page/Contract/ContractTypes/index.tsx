@@ -1,10 +1,11 @@
 import { useForm, FormProvider } from "react-hook-form"
-import { Form, Divider } from "@heroui/react";
+import { Divider } from "@heroui/react";
 import NavigationBreadCrumbs from "@/components/breadcrumb"
 import FormContractType from "./components/form-contract-type";
 import FormButton from "@/components/Form/form-button"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contractTypeValidationSchema } from "./utils/validation";
+import ContractTable from "./components/contract-table";
 
 
 type Contracts = {
@@ -35,7 +36,7 @@ export default function ContractTypePage() {
             />
             <h1 className="sm:text-2xl mt-2">Create New Contract Type</h1>
 
-            <Divider style={{ marginBlock: "1rem" }} />
+            <Divider className="my-3" />
 
             <FormProvider {...form}>
                 <div className="">
@@ -48,6 +49,14 @@ export default function ContractTypePage() {
 
                 </div>
             </FormProvider>
+
+            <Divider className="my-3" />
+
+            <h1 className="sm:text-2xl mt-2">Contract Types</h1>
+
+            <br />
+
+            <ContractTable />
         </section >
     )
 }

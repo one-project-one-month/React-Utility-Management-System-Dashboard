@@ -8,11 +8,18 @@ import type { Contracts } from "@/types/contract";
 export default function FormContractType() {
     const { control } = useFormContext<Contracts>();
 
-    const options = [
-        { key: "3", label: '3 Months' },
-        { key: "6", label: '6 Months' },
-        { key: "12", label: '1 Years' },
-        { key: "24", label: '2 Years' },
+    const durationOptions = [
+        { key: "3-months", label: '3 Months' },
+        { key: "6-months", label: '6 Months' },
+        { key: "1 year", label: '1 Years' },
+        { key: "2 years", label: '2 Years' },
+    ];
+
+    const facilitiesOptions = [
+        { key: "Air Conditioner", label: 'Air Conditioner' },
+        { key: "Television", label: 'Television' },
+        { key: "Wi-fi", label: 'Wi-fi' },
+        { key: "Refrigerator", label: 'Refrigerator' },
     ];
 
     return (
@@ -27,10 +34,10 @@ export default function FormContractType() {
                         placeholder="Enter Contract Name"
                         errorMessage={fieldState.error?.message}
                         isInvalid={!!fieldState.invalid}
+                        variant="bordered"
                     />
                 )}
             />
-            <br />
 
             <Controller
                 name="price"
@@ -42,18 +49,18 @@ export default function FormContractType() {
                         placeholder="Enter Price"
                         errorMessage={fieldState.error?.message}
                         isInvalid={!!fieldState.invalid}
-                        className="mb-2"
+                        variant="bordered"
                     />
                 )}
             />
-            <br />
+
             <Controller
                 control={control}
                 name="duration"
                 render={({ field, fieldState }) => (
                     <Select
                         label="Select Contract Type"
-                        labelPlacement={"outside"}
+                        labelPlacement={"inside"}
                         placeholder="Contract Type"
                         selectedKeys={field.value ? [String(field.value)] : []}
                         variant="bordered"
@@ -66,7 +73,34 @@ export default function FormContractType() {
                         errorMessage={fieldState.error?.message}
 
                     >
-                        {options.map((option) => (
+                        {durationOptions.map((option) => (
+                            <SelectItem key={option.key}>{option.label}</SelectItem>
+                        ))}
+                    </Select>
+                )}
+            />
+
+            <Controller
+                control={control}
+                name="facilities"
+                render={({ field, fieldState }) => (
+                    <Select
+                        // {...field}
+                        label="Select Facilities"
+                        labelPlacement={"inside"}
+                        placeholder="Choose Facilities"
+                        // selectedKeys={field.value}
+                        variant="bordered"
+                        onSelectionChange={(keys) => {
+                            const key = Array.from(keys);
+                            field.onChange(key);
+                        }}
+                        // defaultSelectedKeys={[3]}
+                        isInvalid={fieldState.invalid}
+                        errorMessage={fieldState.error?.message}
+                        selectionMode="multiple"
+                    >
+                        {facilitiesOptions.map((option) => (
                             <SelectItem key={option.key}>{option.label}</SelectItem>
                         ))}
                     </Select>
