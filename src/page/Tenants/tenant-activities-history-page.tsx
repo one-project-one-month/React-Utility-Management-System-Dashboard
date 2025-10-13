@@ -23,7 +23,7 @@ export default function TenantActivitiesHistoryPage() {
   ];
 
   return (
-    <div>
+    <div className="h-[calc(100vh-70px)] rounded-2xl overflow-y-auto custom-scrollbar-3">
       <Card className="p-6 h-[calc(100vh-30px)] ">
         <div className="flex flex-col gap-1">
           <HeaderForAllPages action={"viewActivities"} tenantId={id} />
