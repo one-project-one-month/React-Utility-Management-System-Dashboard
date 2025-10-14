@@ -1,15 +1,13 @@
-import {Grid, type LucideIcon} from "lucide-react";
+import {FileStack, Grid, SquareUser, type LucideIcon} from "lucide-react";
 import {
   Home,
   CreditCard,
-  FilePlus,
-  History,
   FileText,
   Users,
   Zap,
   FileSpreadsheet,
   Headphones,
-  Command
+  Command,
 } from "lucide-react";
 
 export type SidebarLink = {
@@ -38,24 +36,48 @@ const sidebarLinks: SidebarLink[] = [
     title: "Billing",
     icon: CreditCard,
     order: 3,
-    children: [
-      {
-        href: "/billing/create",
-        title: "New Billing",
-        icon: FilePlus,
-      },
-      {
-        href: "/billing/history",
-        title: "Billing History",
-        icon: History,
-      },
-    ],
   },
+  {
+    href: "/invoice",
+    title: "Invoices",
+    icon: FileSpreadsheet,
+    order: 8,
+  },
+  // {
+  //   href: "/billing",
+  //   title: "Billing",
+  //   icon: CreditCard,
+  //   order: 3,
+  //   children: [
+  //     {
+  //       href: "/billing",
+  //       title: "Billing",
+  //       icon: FilePlus,
+  //     },
+  //     {
+  //       href: "/billing/history",
+  //       title: "Billing History",
+  //       icon: History,
+  //     },
+  //   ],
+  // },
   {
     href: "/contract",
     title: "Contracts",
     icon: FileText,
     order: 4,
+    children: [
+      {
+        href: "/contract/contract-type",
+        title: "Contract Type",
+        icon: FileStack
+      },
+      {
+        href: "/contract/contract-tenants",
+        title: "Tenants' Contract",
+        icon: SquareUser
+      },
+    ]
   },
   {
     href: "/tenants",
@@ -87,12 +109,7 @@ const sidebarLinks: SidebarLink[] = [
     //   },
     // ],
   },
-  {
-    href: "/invoice",
-    title: "Invoices",
-    icon: FileSpreadsheet,
-    order: 8,
-  },
+
   {
     href: "/customer-service",
     title: "Customer Support",
@@ -104,7 +121,7 @@ const sidebarLinks: SidebarLink[] = [
     title: "Rooms",
     icon: Grid,
     order: 9,
-  }
+  },
 ];
 
 export default sidebarLinks;
