@@ -21,7 +21,7 @@ export default function ActivityCard({ activity }: Props) {
             {activity.type}{" "}
             <span
               className={clsx(
-                "ml-1 font-medium text-sm   rounded-full",
+                "ml-1 font-medium text-sm  rounded-full",
                 activity.textColor,
               )}
             >
