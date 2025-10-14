@@ -60,5 +60,3 @@ export default function ContractTypePage() {
         </section >
     )
 }
-
-export default ContractTypePage
