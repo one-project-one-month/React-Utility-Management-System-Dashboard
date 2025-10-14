@@ -38,7 +38,7 @@ const sidebarLinks: SidebarLink[] = [
     order: 3,
   },
   {
-    href: "/invoice",
+    href: "/invoices",
     title: "Invoices",
     icon: FileSpreadsheet,
     order: 8,

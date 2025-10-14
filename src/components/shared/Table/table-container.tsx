@@ -7,6 +7,9 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useTenantToTenantTableData } from "@/hooks/useTenantToTenantTableData.ts";
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 import DataTable from "@/components/data-table.tsx";
+import type { InvoicesTableData } from "@/types/invoices/invoicesTableData.ts";
+import { useInvoiceToInvoiceTableData } from "@/hooks/useInvoiceToInvoiceTableData.ts";
+import { mockInvoices } from "@/constants/mockData/billing/mockInvoices.ts";
 
 type TableContainerProps<T> = {
   tableName: string;
@@ -18,18 +21,22 @@ type BillingTableProps = TableContainerProps<BillingTableData> & {
   tableName: "BillingTable";
 };
 
+type InvoicesTableProps = TableContainerProps<InvoicesTableData> & {
+  tableName: "InvoicesTable";
+};
+
 type TenantTableProps = TableContainerProps<TenantTableData> & {
   tableName: "TenantTable";
 };
 
-type Props = BillingTableProps | TenantTableProps;
-
+type Props = BillingTableProps | TenantTableProps | InvoicesTableProps;
+type TableData = BillingTableData[] | TenantTableData[] | InvoicesTableData[];
 export default function TableContainer({
   tableName,
   columns,
   columnWidths,
 }: Props) {
-  const [data, setData] = useState<BillingTableData[] | TenantTableData[]>([]);
+  const [data, setData] = useState<TableData>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
@@ -41,6 +48,12 @@ export default function TableContainer({
     billings: mockBillings,
   });
 
+  const invoicesTableData = useInvoiceToInvoiceTableData({
+    page,
+    pageSize,
+    invoices: mockInvoices,
+  });
+
   const tenantTableData = useTenantToTenantTableData({
     page,
     pageSize,
@@ -48,7 +61,11 @@ export default function TableContainer({
   });
 
   const tableData =
-    tableName === "BillingTable" ? billingTableData : tenantTableData;
+    tableName === "BillingTable"
+      ? billingTableData
+      : tableName === "TenantTable"
+        ? tenantTableData
+        : invoicesTableData;
   //
   // const columns = billingsTableColumns;
 
