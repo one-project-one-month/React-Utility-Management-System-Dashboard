@@ -60,7 +60,7 @@ const sidebarLinks: SidebarLink[] = [
 		order: 4,
 		children: [
 			{
-				href: "/contracts/contract-type",
+				href: "/contract/contract-type",
 				title: "Contract Type",
 				icon: FileStack,
 			},
