@@ -52,6 +52,10 @@ export default function BillingDetailsModal({ billingId }: Props) {
         onOpenChange={onOpenChange}
         size="3xl"
         scrollBehavior="inside"
+        classNames={{
+          base: "dark:border-1.5  dark:border-default-100 ",
+          backdrop: "dark:bg-black/85 ",
+        }}
       >
         <ModalContent>
           {(onClose) => (
