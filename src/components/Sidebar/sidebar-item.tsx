@@ -12,11 +12,14 @@ export default function SidebarItem({
 }: {
   item: SidebarLink;
   isMinimized: boolean;
-  pathName: string;
+  pathName: string
 }) {
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const isActive = pathName === item.href || pathName.startsWith(item.href);
+  const isActive =
+    pathName === item.href ||
+    (item.href !== "/" && pathName.startsWith(item.href));
 
   // 🔹 Close dropdown automatically when sidebar is minimized
   useEffect(() => {
@@ -105,7 +108,7 @@ export default function SidebarItem({
       className={cn(
         "justify-start gap-2 font-normal transition-all duration-300",
         isMinimized && "justify-center px-2",
-        pathName === item.href
+        isActive
           ? "bg-primary text-sidebar-primary-foreground"
           : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
       )}

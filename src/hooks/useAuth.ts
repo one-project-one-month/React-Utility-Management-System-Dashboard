@@ -6,13 +6,12 @@ import { setAccessToken, setUser } from "@/store/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { addToast } from "@heroui/react";
 import { useNavigate } from "react-router";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
- 
   return useMutation<
     LoginResponse,
     AxiosError<{ message: string }>,
@@ -22,8 +21,8 @@ const useAuth = () => {
     onSuccess: (data) => {
       dispatch(setAccessToken(data.content.accessToken));
       dispatch(setUser(data.content.user));
-      Cookies.set("token", data.content.accessToken);
-      Cookies.set("user", JSON.stringify(data.content.user));
+      Cookies.set("token", data.content.accessToken, { expires: 7 });
+      Cookies.set("user", JSON.stringify(data.content.user), { expires: 7 });
       addToast({
         title: data.message,
         color: "success",
@@ -41,7 +40,7 @@ const useAuth = () => {
         timeout: 3000,
         shouldShowTimeoutProgress: true,
         radius: "sm",
-        variant:"flat"
+        variant: "flat",
       });
     },
   });

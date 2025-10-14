@@ -14,12 +14,12 @@ module.exports = {
         dark: {
           colors: {
             secondary: {
-              DEFAULT: "#2D9CDB"
+              DEFAULT: "#2D9CDB",
             },
             danger: {
-              DEFAULT: "#DD0303"
-            }
-          }
+              DEFAULT: "#DD0303",
+            },
+          },
         },
         light: {
           colors: {
@@ -40,19 +40,17 @@ module.exports = {
             //   DEFAULT: "#C9CDCF",
             // },
             secondary: {
-              DEFAULT: "#2D9CDB"
+              DEFAULT: "#2D9CDB",
             },
             danger: {
-              DEFAULT: "#DD0303"
-            }
+              DEFAULT: "#DD0303",
+            },
           },
           layout: {
             disabledOpacity: "0.4",
-            radius: {
-              small: "4px",
-              medium: "6px",
-              large: "8px",
-            },
+
+            radius: { sm: "4px", md: "6px", lg: "8px", full: "9999px" },
+
             borderWidth: {
               small: "1px",
               medium: "2px",
