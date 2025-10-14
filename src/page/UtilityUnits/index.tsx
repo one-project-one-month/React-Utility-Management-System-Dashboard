@@ -4,7 +4,7 @@ import UnitList from "@/components/UtilityUnits/unit-list";
 
 export default function UtilityUnitPage() {
   return (
-    <div>
+    <div className="h-[84vh]  overflow-y-auto custom-scrollbar-3">
       <NavigationBreadCrumbs
         items={[
           { label: "Home", href: "/" },

@@ -45,7 +45,7 @@ export const useRoutes = () => {
 
     // Billing
     { title: "Billing", path: "/billing", element: <BillingPage /> },
-    { title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
+    //{ title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
 
     // Tenants
     { title: "Tenants", path: "/tenants", element: <TenantsPage /> },

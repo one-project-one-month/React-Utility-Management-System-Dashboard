@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import type { BillingTableData } from "@/types/billing/billingTableData.ts";
 import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
 import { useBillingToBillingTableData } from "@/hooks/useBillingToBillingTableData.ts";
-import TablePresentation from "@/components/shared/Table/table-presentation.tsx";
 import type { TenantTableData } from "@/types/tenants/TenantTableData.ts";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useTenantToTenantTableData } from "@/hooks/useTenantToTenantTableData.ts";
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
+import DataTable from "@/components/data-table.tsx";
 
 type TableContainerProps<T> = {
   tableName: string;
@@ -71,7 +71,7 @@ export default function TableContainer({
   };
 
   return (
-    <TablePresentation<any, any>
+    <DataTable<any, any>
       columns={columns}
       columnWidths={columnWidths}
       data={data}

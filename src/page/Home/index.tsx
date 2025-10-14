@@ -1,4 +1,15 @@
-import { Autocomplete, AutocompleteItem, Button, Checkbox, CheckboxGroup, Chip, DatePicker, DateRangePicker, Radio, RadioGroup } from "@heroui/react";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Chip,
+  DatePicker,
+  DateRangePicker,
+  Radio,
+  RadioGroup,
+} from "@heroui/react";
 import NavigationBreadCrumbs from "@/components/breadcrumb";
 import { breadcrumbs } from "@/constants/breadcrumbs";
 import { ArrowLeftFromLine, UserIcon } from "lucide-react";
@@ -18,9 +29,11 @@ const rooms = Array.from({ length: 80 }, (_, i) => {
 
 export default function HomePage() {
   return (
-    <div className="p-4 grid grid-cols-4 gap-3">
+    <div className="p-4 grid grid-cols-4 gap-3 h-[84vh] overflow-y-auto custom-scrollbar-3">
       <div aria-labelledby="autocomplete-usage">
-        <p className="text-sm mb-2">Use <code> Autocomplete</code> when there are multiple of items</p>
+        <p className="text-sm mb-2">
+          Use <code> Autocomplete</code> when there are multiple of items
+        </p>
         <Autocomplete className="max-w-xs" label="Select a room" size="sm">
           {rooms.map((room) => (
             <AutocompleteItem key={room.key}>{room.label}</AutocompleteItem>
@@ -49,7 +62,12 @@ export default function HomePage() {
         <Checkbox defaultSelected size="sm">
           Use Small Checkbox
         </Checkbox>
-        <CheckboxGroup className="mt-5" size="sm" defaultValue={["bruno-fernandes"]} label="Select players">
+        <CheckboxGroup
+          className="mt-5"
+          size="sm"
+          defaultValue={["bruno-fernandes"]}
+          label="Select players"
+        >
           <Checkbox value="bruno-fernandes">Bruno Fernandes</Checkbox>
           <Checkbox value="rashford">Marcus Rashford</Checkbox>
           <Checkbox value="garnacho">Alejandro Garnacho</Checkbox>
@@ -59,9 +77,15 @@ export default function HomePage() {
       </div>
       <div aria-labelledby="chip" className="space-x-1">
         <p>Use this for status related things</p>
-        <Chip radius="sm" color="danger">Overdue</Chip>
-        <Chip radius="sm" color="warning">Pending</Chip>
-        <Chip radius="sm" color="success">Paid</Chip>
+        <Chip radius="sm" color="danger">
+          Overdue
+        </Chip>
+        <Chip radius="sm" color="warning">
+          Pending
+        </Chip>
+        <Chip radius="sm" color="success">
+          Paid
+        </Chip>
       </div>
       <div aria-labelledby="date-picker" className="space-y-2">
         <p>Use for normal Date Input</p>
@@ -71,17 +95,14 @@ export default function HomePage() {
       </div>
       <div className="space-y-2" aria-labelledby="drawer-example">
         <p>Drawer Example</p>
-        <FormDrawer
-          btnText="Create New Contract"
-          title="New Contract"
-        >
+        <FormDrawer btnText="Create New Contract" title="New Contract">
           <p>Form Component Goes Here</p>
         </FormDrawer>
         <FormDrawer
           btnText="Open From Left"
           title="New Contract"
           position="left"
-          icon={ < ArrowLeftFromLine /> }
+          icon={<ArrowLeftFromLine />}
         >
           <p>Form Component Goes Here</p>
         </FormDrawer>
@@ -94,7 +115,7 @@ export default function HomePage() {
       </div>
       <div aria-labelledby="skeleton-loaders" className="space-y-3">
         <p>Use this in loading state for table row</p>
-        <SkeletonLoader />  {/* default 6rem height */}
+        <SkeletonLoader /> {/* default 6rem height */}
         <SkeletonLoader height="3rem" width="50%" />
         <SkeletonLoader height="10rem" rounded="rounded-xl" className="mt-4" />
       </div>
