@@ -38,7 +38,7 @@ export default function CustomerSupportPage() {
 
     return (
 
-        <div className="p-8 space-y-4">
+        <div className="h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar">
 
             {/* search */}
             <div className="flex flex-col sm:flex-row gap-2">
