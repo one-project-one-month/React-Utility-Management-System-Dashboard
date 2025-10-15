@@ -54,8 +54,10 @@ export default function RoomPage() {
     }
 
     return (
-        <div className="p-4 space-y-4">
-            <NavigationBreadCrumbs items={breadcrumbs.roomList} />
+        <div className="p-2 pb-6 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3">
+            <NavigationBreadCrumbs
+                items={breadcrumbs.roomList}
+            />
             <div className="flex flex-col sm:flex-row gap-2">
                 <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 <div className="grid grid-cols-2 sm:flex gap-2">
@@ -108,7 +110,7 @@ export default function RoomPage() {
                 </div>
             </div>
 
-            <div className="space-y-4 pb-12">
+            <div className="space-y-4">
                 {filteredAndSortedRooms.map((room) => (
                     <RoomListCard
                         key={room.id}

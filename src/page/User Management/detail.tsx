@@ -30,7 +30,7 @@ export default function RoomDetailPage() {
     }
 
     return (
-        <div className={"p-4 space-y-4"}>
+        <div className={"p-2 space-y-4"}>
             <NavigationBreadCrumbs items={breadcrumbs.userDetail} />
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div className={"flex items-center gap-2"}>
@@ -58,7 +58,7 @@ export default function RoomDetailPage() {
 
             <div className={"space-y-2 pb-12"}>
                 <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6 items-start"}>
-                    <Card className={"shadow-none"}>
+                    <Card className={"shadow-none p-2"}>
                         <CardBody>
                             <div className={"flex justify-between items-center gap-4 mb-6"}>
                                 <div className={"space-y-1"}>
@@ -82,7 +82,7 @@ export default function RoomDetailPage() {
                         </CardBody>
                     </Card>
 
-                    <Card className={"shadow-none"}>
+                    <Card className={"shadow-none p-2"}>
                         <CardHeader className={"text-2xl font-medium"}>Account Information</CardHeader>
                         <CardBody>
                             <InfoRow label={"Created Date"} value={'5.7.2024'} noBorder />

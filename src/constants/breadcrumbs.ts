@@ -22,11 +22,7 @@ export const breadcrumbs: BreadCrumbs = {
     },
     {
       href: "/rooms",
-      label: "rooms",
-    },
-    {
-      href: "/list",
-      label: "List",
+      label: "Rooms",
     },
   ],
   roomDetail: [
@@ -36,7 +32,7 @@ export const breadcrumbs: BreadCrumbs = {
     },
     {
       href: "/rooms",
-      label: "rooms",
+      label: "Rooms",
     },
     {
       href: "/details",
@@ -50,7 +46,7 @@ export const breadcrumbs: BreadCrumbs = {
     },
     {
       href: "/rooms",
-      label: "rooms",
+      label: "Rooms",
     },
     {
       href: "/edit",
@@ -64,11 +60,7 @@ export const breadcrumbs: BreadCrumbs = {
     },
     {
       href: "/user-management/users",
-      label: "users",
-    },
-    {
-      href: "/list",
-      label: "List",
+      label: "Users",
     },
   ],
   userDetail: [
@@ -78,25 +70,11 @@ export const breadcrumbs: BreadCrumbs = {
     },
     {
       href: "/user-management/users",
-      label: "users",
+      label: "Users",
     },
     {
       href: "/details",
       label: "Details",
-    },
-  ],
-  userCreate: [
-    {
-      href: "/",
-      label: "Home",
-    },
-    {
-      href: "/user-management/users",
-      label: "users",
-    },
-    {
-      href: "/create",
-      label: "Create",
     },
   ],
   userEdit: [
@@ -106,7 +84,7 @@ export const breadcrumbs: BreadCrumbs = {
     },
     {
       href: "/user-management/users",
-      label: "users",
+      label: "Users",
     },
     {
       href: "/edit",

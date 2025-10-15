@@ -95,7 +95,7 @@ export default function RoomEditPage() {
     }
 
     return (
-        <div className={"p-4 space-y-4"}>
+        <div className={"p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3"}>
             <NavigationBreadCrumbs items={breadcrumbs.roomEdit} />
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div>

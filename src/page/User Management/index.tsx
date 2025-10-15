@@ -41,7 +41,7 @@ export default function UserPage() {
     }
 
     return (
-        <div className="p-4 pb-16 space-y-4">
+        <div className="p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3">
             <NavigationBreadCrumbs items={breadcrumbs.userList} />
             <div className="flex flex-col sm:flex-row gap-2 sm:items-end">
                 <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />

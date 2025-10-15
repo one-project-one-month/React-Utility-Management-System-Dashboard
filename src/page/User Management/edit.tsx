@@ -57,7 +57,7 @@ export default function UserEditPage() {
     }
 
     return (
-        <div className={"p-4 space-y-4"}>
+        <div className={"p-2 space-y-4"}>
             <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div>

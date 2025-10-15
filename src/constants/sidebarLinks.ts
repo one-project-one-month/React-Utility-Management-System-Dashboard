@@ -92,6 +92,13 @@ const sidebarLinks: SidebarLink[] = [
     title: "User Management",
     icon: Users,
     order: 6,
+    children: [
+      {
+        href: "/user-management/users",
+        title: "Users",
+        icon: Users
+      }
+    ]
   },
   {
     href: "/utility-units",
