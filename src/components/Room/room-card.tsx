@@ -1,5 +1,6 @@
 import {Card, CardBody} from "@heroui/react";
 import * as React from "react";
+import {Card, CardBody} from "@heroui/react";
 
 interface RoomCardProps {
     title: string;
