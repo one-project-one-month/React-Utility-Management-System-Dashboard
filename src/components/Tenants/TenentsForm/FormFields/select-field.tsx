@@ -37,6 +37,7 @@ export default function SelectField({
         render={({ field }) => (
           <Select
             selectedKeys={field.value ? [field.value] : []}
+            aria-label={`Select ${fieldName}`}
             onSelectionChange={(keys) => {
               const value = Array.from(keys)[0] ?? "";
               field.onChange(value);

@@ -30,7 +30,8 @@ export default function TenantsListHeader() {
 
         <Select
           key={"noOfOccupants"}
-          placeholder="Select Ouucpancy"
+          aria-label={`Select Occupancy`}
+          placeholder="Select Occupancy"
           variant={"bordered"}
           // selectedKeys={}
           // onSelectionChange={}

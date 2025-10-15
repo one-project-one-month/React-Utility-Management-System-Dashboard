@@ -42,7 +42,11 @@ export default function TenantInfo({ tenant }: Props) {
           obj={roomAndContractInfo}
         />
         {tenant.occupants.map((occupant, index) => (
-          <InfoCard header={`Occupant ${index + 1}`} obj={occupant} />
+          <InfoCard
+            key={occupant.id}
+            header={`Occupant ${index + 1}`}
+            obj={occupant}
+          />
         ))}
       </div>{" "}
     </div>

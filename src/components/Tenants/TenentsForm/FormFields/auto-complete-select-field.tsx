@@ -34,6 +34,7 @@ export default function AutoCompleteSelectField({
         render={({ field }) => (
           <Autocomplete
             selectedKey={field.value}
+            aria-label={`Select ${fieldName}`}
             onSelectionChange={(key) => field.onChange(key || "")}
             errorMessage={errorMessage}
             isInvalid={isInvalid}
