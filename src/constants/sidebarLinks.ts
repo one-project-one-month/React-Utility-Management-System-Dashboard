@@ -1,21 +1,23 @@
-import {FileStack, Grid, SquareUser, type LucideIcon} from "lucide-react";
+import { Grid, type LucideIcon } from "lucide-react";
 import {
-  Home,
-  CreditCard,
-  FileText,
-  Users,
-  Zap,
-  FileSpreadsheet,
-  Headphones,
-  Command,
+	Home,
+	CreditCard,
+	FileStack,
+	SquareUser,
+	FileText,
+	Users,
+	Zap,
+	FileSpreadsheet,
+	Headphones,
+	Command,
 } from "lucide-react";
 
 export type SidebarLink = {
-  href: string;
-  title: string;
-  icon: LucideIcon;
-  children?: SidebarLink[];
-  order?: number;
+	href: string;
+	title: string;
+	icon: LucideIcon;
+	children?: SidebarLink[];
+	order?: number;
 };
 
 const sidebarLinks: SidebarLink[] = [
@@ -38,7 +40,7 @@ const sidebarLinks: SidebarLink[] = [
     order: 3,
   },
   {
-    href: "/invoice",
+    href: "/invoices",
     title: "Invoices",
     icon: FileSpreadsheet,
     order: 8,
@@ -62,7 +64,7 @@ const sidebarLinks: SidebarLink[] = [
   //   ],
   // },
   {
-    href: "/contract",
+    href: "/contracts",
     title: "Contracts",
     icon: FileText,
     order: 4,
@@ -70,14 +72,14 @@ const sidebarLinks: SidebarLink[] = [
       {
         href: "/contract/contract-type",
         title: "Contract Type",
-        icon: FileStack
+        icon: FileStack,
       },
       {
         href: "/contract/contract-tenants",
         title: "Tenants' Contract",
-        icon: SquareUser
+        icon: SquareUser,
       },
-    ]
+    ],
   },
   {
     href: "/tenants",

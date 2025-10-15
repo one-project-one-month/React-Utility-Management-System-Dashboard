@@ -14,10 +14,12 @@ import {
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
-import { SkeletonLoader } from "./skeleton-loader";
+import { SkeletonLoader } from "@/components/skeleton-loader.tsx";
+import clsx from "clsx";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
+  columnWidths?: Record<string, string>;
   data: TData[];
   isManualPagination: boolean;
   isLoading?: boolean;
@@ -27,8 +29,9 @@ type DataTableProps<TData, TValue> = {
   onPageChange?: (newPage: number) => void;
 };
 
-const DataTable = <TData, TValue>({
+const TablePresentation = <TData, TValue>({
   columns,
+  columnWidths,
   data,
   isManualPagination,
   isLoading = false,
@@ -65,13 +68,17 @@ const DataTable = <TData, TValue>({
     <Table
       isStriped={!isLoading}
       aria-label="Dynamic Data Table With Tanstack Table"
+      classNames={{
+        base: "w-full",
+        table: "w-full  table-fixed ",
+      }}
       bottomContent={
         isManualPagination && (
           <Pagination
             isCompact
             showControls
             showShadow
-            className="flex justify-end w-full"
+            className="flex w-full justify-end"
             color="primary"
             page={
               isManualPagination
@@ -94,13 +101,28 @@ const DataTable = <TData, TValue>({
           .getHeaderGroups()
           .flatMap((headerGroup) => headerGroup.headers)}
       >
-        {(header) => (
-          <TableColumn key={header.id}>
-            {header.isPlaceholder
-              ? null
-              : flexRender(header.column.columnDef.header, header.getContext())}
-          </TableColumn>
-        )}
+        {(header) => {
+          return (
+            <TableColumn
+              key={header.id}
+              className={clsx(
+                (columnWidths && columnWidths[header.column.id]) || "w-auto",
+                (header.column.id === "actions" ||
+                  header.column.id === "billingIdForAction") &&
+                  "text-center",
+              )}
+            >
+              <div className="whitespace-normal break-words max-w-[200px]">
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+              </div>
+            </TableColumn>
+          );
+        }}
       </TableHeader>
 
       <TableBody
@@ -112,7 +134,7 @@ const DataTable = <TData, TValue>({
               <TableRow key={`skeleton-${rowIdx}`}>
                 {Array.from({ length: numColumns }).map((_, colIdx) => (
                   <TableCell key={`skeleton-cell-${rowIdx}-${colIdx}`}>
-                    <SkeletonLoader className="w-full h-4 rounded-lg" />
+                    <SkeletonLoader className="h-4 w-full rounded-lg" />
                   </TableCell>
                 ))}
               </TableRow>
@@ -120,8 +142,22 @@ const DataTable = <TData, TValue>({
           : (row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <TableCell
+                    key={cell.id}
+                    className={clsx(
+                      (columnWidths && columnWidths[cell.column.id]) ||
+                        "w-auto",
+                      (cell.column.id === "actions" ||
+                        cell.column.id === "billingIdForAction") &&
+                        "text-center",
+                    )}
+                  >
+                    <div className="whitespace-normal break-words max-w-[200px]">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </div>
                   </TableCell>
                 ))}
               </TableRow>
@@ -131,4 +167,4 @@ const DataTable = <TData, TValue>({
   );
 };
 
-export default DataTable;
+export default TablePresentation;

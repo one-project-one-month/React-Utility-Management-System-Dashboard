@@ -1,7 +1,62 @@
-const ContractTypePage = () => {
-  return (
-    <div>contract type</div>
-  )
-}
+import { useForm, FormProvider } from "react-hook-form"
+import { Divider } from "@heroui/react";
+import NavigationBreadCrumbs from "@/components/breadcrumb"
+import FormContractType from "./components/form-contract-type";
+import FormButton from "@/components/Form/form-button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contractTypeValidationSchema } from "./utils/validation";
+import ContractTable from "./components/contract-table";
 
-export default ContractTypePage
+
+type Contracts = {
+    name: string;
+    duration: string;
+    price: string;
+    facilities?: string[];
+};
+
+export default function ContractTypePage() {
+    const form = useForm<Contracts>({
+        resolver: zodResolver(contractTypeValidationSchema),
+        defaultValues: { name: "", duration: "", price: "" }
+    });
+
+    const onSubmit = (data: Contracts) => {
+        console.log("Success", data);
+    }
+
+
+    return (
+        <section  >
+            <NavigationBreadCrumbs
+                items={[
+                    { label: "Contract", href: null },
+                    { label: "Contract Type", href: "/contract-type" },
+                ]}
+            />
+            <h1 className="sm:text-2xl mt-2">Create New Contract Type</h1>
+
+            <Divider className="my-3" />
+
+            <FormProvider {...form}>
+                <div className="">
+
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormContractType />
+                        <br />
+                        <FormButton type="submit">Create</FormButton>
+                    </form>
+
+                </div>
+            </FormProvider>
+
+            <Divider className="my-3" />
+
+            <h1 className="sm:text-2xl mt-2">Contract Types</h1>
+
+            <br />
+
+            <ContractTable />
+        </section >
+    )
+}

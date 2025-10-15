@@ -35,8 +35,8 @@ const TenantContractPage = () => {
                     <div className="flex justify-end gap-2 mt-6">
                         <Button color="default">Cancel</Button>
                         <FormButton type="submit">
-                        Create Contract
-                    </FormButton>
+                            Create Contract
+                        </FormButton>
                     </div>
                 </form>
             </FormProvider>
