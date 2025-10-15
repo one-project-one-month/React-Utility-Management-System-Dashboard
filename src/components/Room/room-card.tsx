@@ -1,19 +1,17 @@
-import type {LucideIcon} from "lucide-react";
+import {Card, CardBody} from "@heroui/react";
 import * as React from "react";
 import {Card, CardBody} from "@heroui/react";
 
 interface RoomCardProps {
     title: string;
-    icon: LucideIcon;
     children: React.ReactNode;
 }
 
-export function RoomCard({ title, icon: Icon, children }: RoomCardProps) {
+export function RoomCard({ title, children }: RoomCardProps) {
     return (
-        <Card className={"rounded-3xl shadow-none"}>
+        <Card className={"rounded-lg shadow-none"}>
             <CardBody className={"p-6"}>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <Icon size={20} className="text-default-500" />
+                <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
                     {title}
                 </h3>
                 {children}

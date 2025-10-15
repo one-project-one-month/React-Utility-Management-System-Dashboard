@@ -7,7 +7,7 @@ interface RoomChipProps {
     mode: "status" | "property";
     room: Room;
     icon?: LucideIcon;
-    propertyKey?: keyof Pick<Room, 'bedrooms' | 'bathrooms' | 'floor' | 'dimension' | 'createdDate' | 'tenant'>
+    propertyKey?: keyof Pick<Room, 'noOfBedRoom' | 'floor' | 'dimension'>
     label?: string;
 }
 
@@ -18,10 +18,8 @@ export function RoomChip({ mode, room, icon: Icon, propertyKey, label }: RoomChi
                 size={"sm"}
                 variant="flat"
                 color="default"
-                className="bg-gray-100 text-black space-x-2 p-2"
-                startContent={
-                    <div className={`w-2 h-2 rounded-full ${statusColors[room.status]}`} />
-                }
+                className={statusColors[room.status]}
+                radius={"md"}
             >
                 {statusLabels[room.status]}
             </Chip>

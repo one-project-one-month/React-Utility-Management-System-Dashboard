@@ -1,8 +1,7 @@
 import type {Room} from "@/types/room.ts";
 import { Card, CardBody } from "@heroui/react";
 import {RoomChip} from "@/components/Room/room-chip.tsx";
-import {Bath, Bed, Clock, Layers, MapPin, Maximize2, Pencil, Trash2, User} from "lucide-react";
-import {Button, type PressEvent} from "@heroui/button";
+import {Bed, Layers, Maximize2, Pencil, Trash2} from "lucide-react";
 
 interface RoomCardProps {
     room: Room;
@@ -13,21 +12,27 @@ interface RoomCardProps {
 
 export function RoomListCard({ room, onCardClick, onEdit, onDelete }: RoomCardProps) {
     const handleCardClick = () => {
-        onCardClick(room.id)
+        if (room.id) {
+            onCardClick(room.id)
+        }
     }
 
     const handleEdit = (e: PressEvent) => {
         e.continuePropagation();
-        onEdit(room.id);
+        if (room.id) {
+            onEdit(room.id);
+        }
     }
 
     const handleDelete = (e: PressEvent) => {
         e.continuePropagation();
-        onDelete(room.id);
+        if (room.id) {
+            onDelete(room.id);
+        }
     }
 
     return (
-        <Card className="w-full rounded-3xl shadow-none cursor-pointer transition-colors">
+        <Card className="w-full rounded-lg shadow-none cursor-pointer transition-colors">
             <CardBody className={"p-3"}>
                 <div className="flex flex-col md:flex-row gap-4 p-3">
                     <div
@@ -36,12 +41,8 @@ export function RoomListCard({ room, onCardClick, onEdit, onDelete }: RoomCardPr
                     >
                         <div>
                             <div className="flex items-center gap-3 mb-2">
-                                <h3 className="text-xl font-semibold">{room.roomNo}</h3>
+                                <h3 className="text-xl font-semibold">Room {room.roomNo}</h3>
                                 <RoomChip mode="status" room={room} />
-                            </div>
-                            <div className="flex items-start gap-1 text-sm text-default-500">
-                                <MapPin size={16} className="mt-0.5 flex-shrink-0" />
-                                <span>{room.address}</span>
                             </div>
                         </div>
 
@@ -50,44 +51,26 @@ export function RoomListCard({ room, onCardClick, onEdit, onDelete }: RoomCardPr
                                 mode={"property"}
                                 room={room}
                                 icon={Bed}
-                                propertyKey={"bedrooms"}
-                            />
-                            <RoomChip
-                                mode={"property"}
-                                room={room}
-                                icon={Bath}
-                                propertyKey={"bathrooms"}
+                                label={`${room.noOfBedRoom} Bedroom`}
                             />
                             <RoomChip
                                 mode={"property"}
                                 room={room}
                                 icon={Layers}
-                                label={`Floor ${room.floor}`}
+                                label={`Floor No ${room.floor}`}
                             />
                             <RoomChip
                                 mode={"property"}
                                 room={room}
                                 icon={Maximize2}
-                                label={`${room.dimension} sqft`}
-                            />
-                            <RoomChip
-                                mode={"property"}
-                                room={room}
-                                icon={Clock}
-                                propertyKey={"createdDate"}
-                            />
-                            <RoomChip
-                                mode={"property"}
-                                room={room}
-                                icon={User}
-                                propertyKey={"tenant"}
+                                label={`${room.dimension} sq m Area`}
                             />
                         </div>
                     </div>
 
                     <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:min-w-fit">
                         <div className="text-lg font-semibold">
-                            MMK{room.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            MMK {room.sellingPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
 
                         <div className="flex gap-2">

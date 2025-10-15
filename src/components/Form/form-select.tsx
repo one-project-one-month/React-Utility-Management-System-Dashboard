@@ -5,7 +5,7 @@ interface FormSelectProps {
     label: string;
     placeholder?: string;
     options: Array<{ key: string, label: string }>;
-    value: string;
+    value?: string | null;
     onChange: (val: string) => void;
     startContent?: ReactNode;
     isInvalid?: boolean;
@@ -30,9 +30,15 @@ export function FormSelect({
             labelPlacement={"outside"}
             placeholder={placeholder}
             variant={"bordered"}
-            classNames={{ trigger: "border-[0.5px]" }}
+            classNames={{
+                trigger: "bg-white border-[0.5px] shadow-none dark:text-default-600 dark:bg-transparent",
+                value: "dark:text-default-600"
+            }}
             selectedKeys={value ? [value] : []}
-            onChange={(e) => onChange(e.target.value)}
+            onSelectionChange={(keys) => {
+                const selectedValue = Array.from(keys)[0]?.toString() || "";
+                onChange(selectedValue);
+            }}
             startContent={startContent}
             isInvalid={isInvalid}
             errorMessage={errorMessage}
