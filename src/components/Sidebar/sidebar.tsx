@@ -34,7 +34,7 @@ export default function SideBar() {
                             <LayoutDashboard className="h-4 w-4" />
                         </div>
                         {!isMinimized && (
-                            <span className="font-semibold text-sidebar-foreground">
+                            <span className="font-medium text-sidebar-foreground">
                                 Admin Panel
                             </span>
                         )}
