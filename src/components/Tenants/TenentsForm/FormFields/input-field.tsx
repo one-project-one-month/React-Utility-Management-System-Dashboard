@@ -1,11 +1,9 @@
 import { Input } from "@heroui/input";
 import type { UseFormRegister } from "react-hook-form";
 import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
-import clsx from "clsx";
 import type { TenantFormFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 
 interface Props {
-  isForRegisterSection?: boolean;
   label: string;
   placeholder: string;
   type: React.HTMLInputTypeAttribute;
@@ -15,7 +13,6 @@ interface Props {
   nameForRegister: TenantFormFieldNames;
 }
 export default function InputField({
-  isForRegisterSection,
   label,
   placeholder,
   type,
@@ -25,7 +22,7 @@ export default function InputField({
   nameForRegister,
 }: Props) {
   return (
-    <div className={clsx(isForRegisterSection && "md:col-span-5")}>
+    <div className="w-full">
       <label className="block text-sm font-medium text-slate-700 mb-1">
         {label}
       </label>
