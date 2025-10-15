@@ -22,7 +22,7 @@ const columns: ColumnDef<User>[] = [
         header: "Status",
         cell: ({ row }) => {
             const status = row.original.id % 2 === 0 ? "Active" : "Inactive";
-             const color = status === "Active" ? "success" : "danger";
+            const color = status === "Active" ? "success" : "danger";
             return <Chip color={color}>{status}</Chip>;
         },
     },
@@ -37,7 +37,7 @@ const data: User[] = [
 const DataTableExample = () => {
     return (
         <div>
-            <DataTable columns={columns} data={data} isManualPagination={false}/>
+            <DataTable columns={columns} data={data} isManualPagination={false} />
         </div>
     )
 }
