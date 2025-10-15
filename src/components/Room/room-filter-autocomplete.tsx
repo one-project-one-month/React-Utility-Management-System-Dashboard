@@ -1,5 +1,4 @@
 import {Autocomplete, AutocompleteItem} from "@heroui/react";
-import type {ChangeEvent} from "react";
 
 interface RoomFilterAutoCompleteProps {
     label: string;
@@ -11,15 +10,24 @@ interface RoomFilterAutoCompleteProps {
 export function RoomFilterAutoComplete({ label, options, value, onChange }: RoomFilterAutoCompleteProps) {
     return (
         <Autocomplete
-            className={"max-w-xs"}
+            inputProps={{
+                classNames: {
+                    inputWrapper: "bg-white border-[0.5px] shadow-none dark:text-default-600 dark:bg-transparent",
+                    input: "dark:text-default-600"
+                }
+            }}
+            variant={"bordered"}
             label={label}
             size={"sm"}
-            value={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
+            radius={"lg"}
+            selectedKey={value}
+            onSelectionChange={(key) => {
+                onChange(key?.toString() || "");
+            }}
         >
-            {options.map((option, index) => (
-                <AutocompleteItem key={index}>
-                    {option}
+            {options.map((option) => (
+                <AutocompleteItem key={option}>
+                    {option.charAt(0).toUpperCase() + option.slice(1).toLowerCase()}
                 </AutocompleteItem>
             ))}
         </Autocomplete>
