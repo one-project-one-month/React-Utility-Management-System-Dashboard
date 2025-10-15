@@ -1,29 +1,28 @@
 import { FormSelect } from "@/components/Form/form-select";
 import { serviceRequestMockData } from "@/constants/customerServiceMockData";
 import { customerServiceEditSchema, type CustomerServiceEditFormData } from "@/schemas/customerServiceSchema";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/react";
+import { Button, Card, CardBody } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Activity, AlertTriangle, FolderCog, Save } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router"
 
 const CATEGORY_OPTIONS = [
-    { key: "complain", label: "complain" },
-    { key: "maintenance", label: "maintenance" },
-    { key: "others", label: "others" }
+    { key: "Complain", label: "Complain" },
+    { key: "Maintenance", label: "Maintenance" },
+    { key: "Others", label: "Others" }
 ];
 
 const STATUS_OPTIONS = [
-    { key: "pending", label: "pending", },
-    { key: "ongoing", label: "ongoing", },
-    { key: "resolved", label: "resolved" }
+    { key: "Pending", label: "Pending", },
+    { key: "Ongoing", label: "Ongoing", },
+    { key: "Resolved", label: "Resolved" }
 ];
 
 const PRIORITY_OPTIONS = [
-    { key: "low", label: "low", },
-    { key: "medium", label: "medium", },
-    { key: "high", label: "high" }
+    { key: "Low", label: "Low", },
+    { key: "Medium", label: "Medium", },
+    { key: "High", label: "High" }
 ];
 
 export default function CustomerServiceEditPage() {
@@ -65,7 +64,7 @@ export default function CustomerServiceEditPage() {
     }
 
     return (
-        <div className="p-8 space-y-4">
+        <div className="h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar">
             <div>
                 <div className="flex justify-between">
                     <h1 className={"text-2xl font-semibold"}>Edit Service of {service.roomNo}</h1>

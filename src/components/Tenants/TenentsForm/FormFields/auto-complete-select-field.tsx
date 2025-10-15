@@ -25,7 +25,7 @@ export default function AutoCompleteSelectField({
 }: Props) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-foreground/85 mb-1">
         {label}
       </label>
       <Controller

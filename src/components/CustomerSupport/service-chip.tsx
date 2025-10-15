@@ -6,30 +6,30 @@ type ChipColor = 'success' | 'danger' | 'warning' | 'primary' | 'secondary' | 'd
 
 type Label = Category | Status | Priority
 
-const statusValues: Label[] = ['resolved', 'ongoing', 'pending']
+const statusValues: Label[] = ['Resolved', 'Ongoing', 'Pending']
 const isStatus = (label: Label) => statusValues.includes(label);
 
-const priorityValues: Label[] = ['high', 'medium', 'low']
+const priorityValues: Label[] = ['High', 'Medium', 'Low']
 const isPriority = (label: Label) => priorityValues.includes(label);
 
-const categoryValues: Label[] = ['complain', 'maintenance', 'other']
+const categoryValues: Label[] = ['Complain', 'Maintenance', 'Other']
 const isCategory = (label: Label) => categoryValues.includes(label);
 
 const colorMap: Record<Label, ChipColor> = {
     // === Statuses ===
-    'resolved': 'success',
-    'ongoing': 'primary',
-    'pending': 'secondary',
+    'Resolved': 'success',
+    'Ongoing': 'primary',
+    'Pending': 'secondary',
 
     // === Priorities ===
-    'high': 'danger',
-    'medium': 'warning',
-    'low': 'default',
+    'High': 'danger',
+    'Medium': 'warning',
+    'Low': 'default',
 
     // === Categories ===
-    'complain': 'warning',
-    'maintenance': 'primary',
-    'other': 'secondary',
+    'Complain': 'warning',
+    'Maintenance': 'primary',
+    'Other': 'secondary',
 }
 
 interface ServiceChipProps {

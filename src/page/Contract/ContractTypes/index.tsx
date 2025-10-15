@@ -43,7 +43,7 @@ export default function ContractTypePage() {
 
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormContractType />
-                        <br />
+
                         <FormButton type="submit">Create</FormButton>
                     </form>
 

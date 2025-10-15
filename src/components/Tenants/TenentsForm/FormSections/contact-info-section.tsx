@@ -8,7 +8,7 @@ export default function ContactInfoSection({
 }: TenantFormSectionProps) {
   return (
     <FormSectionCard>
-      <h2 className="text-lg font-semibold text-slate-800 mb-4">
+      <h2 className="text-lg font-semibold text-foreground/80 mb-4">
         Contact Information
       </h2>
 

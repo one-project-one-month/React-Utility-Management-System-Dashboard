@@ -13,7 +13,7 @@ export function ServiceFilterSelect({ label, options, value, onChange }: Service
             key={label.toLowerCase()}
             label={label}
             labelPlacement={"outside"}
-            placeholder={label === "status" ? "all" : "---"}
+            placeholder={label === "status" ? "All" : "---"}
             variant={"bordered"}
             selectedKeys={value ? [value] : []}
             onSelectionChange={(keys) => onChange(Array.from(keys)[0] as string)}

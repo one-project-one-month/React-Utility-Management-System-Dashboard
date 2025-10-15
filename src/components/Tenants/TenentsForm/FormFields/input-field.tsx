@@ -23,7 +23,7 @@ export default function InputField({
 }: Props) {
   return (
     <div className="w-full">
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-foreground/85 mb-1">
         {label}
       </label>
       <Input
