@@ -1,6 +1,5 @@
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, Button, type PressEvent } from "@heroui/react";
 import { Pencil, Trash2 } from "lucide-react";
-import { Button, type PressEvent } from "@heroui/button";
 import type { ServiceRequest } from "@/types/customer-service";
 import { ServiceChip } from "./service-chip";
 import { useState, useRef, useEffect } from "react";

@@ -8,8 +8,8 @@ export interface ServiceRequest {
   issuedDate: string; // DATE string (e.g., "YYYY-MM-DD")
 }
 
-export type Category = "complain" | "maintenance" | "other";
+export type Category = "Complain" | "Maintenance" | "Other";
 
-export type Status = "pending" | "ongoing" | "resolved";
+export type Status = "Pending" | "Ongoing" | "Resolved";
 
-export type Priority = "low" | "medium" | "high";
+export type Priority = "Low" | "Medium" | "High";
