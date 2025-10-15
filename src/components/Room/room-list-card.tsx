@@ -1,6 +1,5 @@
 import type {Room} from "@/types/room.ts";
-import { Card } from "@heroui/react";
-import {CardBody} from "@heroui/card";
+import { Card, CardBody } from "@heroui/react";
 import {RoomChip} from "@/components/Room/room-chip.tsx";
 import {Bath, Bed, Clock, Layers, MapPin, Maximize2, Pencil, Trash2, User} from "lucide-react";
 import {Button, type PressEvent} from "@heroui/button";

@@ -109,7 +109,7 @@ export default function RoomEditPage() {
     }
 
     return (
-        <div className={"p-8 space-y-4"}>
+        <div className={"h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar"}>
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div>
                     <h1 className={"text-2xl font-semibold"}>Edit Room {room.roomNo}</h1>

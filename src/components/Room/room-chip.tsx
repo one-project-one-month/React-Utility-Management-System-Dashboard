@@ -30,10 +30,10 @@ export function RoomChip({ mode, room, icon: Icon, propertyKey, label }: RoomChi
     return (
         <Chip
             variant={"bordered"}
-            startContent={Icon && <Icon size={18} />}
-            className={"flex items-center gap-2 border-1 border-gray-300/40 rounded-lg px-2"}
+            startContent={Icon && <Icon size={14} />}
+            className={"flex items-center space-x-1 border-1 border-gray-300/40 rounded-lg px-2"}
         >
-            <span>{label || (propertyKey ? room[propertyKey] : '')}</span>
+            <span className="text-xs">{label || (propertyKey ? room[propertyKey] : '')}</span>
         </Chip>
     )
 }

@@ -1,6 +1,6 @@
 import type {LucideIcon} from "lucide-react";
 import * as React from "react";
-import {Card, CardBody} from "@heroui/card";
+import {Card, CardBody} from "@heroui/react";
 
 interface RoomCardProps {
     title: string;

@@ -36,11 +36,11 @@ export default function RoomPage() {
     const [filters, setFilters] = useState(INIT_FILTERS);
 
     const handleViewRoom = (roomId: string) => {
-        navigate(`/room/${roomId}`);
+        navigate(`/rooms/${roomId}`);
     }
 
     const handleEditRoom = (roomId: string) => {
-        navigate(`/room/${roomId}/edit`);
+        navigate(`/rooms/${roomId}/edit`);
     };
 
     const handleDeleteRoom = (roomId: string) => {
@@ -55,7 +55,7 @@ export default function RoomPage() {
     }
 
     return (
-        <div className="p-8 space-y-4">
+        <div className="h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar">
             <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                     placeholder="Search"
