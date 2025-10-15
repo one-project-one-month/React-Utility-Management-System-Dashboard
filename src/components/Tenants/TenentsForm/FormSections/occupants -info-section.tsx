@@ -14,12 +14,12 @@ export default function OccupantsInfoSection({
 }: TenantFormSectionProps) {
   return (
     <FormSectionCard>
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center mb-5 pr-3">
         <div>
-          <h2 className="text-lg font-semibold text-slate-800">
+          <h2 className="text-lg font-semibold text-foreground/80">
             Occupants Information
           </h2>
-          <p className="text-slate-500 text-xs mt-1">
+          <p className="text-foreground/50 text-xs mt-1">
             Add all Occupants who will be living in the room
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function OccupantsInfoSection({
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start p-3 bg-slate-50 rounded-lg border border-slate-200"
+            className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start p-3 bg-background/20  rounded-lg border border-slate-200 dark:border-slate-700"
           >
             <InputField
               isForRegisterSection

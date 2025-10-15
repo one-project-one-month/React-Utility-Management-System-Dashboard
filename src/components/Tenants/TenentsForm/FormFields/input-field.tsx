@@ -26,7 +26,7 @@ export default function InputField({
 }: Props) {
   return (
     <div className={clsx(isForRegisterSection && "md:col-span-5")}>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-foreground/70 mb-1">
         {label}
       </label>
       <Input

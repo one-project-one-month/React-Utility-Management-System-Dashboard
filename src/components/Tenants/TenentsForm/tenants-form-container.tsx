@@ -5,7 +5,7 @@ interface Props {
 }
 export default function TenantsFormContainer({ children }: Props) {
   return (
-    <div className="flex-1 overflow-y-auto custom-scrollbar   border border-slate-200 rounded-xl">
+    <div className="flex-1 overflow-y-auto custom-scrollbar   border border-divider/70  rounded-xl">
       <Card className="shadow-lg rounded-xl border-0">
         <CardBody className="p-6">{children}</CardBody>
       </Card>

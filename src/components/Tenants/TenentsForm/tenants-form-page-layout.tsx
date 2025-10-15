@@ -3,7 +3,7 @@ import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-
 import OccupantsInfoSection from "@/components/Tenants/TenentsForm/FormSections/occupants -info-section.tsx";
 import ContactInfoSection from "@/components/Tenants/TenentsForm/FormSections/contact-info-section.tsx";
 import RoomAndContractSection from "@/components/Tenants/TenentsForm/FormSections/room-and-contract-section.tsx";
-import FormActionButtons from "@/components/Tenants/TenentsForm/form-action-buttons.tsx";
+import FormActionButtons from "@/components/Form/form-action-buttons.tsx";
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 
 interface Props {

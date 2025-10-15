@@ -13,9 +13,9 @@ export const tenantTableColumnWidths: Record<string, string> = {
   nrc: "w-[20%]",
   email: "w-[15%]",
   phoneNo: "w-[15%]",
-  contractType: "w-[15%]",
+  contractType: "w-[14%]",
   roomNo: "w-[9.5%]",
-  occupantsCount: "w-[10.5%]",
+  occupantsCount: "w-[11.5%]",
   actions: "w-[12%]",
 };
 
@@ -57,7 +57,7 @@ export const tenantsTableColumns: ColumnDef<TenantTableData>[] = [
   },
   {
     accessorKey: "occupantsCount",
-    header: "OccupantsCount",
+    header: "# Occupants",
     cell: (info) => info.getValue(),
   },
   {
