@@ -6,7 +6,6 @@ import {
   billMockData,
   utilityUnitMockData,
 } from "@/constants/utilityUnitMockData";
-import EditForm from "./edit-form";
 import { Link } from "react-router";
 import { EyeIcon } from "lucide-react";
 
@@ -15,20 +14,21 @@ export default function UnitList() {
 
   const columns: ColumnDef<UtilityUnit>[] = [
     {
-      accessorKey: "bill_id",
+      id: "room_id",
       header: "Room No",
-      cell: ({ getValue }) => {
-        const billId = getValue();
-        const bill = billMockData.find((b) => b.bill_id === billId);
+      cell: ({ row }) => {
+        const billId = row.original.id;
+
+        const bill = billMockData.find((b) => b.id === billId);
         return bill ? bill.room_number : "—";
       },
     },
     {
-      accessorKey: "bill_id",
+      id: "tenant_id",
       header: "Tenant Name",
-      cell: ({ getValue }) => {
-        const billId = getValue();
-        const bill = billMockData.find((b) => b.bill_id === billId);
+      cell: ({ row }) => {
+        const billId = row.original.id;
+        const bill = billMockData.find((b) => b.id === billId);
         return bill ? bill.tenant_name : "—";
       },
     },
@@ -78,11 +78,10 @@ export default function UnitList() {
     },
     {
       id: "action",
-      header: "Action",
+      header: () => <div className="text-center">Action</div>,
       cell: (info) => {
         return (
-          <div className="flex items-center gap-x-1">
-            <EditForm id={info.row.original.id} />
+          <div className="flex justify-center gap-x-1">
             <Link
               to={`/utility-units/${info.row.original.id}`}
               className="px-3 py-2 border rounded border-neutral-200"
