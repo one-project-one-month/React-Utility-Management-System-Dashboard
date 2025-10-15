@@ -2,30 +2,39 @@ import type {Room} from "@/types/room.ts";
 import {useMemo} from "react";
 
 export type Filters = {
-    bedrooms: string;
-    bathrooms: string;
+    noOfBedRoom: string;
     floor: string;
     status: string;
-    price: string;
+    sellingPrice: string;
 }
 
 export function useFilteredRooms(rooms: Room[], searchTerm: string, filters: Filters) {
     return useMemo(() => {
         return rooms.filter((room) => {
-            const checks = [
-                !searchTerm ||
-                    room.roomNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    room.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    room.tenant.toLowerCase().includes(searchTerm.toLowerCase()),
+            const searchLower = searchTerm.toLowerCase().trim();
 
-                !filters.bedrooms || room.bedrooms === Number(filters.bedrooms),
-                !filters.bathrooms || room.bathrooms === Number(filters.bathrooms),
-                !filters.floor || room.floor === Number(filters.floor),
-                filters.status === "all" || room.status === filters.status,
-                !filters.price || room.price <= Number(filters.price),
-            ];
+            const roomNumberStr = room.roomNo.toString();
+            const roomWithPrefix = `room ${roomNumberStr}`;
 
-            return checks.every(Boolean);
-        }).sort((a, b) => a.roomNo.localeCompare(b.roomNo));
+            const search = !searchLower ||
+                roomNumberStr.includes(searchTerm) ||
+                roomWithPrefix.includes(searchLower) ||
+                room.status.toLowerCase().includes(searchLower);
+
+            const bedroom = !filters.noOfBedRoom ||
+                room.noOfBedRoom === Number(filters.noOfBedRoom);
+
+            const floor = !filters.floor ||
+                room.floor === Number(filters.floor);
+
+            const status = !filters.status ||
+                filters.status === "all" ||
+                room.status === filters.status;
+
+            const price = !filters.sellingPrice ||
+                room.sellingPrice <= Number(filters.sellingPrice);
+
+            return search && bedroom && floor && status && price;
+        }).sort((a, b) => a.roomNo - b.roomNo);
     }, [rooms, searchTerm, filters]);
 }

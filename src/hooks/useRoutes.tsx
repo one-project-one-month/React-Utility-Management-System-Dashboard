@@ -15,6 +15,12 @@ const RoomPage = lazy(() => import("@/page/Room"));
 const RoomDetailPage = lazy(() => import("@/page/Room/detail"));
 const EditRoomPage = lazy(() => import("@/page/Room/edit"));
 
+// User Management
+const UserPage = lazy(() => import("@/page/User Management"));
+const UserDetailPage = lazy(() => import("@/page/User Management/detail"));
+const CreateUserPage = lazy(() => import("@/page/User Management/create"));
+const EditUserPage = lazy(() => import("@/page/User Management/edit"));
+
 // Customer Service
 const CustomerSupportPage = lazy(() => import("@/page/CustomerSupport"));
 const CustomerServiceEditPage = lazy(() => import("@/page/CustomerSupport/edit"));
@@ -58,6 +64,12 @@ export const useRoutes = () => {
     { title: "Rooms", path: "/rooms", element: <RoomPage /> },
     { title: "Room Details", path: "/rooms/:id", element: <RoomDetailPage /> },
     { title: "Edit Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
+
+    // User Management
+    { title: "User Management", path: "/user-management/users", element: <UserPage /> },
+    { title: "User Details", path: "/user-management/users/:id", element: <UserDetailPage /> },
+    { title: "Create Room", path: "/user-management/users/create", element: <CreateUserPage /> },
+    { title: "Edit Room", path: "/user-management/users/:id/edit", element: <EditUserPage /> },
 
     // Customer Support
     { title: "Customer Service", path: "/customer-service", element: <CustomerSupportPage /> },
