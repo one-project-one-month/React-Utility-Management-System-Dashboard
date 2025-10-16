@@ -1,22 +1,23 @@
 import type { Bill, UtilityUnit } from "@/types/utilityUnit";
 
 export const billMockData: Bill[] = [
-  { bill_id: "BILL001", room_number: "A-101", tenant_name: "John Smith", created_date: new Date("2025-10-01"), electricity_fee: 10000, water_fee: 5000 },
-  { bill_id: "BILL002", room_number: "A-102", tenant_name: "Emma Johnson", created_date: new Date("2025-10-01"), electricity_fee: 11000, water_fee: 4500 },
-  { bill_id: "BILL003", room_number: "A-103", tenant_name: "Michael Brown", created_date: new Date("2025-10-01"), electricity_fee: 9500, water_fee: 4000 },
-  { bill_id: "BILL004", room_number: "A-104", tenant_name: "Sophia Davis", created_date: new Date("2025-10-01"), electricity_fee: 10500, water_fee: 4700 },
-  { bill_id: "BILL005", room_number: "A-105", tenant_name: "William Wilson", created_date: new Date("2025-10-01"), electricity_fee: 12500, water_fee: 5200 },
-  { bill_id: "BILL006", room_number: "B-201", tenant_name: "Olivia Taylor", created_date: new Date("2025-10-01"), electricity_fee: 8700, water_fee: 4100 },
-  { bill_id: "BILL007", room_number: "B-202", tenant_name: "James Anderson", created_date: new Date("2025-10-01"), electricity_fee: 11500, water_fee: 4800 },
-  { bill_id: "BILL008", room_number: "B-203", tenant_name: "Ava Thomas", created_date: new Date("2025-10-01"), electricity_fee: 10200, water_fee: 4300 },
-  { bill_id: "BILL009", room_number: "B-204", tenant_name: "Isabella Martinez", created_date: new Date("2025-10-01"), electricity_fee: 9500, water_fee: 3900 },
-  { bill_id: "BILL010", room_number: "B-205", tenant_name: "Ethan Garcia", created_date: new Date("2025-10-01"), electricity_fee: 12800, water_fee: 5500 },
-  { bill_id: "BILL011", room_number: "C-301", tenant_name: "Mia Rodriguez", created_date: new Date("2025-10-01"), electricity_fee: 9900, water_fee: 4200 },
-  { bill_id: "BILL012", room_number: "C-302", tenant_name: "Lucas Hernandez", created_date: new Date("2025-10-01"), electricity_fee: 10100, water_fee: 4400 },
-  { bill_id: "BILL013", room_number: "C-303", tenant_name: "Amelia Lopez", created_date: new Date("2025-10-01"), electricity_fee: 9700, water_fee: 4100 },
-  { bill_id: "BILL014", room_number: "C-304", tenant_name: "Benjamin Gonzalez", created_date: new Date("2025-10-01"), electricity_fee: 11200, water_fee: 4600 },
-  { bill_id: "BILL015", room_number: "C-305", tenant_name: "Harper Clark", created_date: new Date("2025-10-01"), electricity_fee: 10700, water_fee: 4500 },
+  { id: 1, bill_id: "BILL001", room_number: "A-101", tenant_name: "John Smith", created_date: new Date("2025-10-01"), electricity_fee: 10000, water_fee: 5000 },
+  { id: 2, bill_id: "BILL002", room_number: "A-102", tenant_name: "Emma Johnson", created_date: new Date("2025-10-01"), electricity_fee: 11000, water_fee: 4500 },
+  { id: 3, bill_id: "BILL003", room_number: "A-103", tenant_name: "Michael Brown", created_date: new Date("2025-10-01"), electricity_fee: 9500, water_fee: 4000 },
+  { id: 4, bill_id: "BILL004", room_number: "A-104", tenant_name: "Sophia Davis", created_date: new Date("2025-10-01"), electricity_fee: 10500, water_fee: 4700 },
+  { id: 5, bill_id: "BILL005", room_number: "A-105", tenant_name: "William Wilson", created_date: new Date("2025-10-01"), electricity_fee: 12500, water_fee: 5200 },
+  { id: 6, bill_id: "BILL006", room_number: "B-201", tenant_name: "Olivia Taylor", created_date: new Date("2025-10-01"), electricity_fee: 8700, water_fee: 4100 },
+  { id: 7, bill_id: "BILL007", room_number: "B-202", tenant_name: "James Anderson", created_date: new Date("2025-10-01"), electricity_fee: 11500, water_fee: 4800 },
+  { id: 8, bill_id: "BILL008", room_number: "B-203", tenant_name: "Ava Thomas", created_date: new Date("2025-10-01"), electricity_fee: 10200, water_fee: 4300 },
+  { id: 9, bill_id: "BILL009", room_number: "B-204", tenant_name: "Isabella Martinez", created_date: new Date("2025-10-01"), electricity_fee: 9500, water_fee: 3900 },
+  { id: 10, bill_id: "BILL010", room_number: "B-205", tenant_name: "Ethan Garcia", created_date: new Date("2025-10-01"), electricity_fee: 12800, water_fee: 5500 },
+  { id: 11, bill_id: "BILL011", room_number: "C-301", tenant_name: "Mia Rodriguez", created_date: new Date("2025-10-01"), electricity_fee: 9900, water_fee: 4200 },
+  { id: 12, bill_id: "BILL012", room_number: "C-302", tenant_name: "Lucas Hernandez", created_date: new Date("2025-10-01"), electricity_fee: 10100, water_fee: 4400 },
+  { id: 13, bill_id: "BILL013", room_number: "C-303", tenant_name: "Amelia Lopez", created_date: new Date("2025-10-01"), electricity_fee: 9700, water_fee: 4100 },
+  { id: 14, bill_id: "BILL014", room_number: "C-304", tenant_name: "Benjamin Gonzalez", created_date: new Date("2025-10-01"), electricity_fee: 11200, water_fee: 4600 },
+  { id: 15, bill_id: "BILL015", room_number: "C-305", tenant_name: "Harper Clark", created_date: new Date("2025-10-01"), electricity_fee: 10700, water_fee: 4500 }
 ];
+
 
 export const utilityUnitMockData:UtilityUnit[] = [
   {
