@@ -18,6 +18,8 @@ export interface TenantFormSectionProps {
 }
 
 export type TenantFormFieldNames =
+  | "name"
+  | "nrc"
   | "phoneNo"
   | "emergencyNo"
   | "occupants"
@@ -26,8 +28,11 @@ export type TenantFormFieldNames =
   | "contractId"
   | `occupants.${number}`
   | `occupants.${number}.name`
-  | `occupants.${number}.nrc`;
+  | `occupants.${number}.nrc`
+  | `occupants.${number}.relationshipToTenant`;
 
-export type TenantFormSelectFieldNames = "roomId" | "contractId";
+export type TenantFormAutoCompleteSelectFieldNames = "roomId" | "contractId";
+export type TenantFormSelectFieldNames =
+  `occupants.${number}.relationshipToTenant`;
 
 // ဒီမှာ key of TenantFormValues နဲ့လုပ်သင့်။ ဒါပေမယ့် ပြဿနာရှိလို့ လောလောဆယ်ခနထားခဲ့

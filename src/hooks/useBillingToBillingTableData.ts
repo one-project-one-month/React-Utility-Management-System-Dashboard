@@ -28,7 +28,7 @@ export const useBillingToBillingTableData: (p: Props) => BillingTableData[] = ({
 
     const tenant = mockTenants.find((t) => t.roomId === roomId);
     const tenantId = tenant?.id ?? "";
-    const tenantName = tenant?.name[0] ?? "Not found";
+    const tenantName = tenant?.name ?? "Not found";
     const roomNo = room?.roomNo ?? 0;
 
     const contract = mockContracts.find((c) => c.tenantId === tenant?.id);
