@@ -28,6 +28,7 @@ export default function BillingsListHeader() {
 
         <Select
           key={"status"}
+          aria-label={"Filter by Status"}
           placeholder="Filter by Status"
           variant={"bordered"}
           // selectedKeys={}
