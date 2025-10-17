@@ -5,7 +5,7 @@ import {
   type TenantFormValues,
 } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TenantsFormPageLayout from "@/components/Tenants/TenentsForm/tenants-form-page-layout.tsx";
+import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
 
 export default function CreateTenantsPage() {
   const {
@@ -45,7 +45,7 @@ export default function CreateTenantsPage() {
   };
 
   return (
-    <TenantsFormPageLayout
+    <TenantsFormContainer
       action={"create"}
       onSubmit={handleSubmit(onSubmit)}
       tenantsFormSectionProps={tenantsFormSectionProps}

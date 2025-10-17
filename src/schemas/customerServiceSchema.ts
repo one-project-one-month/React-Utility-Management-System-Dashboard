@@ -1,13 +1,13 @@
 import {z} from "zod";
 
 export const customerServiceEditSchema = z.object({
-  category: z.enum(["complain", "maintenance", "other"], {
+  category: z.enum(["Complain", "Maintenance", "Other"], {
     error: "Category is required",
   }),
-  status: z.enum(["pending", "ongoing", "resolved"], {
+  status: z.enum(["Pending", "Ongoing", "Resolved"], {
     error: "Status is required",
   }),
-  priority: z.enum(["low", "medium", "high"], {
+  priority: z.enum(["Low", "Medium", "High"], {
     error: "Priority is required",
   }),
 });

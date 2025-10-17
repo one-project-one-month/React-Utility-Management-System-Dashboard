@@ -11,7 +11,7 @@ export default function BillingsListHeader() {
     { key: "4", label: "Overdue" },
   ];
   return (
-    <div className="h-[80px] flex justify-between items-center gap-5    dark:border-white/[0.05] dark:bg-white/[0.03] ">
+    <div className="h-[80px] flex justify-between items-center gap-5 ">
       <div className="flex justify-start w-[80%] gap-5 items-center">
         <Input
           placeholder="Search"
@@ -28,6 +28,7 @@ export default function BillingsListHeader() {
 
         <Select
           key={"status"}
+          aria-label={"Filter by Status"}
           placeholder="Filter by Status"
           variant={"bordered"}
           // selectedKeys={}

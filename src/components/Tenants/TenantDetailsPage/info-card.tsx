@@ -9,9 +9,9 @@ interface Props {
 
 export default function InfoCard({ header, obj }: Props) {
   return (
-    <Card className="pb-3 shadow-sm border border-slate-200 rounded-xl">
+    <Card className="pb-3 shadow-sm border border-divider  rounded-xl">
       <CardHeader className="pb-1 pt-3 px-4">
-        <h1 className="text-base font-semibold text-slate-800 tracking-tight">
+        <h1 className="text-base font-semibold text-foreground/80 tracking-tight">
           {header}
         </h1>
       </CardHeader>
@@ -25,7 +25,7 @@ export default function InfoCard({ header, obj }: Props) {
                   "text-sm font-medium",
                   label === "Total Rent Fee"
                     ? "text-primary"
-                    : "text-slate-500",
+                    : "text-foreground/60",
                 )}
               >
                 {label}
@@ -35,13 +35,13 @@ export default function InfoCard({ header, obj }: Props) {
                   "text-sm font-semibold",
                   label === "Total Rent Fee"
                     ? "text-primary"
-                    : "text-slate-800",
+                    : "text-foreground/85",
                 )}
               >
                 {value || "—"}
               </span>
             </div>
-            {index < arr.length - 1 && <Divider className="bg-slate-200" />}
+            {index < arr.length - 1 && <Divider className="bg-divider" />}
           </div>
         ))}
       </CardBody>

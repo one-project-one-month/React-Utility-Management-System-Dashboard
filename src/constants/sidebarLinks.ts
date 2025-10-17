@@ -1,21 +1,23 @@
 import { Grid, type LucideIcon } from "lucide-react";
 import {
-  Home,
-  CreditCard,
-  FileText,
-  Users,
-  Zap,
-  FileSpreadsheet,
-  Headphones,
-  Command,
+	Home,
+	CreditCard,
+	FileStack,
+	SquareUser,
+	FileText,
+	Users,
+	Zap,
+	FileSpreadsheet,
+	Headphones,
+	Command,
 } from "lucide-react";
 
 export type SidebarLink = {
-  href: string;
-  title: string;
-  icon: LucideIcon;
-  children?: SidebarLink[];
-  order?: number;
+	href: string;
+	title: string;
+	icon: LucideIcon;
+	children?: SidebarLink[];
+	order?: number;
 };
 
 const sidebarLinks: SidebarLink[] = [
@@ -62,10 +64,22 @@ const sidebarLinks: SidebarLink[] = [
   //   ],
   // },
   {
-    href: "/contract",
+    href: "/contracts",
     title: "Contracts",
     icon: FileText,
     order: 4,
+    children: [
+      {
+        href: "/contract/contract-type",
+        title: "Contract Type",
+        icon: FileStack,
+      },
+      {
+        href: "/contract/contract-tenants",
+        title: "Tenants' Contract",
+        icon: SquareUser,
+      },
+    ],
   },
   {
     href: "/tenants",
@@ -78,6 +92,13 @@ const sidebarLinks: SidebarLink[] = [
     title: "User Management",
     icon: Users,
     order: 6,
+    children: [
+      {
+        href: "/user-management/users",
+        title: "Users",
+        icon: Users
+      }
+    ]
   },
   {
     href: "/utility-units",

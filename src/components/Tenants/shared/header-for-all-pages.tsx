@@ -42,9 +42,9 @@ export default function HeaderForAllPages({ tenantId, action }: Props) {
           variant="light"
           size="sm"
           onPress={() => navigate(-1)}
-          className="hover:bg-slate-100"
+          className="hover:bg-foreground/30"
         >
-          <ChevronLeft size={40} className="text-slate-600" />
+          <ChevronLeft size={40} className="text-foreground/65" />
         </Button>
         <div className="p-2 bg-blue-500 rounded-xl shadow-lg">
           {action === "create" || action === "viewDetails" ? (
@@ -58,7 +58,7 @@ export default function HeaderForAllPages({ tenantId, action }: Props) {
           )}
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">
+          <h1 className="text-2xl font-bold text-foreground/85">
             {action === "create"
               ? "Tenant Registration"
               : action === "update"
@@ -69,7 +69,7 @@ export default function HeaderForAllPages({ tenantId, action }: Props) {
                     ? "Tenant Activities History"
                     : ""}
           </h1>
-          <p className="text-slate-500 text-sm">
+          <p className="text-foreground/50 text-sm">
             {action === "create"
               ? "Register new tenant and assign to room"
               : action === "update"

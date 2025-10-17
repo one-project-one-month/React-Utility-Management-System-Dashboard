@@ -1,11 +1,13 @@
 import { type Control, Controller } from "react-hook-form";
-import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
 import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
-import { mockContracts } from "@/constants/mockData/tenants/mockContracts";
-import { Autocomplete } from "@heroui/autocomplete";
-import { AutocompleteItem } from "@heroui/react";
+import { Select } from "@heroui/select";
+import { SelectItem } from "@heroui/react";
 
+interface Item {
+  key: string;
+  value: string;
+}
 interface Props {
   label: string;
   control: Control<TenantFormValues>;
@@ -13,7 +15,7 @@ interface Props {
   errorMessage: string;
   isInvalid: boolean;
   placeholder: string;
-  items: typeof mockRooms | typeof mockContracts;
+  items: Item[];
 }
 export default function SelectField({
   label,
@@ -26,16 +28,20 @@ export default function SelectField({
 }: Props) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-foreground/70 mb-1">
         {label}
       </label>
       <Controller
         control={control}
         name={fieldName}
         render={({ field }) => (
-          <Autocomplete
-            selectedKey={field.value}
-            onSelectionChange={(key) => field.onChange(key || "")}
+          <Select
+            selectedKeys={field.value ? [field.value] : []}
+            aria-label={`Select ${fieldName}`}
+            onSelectionChange={(keys) => {
+              const value = Array.from(keys)[0] ?? "";
+              field.onChange(value);
+            }}
             errorMessage={errorMessage}
             isInvalid={isInvalid}
             placeholder={placeholder}
@@ -43,22 +49,13 @@ export default function SelectField({
             variant="bordered"
           >
             {items.map((item) => {
-              const roomNo = "roomNo" in item ? item.roomNo : null;
-              const contractName =
-                "contractName" in item ? item.contractName : null;
-
-              const textValue = roomNo
-                ? `Room ${roomNo}`
-                : contractName
-                  ? contractName
-                  : "";
               return (
-                <AutocompleteItem key={item.id} textValue={textValue}>
-                  {textValue}
-                </AutocompleteItem>
+                <SelectItem key={item.key} textValue={item.value}>
+                  {item.value}
+                </SelectItem>
               );
             })}
-          </Autocomplete>
+          </Select>
         )}
       />
     </div>

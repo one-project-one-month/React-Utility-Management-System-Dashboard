@@ -1,28 +1,30 @@
 import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-service-list-card";
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
 import { serviceRequestMockData } from "@/constants/customerServiceMockData";
-import type { Category } from "@/types/customer-service";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
+import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices";
+import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
+import { Button, Input } from "@heroui/react";
 import { Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const FILTER_OPTIONS = {
-    category: ['complain', 'maintenance', 'other'] as Category[],
-    status: ["all", "pending", "ongoing", "resolved"] as string[],
-    priority: ["low", "medium", "high"] as string[],
+    category: ['Complain', 'Maintenance', 'Other'] as Category[],
+    status: ["All", "Pending", "Ongoing", "Resolved"] as Status[],
+    priority: ["Low", "Medium", "High"] as Priority[],
 };
 
 const INIT_FILTERS = {
     category: "",
-    status: "all",
+    status: "All",
     priority: "",
 }
 
 export default function CustomerSupportPage() {
 
+
     const [searchTerm, setSearchTerm] = useState("");
+    const [services] = useState<ServiceRequest[]>(serviceRequestMockData);
     const [filters, setFilters] = useState(INIT_FILTERS);
     const navigate = useNavigate();
 
@@ -36,9 +38,11 @@ export default function CustomerSupportPage() {
         navigate(`/customer-service/${id}/edit`)
     }
 
+    const filteredAndSortedServices = useFilteredCustomerServices(services, searchTerm, filters);
+
     return (
 
-        <div className="p-8 space-y-4">
+        <div className="h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar">
 
             {/* search */}
             <div className="flex flex-col sm:flex-row gap-2">
@@ -71,7 +75,7 @@ export default function CustomerSupportPage() {
                         label={"Category"}
                         options={FILTER_OPTIONS.category}
                         value={filters.category}
-                        onChange={(val) => setFilters((prev) => ({ ...prev, bedrooms: val }))}
+                        onChange={(val) => setFilters((prev) => ({ ...prev, category: val }))}
                     />
                     <ServiceFilterSelect
                         label={"Status"}
@@ -83,7 +87,7 @@ export default function CustomerSupportPage() {
                         label={"Priority"}
                         options={FILTER_OPTIONS.priority}
                         value={filters.priority}
-                        onChange={(val) => setFilters((prev) => ({ ...prev, price: val }))}
+                        onChange={(val) => setFilters((prev) => ({ ...prev, priority: val }))}
                     />
                 </div>
             </div>
@@ -91,11 +95,11 @@ export default function CustomerSupportPage() {
             {/* service request */}
             <div className="bg-gray-200/20 rounded-2xl p-4 md:p-7 space-y-4">
                 <h3 className="text-lg font-medium">
-                    Customer Services: <span className="text-gray-400">{serviceRequestMockData.length}</span>
+                    Customer Services: <span className="text-gray-400">{filteredAndSortedServices.length}</span>
                 </h3>
 
                 <div className="space-y-4">
-                    {serviceRequestMockData.map((service) => (
+                    {filteredAndSortedServices.map((service) => (
                         <CustomerServiceListCard
                             key={service.id}
                             service={service}
@@ -103,10 +107,10 @@ export default function CustomerSupportPage() {
                             onDelete={() => console.log("delete")}
                         />
                     ))}
-                    {serviceRequestMockData.length === 0 && (
+                    {filteredAndSortedServices.length === 0 && (
                         <div className="text-center p-6 text-gray-200">
                             No rooms found matching the current filters.
-                        </div>
+                        </div>                        
                     )}
                 </div>
             </div>

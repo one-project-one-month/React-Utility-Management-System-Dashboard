@@ -30,7 +30,7 @@ export default function TenantActivitiesHistoryPage() {
 
           <h2 className="text-lg font-semibold text-foreground-400 tracking-tight">
             Tenant Name:{" "}
-            <span className="text-foreground-500">{tenant?.name[0]}</span>
+            <span className="text-foreground-500">{tenant?.name}</span>
           </h2>
 
           <div className="flex w-full flex-col mt-4">
