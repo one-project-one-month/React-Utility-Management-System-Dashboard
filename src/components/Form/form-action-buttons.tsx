@@ -7,7 +7,7 @@ interface Props {
 export default function FormActionButtons({ action }: Props) {
   const navigate = useNavigate();
   return (
-    <div className="flex justify-between p-5 pt-2">
+    <div className="flex  justify-end gap-5 p-5 pt-2">
       <Button
         onPress={() => {
           navigate("/tenants");

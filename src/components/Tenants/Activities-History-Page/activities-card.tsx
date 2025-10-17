@@ -7,7 +7,7 @@ interface Props {
 }
 export default function ActivityCard({ activity }: Props) {
   return (
-    <Card className="mb-4 bg-background p-5 border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-xl">
+    <Card className="mb-4 bg-background p-5 border border-divider shadow-sm hover:shadow-md transition-all rounded-xl">
       <div className="flex items-center gap-4">
         <div
           className={clsx(
@@ -21,7 +21,7 @@ export default function ActivityCard({ activity }: Props) {
             {activity.type}{" "}
             <span
               className={clsx(
-                "ml-1 font-medium text-sm   rounded-full",
+                "ml-1 font-medium text-sm  rounded-full",
                 activity.textColor,
               )}
             >
@@ -29,7 +29,7 @@ export default function ActivityCard({ activity }: Props) {
             </span>
           </h2>
 
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+          <div className="flex items-center gap-2 text-sm text-foreground/60 mt-1">
             <span>{activity.data}</span>
             <span className="w-1 h-1 rounded-full bg-foreground-500"></span>
             <span>{activity.date}</span>

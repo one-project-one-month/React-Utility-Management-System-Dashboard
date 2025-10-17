@@ -6,24 +6,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router";
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
-import TenantsFormPageLayout from "@/components/Tenants/TenentsForm/tenants-form-page-layout.tsx";
+import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
 
 export default function UpdateTenantsPage() {
   const { id } = useParams<{ id: string }>();
 
   const tenantToBeUpdated = mockTenants.find((tenant) => tenant.id === id);
-
-  const occupants: { name: string; nrc: string }[] = [];
-  const occupantNames = tenantToBeUpdated?.name;
-  const occupantNRCs = tenantToBeUpdated?.nrc;
-
-  occupantNames?.map((name) => {
-    occupants.push({ name, nrc: "" });
-  });
-
-  occupantNRCs?.map((nrc, index) => {
-    occupants[index].nrc = nrc;
-  });
 
   const {
     register,
@@ -33,7 +21,9 @@ export default function UpdateTenantsPage() {
   } = useForm({
     resolver: zodResolver(tenantFormSchema),
     defaultValues: {
-      occupants: occupants,
+      name: tenantToBeUpdated?.name ?? "",
+      nrc: tenantToBeUpdated?.nrc ?? "",
+      occupants: tenantToBeUpdated?.occupants,
       phoneNo: tenantToBeUpdated?.phoneNo ?? "",
       email: tenantToBeUpdated?.email ?? "",
       emergencyNo: tenantToBeUpdated?.emergencyNo ?? "",
@@ -62,7 +52,7 @@ export default function UpdateTenantsPage() {
   };
 
   return (
-    <TenantsFormPageLayout
+    <TenantsFormContainer
       tenantId={id}
       action={"update"}
       onSubmit={handleSubmit(onSubmit)}

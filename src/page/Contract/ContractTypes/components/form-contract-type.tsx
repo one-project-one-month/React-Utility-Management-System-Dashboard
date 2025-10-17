@@ -23,7 +23,7 @@ export default function FormContractType() {
     ];
 
     return (
-        <section className="space-y-4" style={{ width: "100%" }}>
+        <section className="space-y-4 sm:columns-2">
             <Controller
                 name="name"
                 control={control}
@@ -106,8 +106,6 @@ export default function FormContractType() {
                     </Select>
                 )}
             />
-
-
         </section>
     );
 }

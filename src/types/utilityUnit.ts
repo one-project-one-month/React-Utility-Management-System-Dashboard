@@ -1,4 +1,5 @@
 export type Bill = {
+    id:number,
     bill_id: string,
     room_number: string,
     tenant_name: string,

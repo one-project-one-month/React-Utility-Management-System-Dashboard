@@ -16,10 +16,10 @@ export default function DetailsModalHeader({ tenant, room, contract }: Props) {
     <div className="flex flex-wrap justify-between items-center mt-2 gap-3">
       <ModalHeaderItem
         icon={<User size={18} className="text-primary" />}
-        data={tenant?.name[0] || "Unknown Tenant"}
+        data={tenant?.name || "Unknown Tenant"}
         tooltipContent={"See Tenant Info"}
         color={"primary"}
-        href={`/tenants/details/${tenant?.id}`}
+        href={`/tenants/${tenant?.id}/details`}
       />
 
       <ModalHeaderItem

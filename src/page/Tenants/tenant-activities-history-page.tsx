@@ -11,9 +11,9 @@ export default function TenantActivitiesHistoryPage() {
 
   const tenant = mockTenants.find((tenant) => tenant.id === id);
   const all = mockTenantActivities;
-  const payments = all.filter((a) => a.type === "Payment");
-  const services = all.filter((a) => a.type === "Service");
-  const contracts = all.filter((a) => a.type === "Contract");
+  const payments = all.filter((activity) => activity.type === "Payment");
+  const services = all.filter((activity) => activity.type === "Service");
+  const contracts = all.filter((activity) => activity.type === "Contract");
 
   const tabs = [
     { id: "all", label: "All", content: all },
@@ -30,7 +30,7 @@ export default function TenantActivitiesHistoryPage() {
 
           <h2 className="text-lg font-semibold text-foreground-400 tracking-tight">
             Tenant Name:{" "}
-            <span className="text-foreground-500">{tenant?.name[0]}</span>
+            <span className="text-foreground-500">{tenant?.name}</span>
           </h2>
 
           <div className="flex w-full flex-col mt-4">
@@ -38,8 +38,8 @@ export default function TenantActivitiesHistoryPage() {
               {(item) => (
                 <Tab key={item.id} title={item.label}>
                   <div className=" gap-5 mt-3 h-[calc(100vh-310px)]  overflow-y-auto custom-scrollbar pr-2">
-                    {item.content.map((c, index) => (
-                      <ActivityCard activity={c} key={index} />
+                    {item.content.map((activity, index) => (
+                      <ActivityCard activity={activity} key={index} />
                     ))}
                   </div>
                 </Tab>

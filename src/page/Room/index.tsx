@@ -57,10 +57,7 @@ export default function RoomPage() {
     }
 
     return (
-        <div className="p-2 pb-6 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3">
-            <NavigationBreadCrumbs
-                items={breadcrumbs.roomList}
-            />
+        <div className="h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar">
             <div className="flex flex-col sm:flex-row gap-2">
                 <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 <div className="grid grid-cols-2 sm:flex gap-2">

@@ -1,5 +1,5 @@
 import InputField from "@/components/Tenants/TenentsForm/FormFields/input-field.tsx";
-import FormSectionCard from "@/components/Tenants/TenentsForm/form-section-card.tsx";
+import FormSectionCard from "@/components/Tenants/TenentsForm/FormUiWrappers/form-section-card.tsx";
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 
 export default function ContactInfoSection({
@@ -8,7 +8,7 @@ export default function ContactInfoSection({
 }: TenantFormSectionProps) {
   return (
     <FormSectionCard>
-      <h2 className="text-lg font-semibold text-slate-800 mb-4">
+      <h2 className="text-lg font-semibold text-foreground/80 mb-4">
         Contact Information
       </h2>
 
