@@ -41,9 +41,9 @@ export default function TenantsListHeader() {
             popoverContent: "w-auto min-w-[185px]  max-w-[300px]",
           }}
         >
-          {occupancyOptions.map((o) => (
-            <SelectItem key={o.key} textValue={o.label}>
-              {o.label}
+          {occupancyOptions.map((option) => (
+            <SelectItem key={option.key} textValue={option.label}>
+              {option.label}
             </SelectItem>
           ))}
         </Select>

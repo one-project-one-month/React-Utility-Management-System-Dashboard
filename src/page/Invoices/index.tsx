@@ -19,7 +19,6 @@ export default function InvoicesPage() {
         <InvoicesListHeader />
 
         <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl  dark:bg-white/[0.03] custom-scrollbar">
-          {/*<BillingsTableContainer />*/}
           <TableContainer
             tableName={"InvoicesTable"}
             columns={invoicesTableColumns}

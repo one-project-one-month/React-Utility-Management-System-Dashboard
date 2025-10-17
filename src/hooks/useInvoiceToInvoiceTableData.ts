@@ -4,6 +4,8 @@ import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 import type { Invoice } from "@/types/invoices/invoiceType.ts";
 import type { InvoicesTableData } from "@/types/invoices/invoicesTableData.ts";
 import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
+import type { Billing } from "@/types/billing/billingType.ts";
+import type { TenantType } from "@/types/tenants/tenantType.ts";
 
 interface Props {
   page: number;
@@ -18,12 +20,14 @@ export const useInvoiceToInvoiceTableData: (
     const no = (page - 1) * pageSize + index + 1;
     const invoiceNo = invoice.invoiceNo;
 
-    const billing = mockBillings.find((b) => b.id === invoice.billingId);
+    const billing = mockBillings.find(
+      (billing) => billing.id === invoice.billingId,
+    );
     const roomId = billing?.roomId;
 
-    const room = mockRooms.find((r) => r.id === roomId);
+    const room = mockRooms.find((room) => room.id === roomId);
 
-    const tenant = mockTenants.find((t) => t.roomId === roomId);
+    const tenant = mockTenants.find((tenant) => tenant.roomId === roomId);
     const tenantName = tenant?.name[0] ?? "Not found";
 
     const roomNo = room?.roomNo ?? 0;
@@ -42,6 +46,9 @@ export const useInvoiceToInvoiceTableData: (
       onDownloadInvoice,
       onSendReceipt,
       disableSendReceipt,
+      billing: billing as Billing,
+      invoice,
+      tenant: tenant as TenantType,
     };
     return {
       no,

@@ -75,8 +75,11 @@ export const billingsTableColumns: ColumnDef<BillingTableData>[] = [
         <Chip
           color={color}
           variant="flat"
-          radius="sm"
-          className="capitalize font-medium"
+          radius="lg"
+          classNames={{
+            base: `min-w-20 h-6 px-2 `,
+            content: `text-xs capitalize text-center font-semibold`,
+          }}
         >
           {status}
         </Chip>

@@ -39,9 +39,9 @@ export default function BillingsListHeader() {
             popoverContent: "w-auto min-w-[185px]  max-w-[300px]",
           }}
         >
-          {statusOptions.map((o) => (
-            <SelectItem key={o.key} textValue={o.label}>
-              {o.label}
+          {statusOptions.map((option) => (
+            <SelectItem key={option.key} textValue={option.label}>
+              {option.label}
             </SelectItem>
           ))}
         </Select>

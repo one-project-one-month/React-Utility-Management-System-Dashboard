@@ -9,17 +9,21 @@ import type {
 import { Tooltip } from "@heroui/tooltip";
 import { Button } from "@heroui/button";
 import { Download, Send } from "lucide-react";
+import BillingDetailsModal from "@/components/Billings/BillingDetails/billing-details-modal.tsx";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePDF from "@/components/Invoices/InvoicePDF/invoice-pdf.tsx";
+import type { Invoice } from "@/types/invoices/invoiceType.ts";
 
 export const invoicesTableColumnWidths: Record<string, string> = {
   no: "w-[5%]",
   invoiceNo: "w-[10%]",
-  tenantName: "w-[15%]",
+  tenantName: "w-[12%]",
   roomNo: "w-[8%]",
   totalAmount: "w-[10%]",
-  issueDate: "w-[12%]",
+  issueDate: "w-[10%]",
   dueDate: "w-[10%]",
   status: "w-[10%]",
-  actions: "w-[10%]",
+  actions: "w-[15%]",
 };
 export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
   {
@@ -73,8 +77,11 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
         <Chip
           color={color}
           variant="flat"
-          radius="sm"
-          className="capitalize font-medium"
+          radius="lg"
+          classNames={{
+            base: `min-w-20 h-6 px-2 `,
+            content: `text-xs capitalize text-center font-semibold`,
+          }}
         >
           {status}
         </Chip>
@@ -98,17 +105,30 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
       const actions = info.getValue() as InvoicesTableActions;
       return (
         <div className="flex justify-center gap-2">
-          <Tooltip content="Download invoice" placement="top">
-            <Button
-              isIconOnly
-              variant="light"
-              color="primary"
-              radius="full"
-              onPress={() => {}}
-            >
-              <Download size={18} />
-            </Button>
-          </Tooltip>
+          <BillingDetailsModal billingId={actions.billing.id} />
+          <PDFDownloadLink
+            document={
+              <InvoicePDF
+                billing={actions.billing}
+                invoice={actions.invoice as Invoice}
+                tenant={actions.tenant}
+              />
+            }
+            fileName={`${actions.invoice?.invoiceNo}.pdf`}
+          >
+            <Tooltip content="Download Invoice" placement="top">
+              <Button
+                isIconOnly
+                variant="light"
+                color="primary"
+                radius="full"
+                onPress={() => {}}
+              >
+                <Download size={18} />
+              </Button>
+            </Tooltip>
+          </PDFDownloadLink>
+
           <Tooltip content="Send Receipt" placement="top">
             <Button
               isIconOnly

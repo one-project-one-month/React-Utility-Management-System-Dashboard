@@ -69,7 +69,7 @@ const billingToActivity = (billing: Billing): Activity => {
 };
 
 export const mockTenantActivities: Activity[] = [
-  ...mockBillings.map((b) => billingToActivity(b)),
-  ...mockServices.map((s) => serviceToActivity(s)),
-  ...mockContracts.slice(0, 2).map((c) => contractToActivity(c)),
+  ...mockBillings.map((billing) => billingToActivity(billing)),
+  ...mockServices.map((service) => serviceToActivity(service)),
+  ...mockContracts.slice(0, 2).map((contract) => contractToActivity(contract)),
 ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
