@@ -40,6 +40,14 @@ export default function UserPage() {
         setFilters({ ...filters, role: value });
     }
 
+    const handleDelete = (userId: string) => {
+        const userToDelete = users.find(user => user.id === userId);
+        console.log("Deleted user:", {
+            userId: userToDelete?.id,
+            name: userToDelete?.userName
+        })
+    }
+
     return (
         <div className="p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3">
             <NavigationBreadCrumbs items={breadcrumbs.userList} />
@@ -70,7 +78,7 @@ export default function UserPage() {
                 </FormDrawer>
             </div>
 
-            <UserDataTable data={filteredUsers} isLoading={isLoading} />
+            <UserDataTable data={filteredUsers} isLoading={isLoading} onDeleteUser={handleDelete} />
         </div>
     )
 }

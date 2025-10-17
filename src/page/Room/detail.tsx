@@ -1,6 +1,5 @@
 import {
     Pencil,
-    Trash2,
 } from "lucide-react";
 import {Button} from "@heroui/react";
 import {useNavigate, useParams} from "react-router";
@@ -51,21 +50,14 @@ export default function RoomDetailPage() {
                     <RoomChip mode={"status"} room={room} />
                 </div>
 
-                <div className={"flex gap-2"}>
+                <div>
                     <Button
                         onPress={handleEditRoom}
                         variant={"bordered"}
-                        className={"border-[0.5px] bg-white dark:text-black"}
+                        className={"border-[0.5px] bg-white text-primary dark:bg-transparent"}
                         startContent={<Pencil size={16} />}
                     >
                         Edit
-                    </Button>
-                    <Button
-                        variant={"bordered"}
-                        className={"border-[0.5px] text-red-500 bg-white"}
-                        startContent={<Trash2 size={16} />}
-                    >
-                        Delete
                     </Button>
                 </div>
             </div>
@@ -84,23 +76,6 @@ export default function RoomDetailPage() {
                         <InfoRow label={"Max Occupancy"} value={`${room.maxNoPeople} People`} />
                         <InfoRow label={"Monthly Rent Fee"} value={formatCurrency(room.sellingPrice)} valueClassName={"text-lg text-primary"} />
                     </RoomCard>
-                </div>
-
-                <div className={"flex flex-col sm:flex-row gap-6 pt-4"}>
-                    <Button
-                        className={"bg-primary text-white flex-1"}
-                        size={"lg"}
-                    >
-                        Download Room Details
-                    </Button>
-                    <Button
-                        variant="bordered"
-                        size="lg"
-                        className="flex-1 border-[0.5px] border-gray-400"
-                        onPress={() => navigate(`/room/${room.id}/utilities`)}
-                    >
-                        View Utility History
-                    </Button>
                 </div>
             </div>
         </div>

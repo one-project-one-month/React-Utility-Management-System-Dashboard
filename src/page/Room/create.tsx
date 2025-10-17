@@ -1,72 +1,50 @@
-import {
-    Bed,
-    DollarSign,
-    Hash,
-    Layers,
-    Maximize2,
-    Users
-} from "lucide-react";
-import {useNavigate, useParams} from "react-router";
-import {Textarea, Button} from "@heroui/react";
-import {BEDROOM_OPTIONS, FLOOR_OPTIONS, roomMockData, STATUS_OPTIONS} from "@/constants/roomMockData.ts";
 import {Controller, type Resolver, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {FormSelect} from "@/components/Form/form-select.tsx";
-import {type EditRoomFormData, editRoomSchema} from "@/types/room.ts";
+import {type CreateRoomFormData, createRoomSchema} from "@/types/room.ts";
+import {useNavigate} from "react-router";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
+import {Bed, DollarSign, Hash, Layers, Maximize2, Users} from "lucide-react";
+import {FormSelect} from "@/components/Form/form-select.tsx";
+import {BEDROOM_OPTIONS, FLOOR_OPTIONS, STATUS_OPTIONS} from "@/constants/roomMockData.ts";
+import {Button, Textarea} from "@heroui/react";
 
-export default function RoomEditPage() {
-    const { id } = useParams();
+export default function RoomCreatePage() {
     const navigate = useNavigate();
-
-    const room = roomMockData.find(r => r.id === id);
 
     const {
         control,
         handleSubmit,
-        formState: { errors },
-    } = useForm<EditRoomFormData>({
-        resolver: zodResolver(editRoomSchema) as Resolver<EditRoomFormData>,
+        formState: { errors }
+    } = useForm({
+        resolver: zodResolver(createRoomSchema) as Resolver<CreateRoomFormData>,
         defaultValues: {
-            roomNo: room?.roomNo || 1,
-            noOfBedRoom: room?.noOfBedRoom || 1,
-            floor: room?.floor || 1,
-            dimension: room?.dimension || "",
-            status: room?.status || "available",
-            sellingPrice: room?.sellingPrice || 1,
-            maxNoPeople: room?.maxNoPeople || 1,
-            description: room?.description || "",
+            roomNo: undefined,
+            noOfBedRoom: 1,
+            floor: 1,
+            dimension: "",
+            status: "available",
+            sellingPrice: undefined,
+            maxNoPeople: undefined,
+            description: "",
         }
     });
 
-    if (!room) {
-        return (
-            <div className="p-8">
-                <div className="text-center">
-                    <h1 className="text-2xl font-semibold mb-4">Room Not Found</h1>
-                    <Button onPress={() => navigate('/room')}>
-                        Back to Rooms
-                    </Button>
-                </div>
-            </div>
-        )
-    }
-
     const handleCancel = () => {
-        navigate(`/rooms`)
+        navigate('/rooms');
     }
 
-    const onSubmit = (data: EditRoomFormData) => {
+    const onSubmit = (data: CreateRoomFormData) => {
         console.log("Form submitted", data);
     }
 
     return (
-        <div className={"h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar"}>
+        <div className={"p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3"}>
+            <NavigationBreadCrumbs items={breadcrumbs.roomCreate} />
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div>
-                    <h1 className={"text-2xl font-semibold"}>Edit Room {room.roomNo}</h1>
+                    <h1 className={"text-2xl font-semibold"}>Create Room</h1>
                 </div>
             </div>
 
@@ -84,7 +62,6 @@ export default function RoomEditPage() {
                                     {...field}
                                     label={"Room Number"}
                                     placeholder={"Enter room number"}
-                                    value={field.value?.toString() || ""}
                                     startContent={<Hash size={18} className={"text-default-500"} />}
                                     isInvalid={!!errors.roomNo}
                                     errorMessage={errors.roomNo?.message}
@@ -116,7 +93,6 @@ export default function RoomEditPage() {
                                     {...field}
                                     label={"Dimension"}
                                     placeholder={"Enter dimension"}
-                                    value={field.value?.toString() || ""}
                                     startContent={<Maximize2 size={18} className={"text-default-500"} />}
                                     isInvalid={!!errors.dimension}
                                     errorMessage={errors.dimension?.message}
@@ -163,7 +139,6 @@ export default function RoomEditPage() {
                                     {...field}
                                     label={"Maximum Occupancy"}
                                     placeholder={"Maximum number of people"}
-                                    value={field.value?.toString() || 0}
                                     type={"number"}
                                     startContent={<Users size={18} className={"text-default-500"} />}
                                     isInvalid={!!errors.maxNoPeople}
@@ -210,9 +185,9 @@ export default function RoomEditPage() {
                             control={control}
                             render={({ field }) => (
                                 <FormInput
+                                    {...field}
                                     label={"Monthly Rent Fee"}
                                     placeholder={"Enter monthly rate"}
-                                    value={field.value?.toString() || 0}
                                     type={"number"}
                                     startContent={<DollarSign size={18} className="text-default-500" />}
                                     isInvalid={!!errors.sellingPrice}
@@ -236,7 +211,7 @@ export default function RoomEditPage() {
                         className="bg-primary text-white"
                         type={"submit"}
                     >
-                        Save
+                        Create
                     </Button>
                 </div>
             </form>

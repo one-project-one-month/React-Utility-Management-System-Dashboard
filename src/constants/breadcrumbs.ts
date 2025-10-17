@@ -39,6 +39,20 @@ export const breadcrumbs: BreadCrumbs = {
       label: "Details",
     },
   ],
+  roomCreate: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/rooms",
+      label: "Rooms",
+    },
+    {
+      href: "/create",
+      label: "Create",
+    },
+  ],
   roomEdit: [
     {
       href: "/",
