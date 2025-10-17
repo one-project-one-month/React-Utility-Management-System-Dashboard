@@ -19,7 +19,7 @@ export function RoomChip({ mode, room, icon: Icon, propertyKey, label }: RoomChi
                 variant="flat"
                 color="default"
                 className={statusColors[room.status]}
-                radius={"md"}
+                radius={"full"}
             >
                 {statusLabels[room.status]}
             </Chip>
