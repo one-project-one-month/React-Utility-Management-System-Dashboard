@@ -126,11 +126,11 @@ export default function CustomerServiceEditPage() {
                         />
                     </CardBody>
                 </Card>
-                <div className={"flex flex-col sm:flex-row gap-3 pt-4"}>
+                <div className="flex flex-col md:flex-row gap-3 pt-4">
                     <Button
                         variant="bordered"
                         size="lg"
-                        className="flex-1 border-[0.5px] border-gray-400"
+                        className="flex-1 border-[0.5px] border-gray-400 py-2 md:py-6"
                         onPress={handleCancel}
                     >
                         Cancel Changes

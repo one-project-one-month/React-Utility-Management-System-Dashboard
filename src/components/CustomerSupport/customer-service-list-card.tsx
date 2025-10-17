@@ -19,8 +19,9 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
     }
 
     const handleDelete = (e: PressEvent) => {
-        e.continuePropagation();
+        e.continuePropagation();        
         onDelete(service.id);
+        console.log("delete", service.id);
     }
 
     const [isLineClamp, setIsLineClamp] = useState(true);
@@ -36,9 +37,9 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
     }, [service.description]);
 
     return (
-        <Card className="w-full rounded-3xl shadow-none transition-colors">
+        <Card className="w-full rounded-lg shadow-none transition-colors">
             <CardBody className={"p-3"}>
-                <div className="flex flex-col md:flex-row gap-4 p-3">
+                <div className="flex flex-col md:flex-row gap-3 p-2">
                     <div
                         className="flex-1 flex flex-col gap-3"
                     >
@@ -64,7 +65,7 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                         </div>
                     </div>
 
-                    <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:min-w-fit">
+                    <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-3 md:min-w-fit">
                         <div className="text-lg font-semibold">
                             {/* ISSUED DATE */}
                             {service.issuedDate}

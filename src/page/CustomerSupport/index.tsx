@@ -3,10 +3,16 @@ import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter
 import { serviceRequestMockData } from "@/constants/customerServiceMockData";
 import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices";
 import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
-import { Button, Input } from "@heroui/react";
-import { Filter, Search } from "lucide-react";
+import { Filter, LucideTriangleAlert, Search } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import {
+    Input, Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter, Button, useDisclosure
+} from "@heroui/react";
 
 const FILTER_OPTIONS = {
     category: ['Complain', 'Maintenance', 'Other'] as Category[],
@@ -24,9 +30,11 @@ export default function CustomerSupportPage() {
 
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [services] = useState<ServiceRequest[]>(serviceRequestMockData);
+    const [services, setServices] = useState<ServiceRequest[]>(serviceRequestMockData);
+    const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [filters, setFilters] = useState(INIT_FILTERS);
     const navigate = useNavigate();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
 
     const handleResetFilters = () => {
@@ -37,6 +45,20 @@ export default function CustomerSupportPage() {
     const handleEdit = (id: string) => {
         navigate(`/customer-service/${id}/edit`)
     }
+
+    const handleDeleteBtn = (id: string) => {
+        console.log("open delete modal", id);
+        onOpen();
+    }
+
+    const handleConfirmDelete = () => {
+        if (selectedServiceId) {
+            setServices(prev => prev.filter(service => service.id !== selectedServiceId));
+        }
+        console.log("deleted");
+        setSelectedServiceId(null); // reset
+        onClose();
+    };
 
     const filteredAndSortedServices = useFilteredCustomerServices(services, searchTerm, filters);
 
@@ -93,27 +115,52 @@ export default function CustomerSupportPage() {
             </div>
 
             {/* service request */}
-            <div className="bg-gray-200/20 rounded-2xl p-4 md:p-7 space-y-4">
+            <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
                 <h3 className="text-lg font-medium">
                     Customer Services: <span className="text-gray-400">{filteredAndSortedServices.length}</span>
                 </h3>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {filteredAndSortedServices.map((service) => (
                         <CustomerServiceListCard
                             key={service.id}
                             service={service}
                             onEdit={handleEdit}
-                            onDelete={() => console.log("delete")}
+                            onDelete={() => handleDeleteBtn(service.id)}
                         />
                     ))}
                     {filteredAndSortedServices.length === 0 && (
                         <div className="text-center p-6 text-gray-200">
                             No rooms found matching the current filters.
-                        </div>                        
+                        </div>
                     )}
                 </div>
             </div>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex items-center gap-3">
+                                <LucideTriangleAlert className="text-danger" size={24} />
+                                <span className="text-2xl">Delete Service?</span>
+                            </ModalHeader>
+                            <ModalBody>
+                                <p>
+                                    Are you sure you want to delete this service? This action cannot be undone.
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    Close
+                                </Button>
+                                <Button color="primary" onPress={handleConfirmDelete}>
+                                    Delete
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     )
 }
