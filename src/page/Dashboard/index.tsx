@@ -14,7 +14,6 @@ import ComplaintsTable from "@/page/Dashboard/tenants-complaints-table";
 import BillingTable from "@/page/Dashboard/billing-histroy-table";
 import ContractsTable from "@/page/Dashboard/contract-table";
 import StatCardRevenue from "./statcard-revenue";
-import StatCardRoom from "./statcard-room";
 import StatCardTenants from "./statcard-tenants";
 
 const chartData = [
@@ -35,7 +34,6 @@ export default function Dashboard() {
                {/* Stats Cards */}
                <div className="flex flex-wrap md:flex-nowrap gap-6">
                     <StatCardRevenue
-                         icon={<LandmarkIcon size={20} />}
                          title="Total Revenue"
                          currentValue={1600000}
                          lastTotal={1333333}
@@ -44,7 +42,6 @@ export default function Dashboard() {
                          icon={<Building size={20} />}
                          title="Total Room"
                          totalRoom={20}
-                         available={3}
                     />
                     <StatCardTenants
                          icon={<Users size={20} />}
