@@ -66,22 +66,7 @@ export default function UserEditPage() {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className={"space-y-6"}>
-                <div className={"grid grid-cols-1 gap-4"}>
-                    <Controller
-                        name={"userName"}
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                {...field}
-                                label={"Username"}
-                                placeholder={"Enter username"}
-                                value={field.value?.toString() || ""}
-                                isInvalid={!!errors.userName}
-                                errorMessage={errors.userName?.message}
-                            />
-                        )}
-                    />
-
+                <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
                     <Controller
                         name={"email"}
                         control={control}
@@ -112,6 +97,24 @@ export default function UserEditPage() {
                             />
                         )}
                     />
+                </div>
+
+
+                <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
+                    <Controller
+                        name={"userName"}
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                {...field}
+                                label={"Username"}
+                                placeholder={"Enter username"}
+                                value={field.value?.toString() || ""}
+                                isInvalid={!!errors.userName}
+                                errorMessage={errors.userName?.message}
+                            />
+                        )}
+                    />
 
                     <Controller
                         name={"role"}
@@ -134,48 +137,59 @@ export default function UserEditPage() {
                             />
                         )}
                     />
+                </div>
 
-                    <div className={"grid grid-cols-2 gap-4"}>
-                        <Controller
-                            name={"tenantId"}
-                            control={control}
-                            render={({ field }) => (
-                                <FormSelect
-                                    {...field}
-                                    label={"Tenant ID"}
-                                    placeholder={"Select tenant ID"}
-                                    value={field.value || ""}
-                                    options={TENANT_OPTIONS}
-                                    onChange={field.onChange}
-                                    isInvalid={!!errors.tenantId}
-                                    errorMessage={errors.tenantId?.message}
-                                    isDisabled={selectedRole !== "tenant"}
-                                />
-                            )}
-                        />
+                <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
+                    <Controller
+                        name={"tenantId"}
+                        control={control}
+                        render={({ field }) => (
+                            <FormSelect
+                                {...field}
+                                label={"Tenant ID"}
+                                placeholder={"Select tenant ID"}
+                                value={field.value || ""}
+                                options={TENANT_OPTIONS}
+                                onChange={field.onChange}
+                                isInvalid={!!errors.tenantId}
+                                errorMessage={errors.tenantId?.message}
+                                isDisabled={selectedRole !== "tenant"}
+                            />
+                        )}
+                    />
 
-                        <Controller
-                            name="isActive"
-                            control={control}
-                            render={({ field: { value, onChange } }) => (
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-sm text-foreground-600">Status</label>
-                                    <div className="flex items-center justify-between px-3 py-2 border-[0.5px] rounded-medium bg-white dark:bg-transparent border-default-200 hover:border-default-400 transition-colors">
-                                        <span className="text-sm text-default-600">
-                                            {value ? 'Active' : 'Inactive'}
-                                        </span>
-                                        <Switch
-                                            isSelected={value}
-                                            onValueChange={onChange}
-                                            color="primary"
-                                            size="sm"
-                                        />
-                                    </div>
+                    <Controller
+                        name="isActive"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm text-foreground-600">Status</label>
+                                <div className="flex items-center justify-between px-3 py-2 border-[0.5px] rounded-medium bg-white dark:bg-transparent border-default-200 hover:border-default-400 transition-colors">
+                                    <span className="text-sm text-default-600">
+                                        {value ? 'Active' : 'Inactive'}
+                                    </span>
+                                    <Switch
+                                        isSelected={value}
+                                        onValueChange={onChange}
+                                        color="primary"
+                                        size="sm"
+                                    />
                                 </div>
-                            )}
-                        />
-                    </div>
+                            </div>
+                        )}
+                    />
+                </div>
 
+
+                <div className={"flex justify-end gap-2"}>
+                    <Button
+                        type={"button"}
+                        variant={"bordered"}
+                        className={"border-[0.5px]"}
+                        onPress={() => navigate('/user-management/users')}
+                    >
+                        Cancel
+                    </Button>
                     <Button
                         type={"submit"}
                         className={"text-white bg-primary"}
