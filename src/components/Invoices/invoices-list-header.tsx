@@ -3,7 +3,7 @@ import { Plus, Search } from "lucide-react";
 import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 
-export default function BillingsListHeader() {
+export default function InvoicesListHeader() {
   const statusOptions = [
     { key: "1", label: "All Status" },
     { key: "2", label: "Pending" },
@@ -11,7 +11,7 @@ export default function BillingsListHeader() {
     { key: "4", label: "Overdue" },
   ];
   return (
-    <div className="h-[80px] flex justify-between items-center gap-5 ">
+    <div className="h-[80px] flex justify-between items-center gap-5  ">
       <div className="flex justify-start w-[80%] gap-5 items-center">
         <Input
           placeholder="Search"
@@ -53,7 +53,7 @@ export default function BillingsListHeader() {
         className={"hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"}
       >
         {" "}
-        <Plus /> Create New Bill
+        <Plus /> Create New Invoice
       </Button>
     </div>
   );

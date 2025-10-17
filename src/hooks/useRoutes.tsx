@@ -10,6 +10,9 @@ const Components = lazy(() => import("@/page/Home"));
 // Billing
 const BillingPage = lazy(() => import("@/page/Billing"));
 
+//Invoices
+const InvoicesPage = lazy(() => import("@/page/Invoices"));
+
 // Rooms
 const RoomPage = lazy(() => import("@/page/Room"));
 const RoomDetailPage = lazy(() => import("@/page/Room/detail"));
@@ -52,6 +55,9 @@ export const useRoutes = () => {
     // Billing
     { title: "Billing", path: "/billing", element: <BillingPage /> },
     //{ title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
+
+    //Invoices
+    { title: "Invoices", path: "/invoices", element: <InvoicesPage /> },
 
     // Tenants
     { title: "Tenants", path: "/tenants", element: <TenantsPage /> },

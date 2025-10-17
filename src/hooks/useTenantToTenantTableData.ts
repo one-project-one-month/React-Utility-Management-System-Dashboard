@@ -23,10 +23,12 @@ export const useTenantToTenantTableData: (p: Props) => TenantTableData[] = ({
     const email = tenant.email;
     const phoneNo = tenant.phoneNo;
 
-    const contract = mockContracts.find((c) => c.tenantId === tenant?.id);
+    const contract = mockContracts.find(
+      (contract) => contract.tenantId === tenant?.id,
+    );
     const contractType = contract?.contractName ?? "Not found";
 
-    const room = mockRooms.find((r) => r.id === tenant.roomId);
+    const room = mockRooms.find((room) => room.id === tenant.roomId);
     const roomNo = room?.roomNo ?? 0;
 
     const occupantsCount = tenant.occupants.length + 1;
