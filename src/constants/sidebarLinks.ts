@@ -1,4 +1,4 @@
-import { Grid, type LucideIcon } from "lucide-react";
+import {Grid, type LucideIcon, ShieldUser} from "lucide-react";
 import {
 	Home,
 	CreditCard,
@@ -88,17 +88,10 @@ const sidebarLinks: SidebarLink[] = [
     order: 5,
   },
   {
-    href: "/user-management",
+    href: "/user-management/users",
     title: "User Management",
-    icon: Users,
+    icon: ShieldUser,
     order: 6,
-    children: [
-      {
-        href: "/user-management/users",
-        title: "Users",
-        icon: Users
-      }
-    ]
   },
   {
     href: "/utility-units",

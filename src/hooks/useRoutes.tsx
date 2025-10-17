@@ -13,6 +13,7 @@ const BillingPage = lazy(() => import("@/page/Billing"));
 // Rooms
 const RoomPage = lazy(() => import("@/page/Room"));
 const RoomDetailPage = lazy(() => import("@/page/Room/detail"));
+const CreateRoomPage = lazy(() => import("@/page/Room/create"));
 const EditRoomPage = lazy(() => import("@/page/Room/edit"));
 
 // User Management
@@ -63,6 +64,7 @@ export const useRoutes = () => {
     // Rooms
     { title: "Rooms", path: "/rooms", element: <RoomPage /> },
     { title: "Room Details", path: "/rooms/:id", element: <RoomDetailPage /> },
+    { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
     { title: "Edit Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
 
     // User Management
