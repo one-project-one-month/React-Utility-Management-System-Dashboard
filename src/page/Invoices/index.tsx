@@ -9,7 +9,7 @@ import {
 export default function InvoicesPage() {
   return (
     <div className="h-[84vh] px-2 overflow-y-auto custom-scrollbar-3">
-      <div className="min-h-[90vh]  rounded-xl    dark:border-white/[0.05] dark:bg-white/[0.03]">
+      <div className="min-h-[90vh]  rounded-xl     ">
         <NavigationBreadCrumbs
           items={[
             { label: "Home", href: "/" },
@@ -18,7 +18,7 @@ export default function InvoicesPage() {
         />
         <InvoicesListHeader />
 
-        <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl  dark:bg-white/[0.03] custom-scrollbar">
+        <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl   custom-scrollbar">
           <TableContainer
             tableName={"InvoicesTable"}
             columns={invoicesTableColumns}
