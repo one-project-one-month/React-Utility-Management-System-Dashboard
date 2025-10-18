@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/react";
+import { Card, CardHeader, CardBody } from "@heroui/react";
 import {
      ResponsiveContainer,
      BarChart,
@@ -6,36 +6,35 @@ import {
      XAxis,
      YAxis,
      CartesianGrid,
-     Tooltip,
-     Legend,
 } from "recharts";
 
-const data = [
+type chartData = {
+     name: string;
+     unit: number;
+};
+
+const data: chartData[] = [
      {
           name: "May",
-          uv: 4000,
-          pv: 80,
-          amt: 2400,
+          unit: 80,
      },
      {
-          name: "Jun",
-          uv: 3000,
-          pv: 90,
-          amt: 2210,
+          name: "June",
+          unit: 90,
      },
      {
           name: "July",
-          uv: 2000,
-          pv: 112,
-          amt: 2290,
+          unit: 112,
      },
      {
-          name: "Aug",
-          uv: 2780,
-          pv: 85,
-          amt: 2000,
+          name: "August",
+          unit: 85,
      },
 ];
+
+const total: number = data.reduce((sum: number, item: chartData) => {
+     return sum + item.unit;
+}, 0);
 
 export default function Rechart() {
      return (
@@ -44,32 +43,61 @@ export default function Rechart() {
                     <h3 className="text-gray-600 text-xl dark:text-gray-400">
                          Monthly Unit Usage Comparison
                     </h3>
-                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
-                         Total - Total Unit
+                    <p className="text-2xl font-extrabold text-gray-800 dark:text-gray-200">
+                         Total - {total} Unit
                     </p>
                </CardHeader>
                <CardBody>
                     <div className="h-64">
                          <ResponsiveContainer width="100%" height="100%">
-                              <BarChart
-                                   data={data}
-                                   margin={{
-                                        top: 0,
-                                        right: 0,
-                                        left: 0,
-                                        bottom: 0,
-                                   }}
-                              >
-                                   <CartesianGrid strokeDasharray="10 10" />
-                                   <XAxis dataKey="name" />
-                                   <YAxis />
-                                   <Tooltip />
-                                   <Legend />
+                              <BarChart barSize={30} data={data}>
+                                   <CartesianGrid strokeDasharray="3 10" />
+                                   <XAxis
+                                        dataKey="name"
+                                        padding={{ left: 30, right: 30 }}
+                                        // stroke="#8884d8"
+                                        axisLine={false}
+                                        tickLine={false}
+                                   />
+                                   <YAxis
+                                        dataKey="height"
+                                        axisLine={false}
+                                        tickLine={false}
+                                        domain={[50, 150]}
+                                        ticks={[50, 75, 100, 125, 150]}
+                                   />
+                                   <Bar
+                                        dataKey="unit"
+                                        // fill="var(--rechart-bar-fill)"
+                                        fill="#4C4C4C"
+                                        radius={[10, 10, 0, 0]}
+                                        // className="text-gray-800 dark:text-gray-200"
+                                        // background={{
+                                        //      fill: "var(--rechart-bar-background)",
+                                        //      radius: [4, 4, 0, 0],
+                                        // }}
+                                   />
                               </BarChart>
                          </ResponsiveContainer>
                     </div>
+                    <div className="p-4">
+                         {data.map((item, index) => (
+                              <div
+                                   key={index}
+                                   className={`flex justify-between items-center ${
+                                        index > 0 ? "pt-3" : ""
+                                   }`}
+                              >
+                                   <h3 className="text-gray-600 text-l dark:text-gray-400 ml-11">
+                                        {item.name} Utility Units Usage
+                                   </h3>
+                                   <p className="text-l font-extrabold text-gray-800 dark:text-gray-200 mr-14">
+                                        {item.unit} Unit
+                                   </p>
+                              </div>
+                         ))}
+                    </div>
                </CardBody>
-               <CardFooter></CardFooter>
           </Card>
      );
 }

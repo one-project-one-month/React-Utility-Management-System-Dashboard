@@ -17,6 +17,8 @@ const tenantsComplaints: Complaint[] = [
      { name: "Devon Lane", room: "008", date: "6.10.2025" },
      { name: "Kristin Watson", room: "008", date: "6.10.2025" },
      { name: "Cody Fisher", room: "008", date: "6.10.2025" },
+     { name: "Thaw Lewis", room: "000", date: "13.5.2005" },
+     { name: "Wunna Aung", room: "001", date: "6.10.2025" },
 ];
 
 const columns: ColumnDef<Complaint>[] = [
