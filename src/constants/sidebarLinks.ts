@@ -1,23 +1,23 @@
-import {Grid, type LucideIcon} from "lucide-react";
+import {Grid, type LucideIcon, ShieldUser} from "lucide-react";
 import {
-  Home,
-  CreditCard,
-  FilePlus,
-  History,
-  FileText,
-  Users,
-  Zap,
-  FileSpreadsheet,
-  Headphones,
-  Command
+	Home,
+	CreditCard,
+	FileStack,
+	SquareUser,
+	FileText,
+	Users,
+	Zap,
+	FileSpreadsheet,
+	Headphones,
+	Command,
 } from "lucide-react";
 
 export type SidebarLink = {
-  href: string;
-  title: string;
-  icon: LucideIcon;
-  children?: SidebarLink[];
-  order?: number;
+	href: string;
+	title: string;
+	icon: LucideIcon;
+	children?: SidebarLink[];
+	order?: number;
 };
 
 const sidebarLinks: SidebarLink[] = [
@@ -38,24 +38,48 @@ const sidebarLinks: SidebarLink[] = [
     title: "Billing",
     icon: CreditCard,
     order: 3,
-    children: [
-      {
-        href: "/billing/create",
-        title: "New Billing",
-        icon: FilePlus,
-      },
-      {
-        href: "/billing/history",
-        title: "Billing History",
-        icon: History,
-      },
-    ],
   },
   {
-    href: "/contract",
+    href: "/invoices",
+    title: "Invoices",
+    icon: FileSpreadsheet,
+    order: 8,
+  },
+  // {
+  //   href: "/billing",
+  //   title: "Billing",
+  //   icon: CreditCard,
+  //   order: 3,
+  //   children: [
+  //     {
+  //       href: "/billing",
+  //       title: "Billing",
+  //       icon: FilePlus,
+  //     },
+  //     {
+  //       href: "/billing/history",
+  //       title: "Billing History",
+  //       icon: History,
+  //     },
+  //   ],
+  // },
+  {
+    href: "/contracts",
     title: "Contracts",
     icon: FileText,
     order: 4,
+    children: [
+      {
+        href: "/contract/contract-type",
+        title: "Contract Type",
+        icon: FileStack,
+      },
+      {
+        href: "/contract/contract-tenants",
+        title: "Tenants' Contract",
+        icon: SquareUser,
+      },
+    ],
   },
   {
     href: "/tenants",
@@ -64,9 +88,9 @@ const sidebarLinks: SidebarLink[] = [
     order: 5,
   },
   {
-    href: "/user-management",
+    href: "/user-management/users",
     title: "User Management",
-    icon: Users,
+    icon: ShieldUser,
     order: 6,
   },
   {
@@ -74,25 +98,20 @@ const sidebarLinks: SidebarLink[] = [
     title: "Utility Units",
     icon: Zap,
     order: 7,
-    children: [
-      {
-        href: "/utility-units/electricity",
-        title: "Electricity",
-        icon: Zap,
-      },
-      {
-        href: "/utility-units/water",
-        title: "Water",
-        icon: FilePlus,
-      },
-    ],
+    // children: [
+    //   {
+    //     href: "/utility-units/electricity",
+    //     title: "Electricity",
+    //     icon: Zap,
+    //   },
+    //   {
+    //     href: "/utility-units/water",
+    //     title: "Water",
+    //     icon: FilePlus,
+    //   },
+    // ],
   },
-  {
-    href: "/invoice",
-    title: "Invoices",
-    icon: FileSpreadsheet,
-    order: 8,
-  },
+
   {
     href: "/customer-service",
     title: "Customer Support",
@@ -100,11 +119,11 @@ const sidebarLinks: SidebarLink[] = [
     order: 9,
   },
   {
-    href: "/room",
+    href: "/rooms",
     title: "Rooms",
     icon: Grid,
     order: 9,
-  }
+  },
 ];
 
 export default sidebarLinks;
