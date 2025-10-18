@@ -1,5 +1,10 @@
-import TableData from "@/components/data-table";
+import TablePresentation from "@/components/data-table";
 import { type ColumnDef } from "@tanstack/react-table";
+import type { BillingStatus } from "@/types/billing/billingTableData.ts";
+import { Chip } from "@heroui/chip";
+import { FileText } from "lucide-react";
+import { Button } from "@heroui/button";
+import { Tooltip } from "@heroui/tooltip";
 
 type Billing = {
      name: string;
@@ -17,16 +22,72 @@ const billingHistory: Billing[] = [
 const columns: ColumnDef<Billing>[] = [
      { accessorKey: "name", header: "Name" },
      { accessorKey: "room", header: "Room No" },
-     { accessorKey: "due", header: "Due Date" },
-     { accessorKey: "status", header: "Status" },
+     { accessorKey: "date", header: "Due Date" },
+     {
+          accessorKey: "status",
+          header: "Status",
+          cell: info => {
+               const status = info.getValue() as BillingStatus;
+
+               let color: "default" | "success" | "warning" | "danger" =
+                    "default";
+
+               switch (status) {
+                    case "Pending":
+                         color = "warning";
+                         break;
+                    case "Paid":
+                         color = "success";
+                         break;
+                    case "Overdue":
+                         color = "danger";
+                         break;
+                    default:
+                         color = "default";
+               }
+
+               return (
+                    <Chip
+                         color={color}
+                         variant="flat"
+                         radius="full"
+                         className="transition hover:scale-120 hover:cursor-default"
+                    >
+                         {status}
+                    </Chip>
+               );
+          },
+     },
+     {
+          header: "Action",
+          cell: ({ row }) => (
+               <Tooltip content="See History" placement="top" className="mb-1">
+                    <Button
+                         isIconOnly
+                         variant="light"
+                         color="primary"
+                         radius="full"
+                         onPress={() => handleOpen(row.original)}
+                         className="transition hover:scale-120"
+                    >
+                         <FileText size={18} />
+                    </Button>
+               </Tooltip>
+          ),
+     },
 ];
 
 export default function BillingTable() {
      return (
-          <TableData
+          <TablePresentation
                columns={columns}
                data={billingHistory}
                isManualPagination={false}
           />
      );
+}
+
+function handleOpen(billing: Billing) {
+     console.log("Open billing for:", billing.name);
+     // Your modal logic can go here
 }

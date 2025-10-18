@@ -1,5 +1,8 @@
-import TableData from "@/components/data-table";
+import TablePresentation from "@/components/data-table";
 import { type ColumnDef } from "@tanstack/react-table";
+import { Tooltip } from "@heroui/tooltip";
+import { Button } from "@heroui/button";
+import { FileText } from "lucide-react";
 
 type Contracts = {
      name: string;
@@ -17,14 +20,37 @@ const columns: ColumnDef<Contracts>[] = [
      { accessorKey: "name", header: "Name" },
      { accessorKey: "room", header: "Room No" },
      { accessorKey: "date", header: "Expiry Date" },
+     {
+          header: "Action",
+          cell: ({ row }) => (
+               <Tooltip content="See Contract" placement="top" className="mb-1">
+                    <Button
+                         isIconOnly
+                         variant="light"
+                         color="primary"
+                         radius="full"
+                         onPress={() => handleOpen(row.original)}
+                         className="transition hover:scale-120"
+                    >
+                         <FileText size={18} />
+                    </Button>
+               </Tooltip>
+          ),
+     },
 ];
 
 export default function ContractsTable() {
      return (
-          <TableData
+          <TablePresentation
                columns={columns}
                data={dataContracts}
                isManualPagination={false}
           />
      );
+}
+
+// Optional: handle click logic
+function handleOpen(contract: Contracts) {
+     console.log("Open billing for:", contract.name);
+     // Your modal logic can go here
 }

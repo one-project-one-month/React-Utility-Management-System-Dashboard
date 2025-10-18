@@ -1,28 +1,22 @@
 import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
 import {
-     ArrowUpRight,
-     ArrowDownRight,
-     CircleDollarSign,
      CircleAlert,
+     CircleCheck,
+     Construction,
+     AlarmClockCheck,
 } from "lucide-react";
 
-// Total Revenue
-function StatCardRevenue({
+// Pending Issues
+function StatCardPending({
      title,
-     currentValue,
-     lastTotal,
+     pendingIssues,
+     highPriority,
 }: {
      title: string;
-     currentValue: number;
-     lastTotal: number;
+     pendingIssues: number;
+     highPriority: number;
 }) {
-     const change = ((currentValue - lastTotal) / lastTotal) * 100;
-     const isPositive = change >= 0;
-     const formattedChange = `${isPositive ? "+" : ""}${change.toFixed(0)}%`;
-     const formattedValue = new Intl.NumberFormat("en-MY", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-     }).format(currentValue);
+     const isPositive: boolean = pendingIssues === 0 ? true : false;
      return (
           <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
                {/* HEADER */}
@@ -37,7 +31,7 @@ function StatCardRevenue({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   <CircleDollarSign size={24} />
+                                   <AlarmClockCheck size={24} />
                               ) : (
                                    <CircleAlert size={24} />
                               )}
@@ -52,9 +46,9 @@ function StatCardRevenue({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   <ArrowUpRight size={24} />
+                                   <CircleCheck size={24} />
                               ) : (
-                                   <ArrowDownRight size={24} />
+                                   <Construction size={24} />
                               )}
                          </Chip>
                     </div>
@@ -66,18 +60,20 @@ function StatCardRevenue({
                          {title}
                     </h3>
                     <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
-                         {formattedValue} MMK
+                         {pendingIssues}
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
                     <p className="text-gray-600 text-xl dark:text-gray-400">
-                         {formattedChange} from last month
+                         {isPositive
+                              ? "No high priority"
+                              : `${highPriority} high priority`}
                     </p>
                </CardFooter>
           </Card>
      );
 }
 
-export default StatCardRevenue;
+export default StatCardPending;

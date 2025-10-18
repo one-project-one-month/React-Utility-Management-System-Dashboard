@@ -2,27 +2,24 @@ import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
 import {
      ArrowUpRight,
      ArrowDownRight,
-     CircleDollarSign,
+     Building,
      CircleAlert,
 } from "lucide-react";
 
-// Total Revenue
-function StatCardRevenue({
+// Occupancy Rate
+function StatCardOccupancy({
      title,
-     currentValue,
-     lastTotal,
+     activeTenants,
+     totalRoom,
 }: {
      title: string;
-     currentValue: number;
-     lastTotal: number;
+     activeTenants: number;
+     totalRoom: number;
 }) {
-     const change = ((currentValue - lastTotal) / lastTotal) * 100;
-     const isPositive = change >= 0;
-     const formattedChange = `${isPositive ? "+" : ""}${change.toFixed(0)}%`;
-     const formattedValue = new Intl.NumberFormat("en-MY", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-     }).format(currentValue);
+     const availableRoom = totalRoom - activeTenants;
+     const rate = (availableRoom / totalRoom) * 100;
+     const isPositive = rate >= 0;
+     const formattedChange = `${isPositive ? "" : ""}${rate.toFixed(0)}%`;
      return (
           <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
                {/* HEADER */}
@@ -37,7 +34,7 @@ function StatCardRevenue({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   <CircleDollarSign size={24} />
+                                   <Building size={24} />
                               ) : (
                                    <CircleAlert size={24} />
                               )}
@@ -66,18 +63,20 @@ function StatCardRevenue({
                          {title}
                     </h3>
                     <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
-                         {formattedValue} MMK
+                         {formattedChange}
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
                     <p className="text-gray-600 text-xl dark:text-gray-400">
-                         {formattedChange} from last month
+                         {availableRoom <= 0
+                              ? "No room available"
+                              : `${availableRoom} rooms available`}
                     </p>
                </CardFooter>
           </Card>
      );
 }
 
-export default StatCardRevenue;
+export default StatCardOccupancy;

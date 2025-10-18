@@ -1,69 +1,71 @@
-import React from "react";
-import { Card, CardHeader, CardBody, Chip } from "@heroui/react";
-import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
+import { Users, CircleCheck, CircleX, CircleAlert } from "lucide-react";
 
-// Total Revenue
+// Total Tenants
 function StatCardTenants({
-     icon,
      title,
-     currentTenants,
-     lastTotal,
+     activeTenants,
+     totalRoom,
 }: {
-     icon?: React.ReactNode;
      title: string;
-     currentTenants: number;
-     lastTotal: number;
+     activeTenants: number;
+     totalRoom: number;
 }) {
-     const change = ((currentTenants - lastTotal) / lastTotal) * 100;
-     const isPositive = change >= 0;
-     const formattedChange = `${change.toFixed(0)}%`;
+     const isPositive: boolean =
+          activeTenants > 0 && activeTenants <= totalRoom ? true : false;
      return (
-          <Card className="p-4 relative flex-[1]">
-               <CardHeader className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                         {icon}
-                         <h3 className="text-gray-800 text-xl font-normal">
-                              {title}
-                         </h3>
+          <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
+               {/* HEADER */}
+               <CardHeader>
+                    <div className="flex w-full justify-between items-center">
+                         {/* Chip Icon */}
+                         <Chip
+                              color={isPositive ? "primary" : "danger"}
+                              size="lg"
+                              radius="sm"
+                              variant="flat"
+                              className="h-12"
+                         >
+                              {isPositive ? (
+                                   <Users size={24} />
+                              ) : (
+                                   <CircleAlert size={24} />
+                              )}
+                         </Chip>
+
+                         {/* Chip Arrow: */}
+                         <Chip
+                              color={isPositive ? "success" : "danger"}
+                              size="lg"
+                              radius="full"
+                              variant="flat"
+                              className="h-12"
+                         >
+                              {isPositive ? (
+                                   <CircleCheck size={24} />
+                              ) : (
+                                   <CircleX size={24} />
+                              )}
+                         </Chip>
                     </div>
                </CardHeader>
-               <CardBody>
-                    <div className="flex justify-between items-end gap-6">
-                         {/* current tenants */}
-                         <p className="text-3xl font-bold text-gray-800">
-                              {currentTenants}
-                         </p>
 
-                         {/* chip arrow */}
-                         <div className="flex items-center gap-2">
-                              <Chip
-                                   color={isPositive ? "success" : "danger"}
-                                   size="lg"
-                                   radius="sm"
-                                   variant="flat"
-                                   className="flex items-center gap-1"
-                              >
-                                   {isPositive ? (
-                                        <ArrowUpRight
-                                             size={14}
-                                             className="inline-block"
-                                        />
-                                   ) : (
-                                        <ArrowDownRight
-                                             size={14}
-                                             className="inline-block"
-                                        />
-                                   )}
-                                   {formattedChange}
-                              </Chip>
-
-                              {/* last month tenants total */}
-                              <p className="text-sm text-gray-800 mt-[8px]">
-                                   Last month total: {lastTotal}
-                              </p>
-                         </div>
-                    </div>
+               {/* BODY */}
+               <CardBody className="pt-2">
+                    <h3 className="text-gray-600 text-xl mb-2.5 dark:text-gray-400">
+                         {title}
+                    </h3>
+                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                         {activeTenants}
+                    </p>
                </CardBody>
+
+               {/* FOOTER */}
+               <CardFooter className="pt-0">
+                    <p className="text-gray-600 text-xl dark:text-gray-400">
+                         Out of {totalRoom} total rooms
+                    </p>
+               </CardFooter>
           </Card>
      );
 }
