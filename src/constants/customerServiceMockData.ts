@@ -6,7 +6,7 @@ export const serviceRequestMockData: ServiceRequest[] = [
     roomNo: "A-101",
     category: "Complain",
     description:
-      "Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.",
+      "Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room. Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.Lights flickering in the living room.lorem...!!!",
     status: "Pending",
     priority: "High",
     issuedDate: "2025-10-01",

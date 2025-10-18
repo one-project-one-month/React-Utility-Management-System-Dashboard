@@ -5,17 +5,20 @@ import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices
 import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
 import { Filter, LucideTriangleAlert, Search } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { ServiceChip } from "@/components/CustomerSupport/service-chip";
 import {
     Input, Modal,
     ModalContent,
     ModalHeader,
     ModalBody,
-    ModalFooter, Button, useDisclosure
+    ModalFooter, Button, useDisclosure,
+    Select,
+    SelectItem,
+    Textarea
 } from "@heroui/react";
 
 const FILTER_OPTIONS = {
-    category: ['Complain', 'Maintenance', 'Other'] as Category[],
+    category: ["Complain", "Maintenance", "Other"] as Category[],
     status: ["All", "Pending", "Ongoing", "Resolved"] as Status[],
     priority: ["Low", "Medium", "High"] as Priority[],
 };
@@ -26,15 +29,30 @@ const INIT_FILTERS = {
     priority: "",
 }
 
-export default function CustomerSupportPage() {
+const STATUS_OPTIONS = [
+    { key: "Pending", label: "Pending" },
+    { key: "Ongoing", label: "Ongoing" },
+    { key: "Resolved", label: "Resolved" },
+];
 
+export default function CustomerSupportPage() {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [services, setServices] = useState<ServiceRequest[]>(serviceRequestMockData);
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [filters, setFilters] = useState(INIT_FILTERS);
-    const navigate = useNavigate();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const {
+        isOpen: isDeleteOpen,
+        onOpen: onDeleteOpen,
+        onClose: onDeleteClose,
+    } = useDisclosure();
+
+    const {
+        isOpen: isEditOpen,
+        onOpen: onEditOpen,
+        onClose: onEditClose,
+    } = useDisclosure();
 
 
     const handleResetFilters = () => {
@@ -42,22 +60,22 @@ export default function CustomerSupportPage() {
         setFilters(INIT_FILTERS);
     }
 
-    const handleEdit = (id: string) => {
-        navigate(`/customer-service/${id}/edit`)
-    }
+    const handleEditBtn = (id: string) => {
+        setSelectedServiceId(id);
+        onEditOpen();
+    };
 
     const handleDeleteBtn = (id: string) => {
-        console.log("open delete modal", id);
-        onOpen();
-    }
+        setSelectedServiceId(id);
+        onDeleteOpen();
+    };
 
     const handleConfirmDelete = () => {
         if (selectedServiceId) {
-            setServices(prev => prev.filter(service => service.id !== selectedServiceId));
+            setServices((prev) => prev.filter((s) => s.id !== selectedServiceId));
         }
-        console.log("deleted");
-        setSelectedServiceId(null); // reset
-        onClose();
+        setSelectedServiceId(null);
+        onDeleteClose();
     };
 
     const filteredAndSortedServices = useFilteredCustomerServices(services, searchTerm, filters);
@@ -125,7 +143,7 @@ export default function CustomerSupportPage() {
                         <CustomerServiceListCard
                             key={service.id}
                             service={service}
-                            onEdit={handleEdit}
+                            onEdit={() => handleEditBtn(service.id)}
                             onDelete={() => handleDeleteBtn(service.id)}
                         />
                     ))}
@@ -136,9 +154,78 @@ export default function CustomerSupportPage() {
                     )}
                 </div>
             </div>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl">
                 <ModalContent>
-                    {(onClose) => (
+                    {() => {
+                        const service = services.find((s) => s.id === selectedServiceId);
+                        if (!service) return null;
+
+                        return (
+                            <>
+                                <ModalHeader className="flex items-center justify-between">
+                                    <h2 className="text-2xl font-semibold">
+                                        Room {service.roomNo || service.id}
+                                    </h2>
+                                    <div className="font-light p-3">{service.issuedDate}</div>
+                                </ModalHeader>
+
+                                <ModalBody className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <ServiceChip label={service.category} />
+                                            <ServiceChip label={service.priority} />
+                                        </div>
+
+                                        {/* Status (editable) */}
+                                        <Select
+                                            key={service.id}
+                                            className="max-w-[40%]"
+                                            selectedKeys={[service.status]} // current status
+                                            radius="full"
+                                            onSelectionChange={(keys) => {
+                                                const newStatus = Array.from(keys)[0] as Status;
+                                                setServices((prev) =>
+                                                    prev.map((s) =>
+                                                        s.id === service.id ? { ...s, status: newStatus } : s
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            {STATUS_OPTIONS.map((status) => (
+                                                <SelectItem key={status.key}>{status.label}</SelectItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+
+                                    {/* Description */}
+                                    <Textarea
+                                        isDisabled
+                                        className="w-full"
+                                        minRows={3}
+                                        maxRows={20}
+                                        defaultValue={service.description}
+                                        label="Description"
+                                        labelPlacement="outside"
+                                    />
+                                </ModalBody>
+
+                                <ModalFooter className="flex justify-end gap-2">
+                                    <Button variant="light" onPress={onEditClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button color="primary" onPress={onEditClose}>
+                                        Save Changes
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        );
+                    }}
+                </ModalContent>
+            </Modal>
+
+            <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+                <ModalContent>
+                    {() => (
                         <>
                             <ModalHeader className="flex items-center gap-3">
                                 <LucideTriangleAlert className="text-danger" size={24} />
@@ -150,7 +237,7 @@ export default function CustomerSupportPage() {
                                 </p>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <Button color="danger" variant="light" onPress={onDeleteClose}>
                                     Close
                                 </Button>
                                 <Button color="primary" onPress={handleConfirmDelete}>

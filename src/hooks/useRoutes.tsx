@@ -23,7 +23,6 @@ const EditUserPage = lazy(() => import("@/page/User Management/edit"));
 
 // Customer Service
 const CustomerSupportPage = lazy(() => import("@/page/CustomerSupport"));
-const CustomerServiceEditPage = lazy(() => import("@/page/CustomerSupport/edit"));
 
 // Tenants
 const TenantsPage = lazy(() => import("@/page/Tenants"));
@@ -73,7 +72,6 @@ export const useRoutes = () => {
 
     // Customer Support
     { title: "Customer Service", path: "/customer-service", element: <CustomerSupportPage /> },
-    { title: "Edit Customer Service", path: "/customer-service/:id/edit", element: <CustomerServiceEditPage /> },
 
     // Utility Units
     { title: "Utility Units", path: "/utility-units", element: <UtilityUnitPage /> },
