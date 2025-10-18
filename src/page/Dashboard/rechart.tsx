@@ -65,11 +65,6 @@ export default function Rechart() {
                                    <YAxis />
                                    <Tooltip />
                                    <Legend />
-                                   <Bar
-                                        dataKey="usage"
-                                        fill="#4F46E5"
-                                        radius={[6, 6, 0, 0]}
-                                   />
                               </BarChart>
                          </ResponsiveContainer>
                     </div>
