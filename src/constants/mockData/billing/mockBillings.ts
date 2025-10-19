@@ -1,10 +1,9 @@
-// constants/mockData/billing/mockBillings.ts
 import type { Billing } from "@/types/billing/billingType.ts";
 
 export const mockBillings: Billing[] = [
   {
     id: "b1",
-    roomId: "r1", // Changed from r101 to match room IDs
+    roomId: "r1",
     rentalFee: 300000,
     electricityFee: 25000,
     waterFee: 10000,
@@ -19,7 +18,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b2",
-    roomId: "r2", // Changed from r102
+    roomId: "r2",
     rentalFee: 280000,
     electricityFee: 18000,
     waterFee: 9000,
@@ -34,7 +33,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b3",
-    roomId: "r3", // Changed from r103
+    roomId: "r3",
     rentalFee: 350000,
     electricityFee: 21000,
     waterFee: 11000,
@@ -49,7 +48,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b4",
-    roomId: "r4", // Changed from r104
+    roomId: "r4",
     rentalFee: 260000,
     electricityFee: 15000,
     waterFee: 7000,
@@ -64,7 +63,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b5",
-    roomId: "r5", // Changed from r105
+    roomId: "r5",
     rentalFee: 400000,
     electricityFee: 30000,
     waterFee: 12000,
@@ -79,7 +78,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b6",
-    roomId: "r6", // Changed from r106
+    roomId: "r6",
     rentalFee: 250000,
     electricityFee: 18000,
     waterFee: 9000,
@@ -94,7 +93,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b7",
-    roomId: "r7", // Changed from r107
+    roomId: "r7",
     rentalFee: 320000,
     electricityFee: 20000,
     waterFee: 8000,
@@ -109,7 +108,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b8",
-    roomId: "r8", // Changed from r108
+    roomId: "r8",
     rentalFee: 270000,
     electricityFee: 17000,
     waterFee: 9000,
@@ -124,7 +123,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b9",
-    roomId: "r9", // Changed from r109
+    roomId: "r9",
     rentalFee: 330000,
     electricityFee: 22000,
     waterFee: 10000,
@@ -139,7 +138,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b10",
-    roomId: "r10", // Changed from r110
+    roomId: "r10",
     rentalFee: 310000,
     electricityFee: 19000,
     waterFee: 8000,
@@ -154,7 +153,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b11",
-    roomId: "r11", // Changed from r201
+    roomId: "r11",
     rentalFee: 290000,
     electricityFee: 18000,
     waterFee: 9000,
@@ -169,7 +168,7 @@ export const mockBillings: Billing[] = [
   },
   {
     id: "b12",
-    roomId: "r12", // Changed from r202
+    roomId: "r12",
     rentalFee: 280000,
     electricityFee: 16000,
     waterFee: 8000,

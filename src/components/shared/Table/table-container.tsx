@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import type { BillingTableData } from "@/types/billing/billingTableData.ts";
 import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
-import { useBillingToBillingTableData } from "@/hooks/useBillingToBillingTableData.ts";
+import { useBillingToBillingTableData } from "@/hooks/TableData/useBillingToBillingTableData.ts";
 import type { TenantTableData } from "@/types/tenants/TenantTableData.ts";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useTenantToTenantTableData } from "@/hooks/useTenantToTenantTableData.ts";
+import { useTenantToTenantTableData } from "@/hooks/TableData/useTenantToTenantTableData.ts";
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 import DataTable from "@/components/data-table.tsx";
 import type { InvoicesTableData } from "@/types/invoices/invoicesTableData.ts";
-import { useInvoiceToInvoiceTableData } from "@/hooks/useInvoiceToInvoiceTableData.ts";
+import { useInvoiceToInvoiceTableData } from "@/hooks/TableData/useInvoiceToInvoiceTableData.ts";
 import { mockInvoices } from "@/constants/mockData/billing/mockInvoices.ts";
 
 type TableContainerProps<T> = {

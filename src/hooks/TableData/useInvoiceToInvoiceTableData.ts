@@ -6,6 +6,7 @@ import type { InvoicesTableData } from "@/types/invoices/invoicesTableData.ts";
 import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
 import type { Billing } from "@/types/billing/billingType.ts";
 import type { TenantType } from "@/types/tenants/tenantType.ts";
+// import { useState } from "react";
 
 interface Props {
   page: number;
@@ -36,19 +37,12 @@ export const useInvoiceToInvoiceTableData: (
     const dueDate = billing?.dueDate ?? "";
     const status = invoice?.status as BillingStatus;
 
-    const onDownloadInvoice = () => {};
-
-    const onSendReceipt = () => {};
-
-    const disableSendReceipt = invoice.status !== "Paid";
-
     const actions = {
-      onDownloadInvoice,
-      onSendReceipt,
-      disableSendReceipt,
-      billing: billing as Billing,
-      invoice,
-      tenant: tenant as TenantType,
+      actionData: {
+        billing: billing as Billing,
+        invoice,
+        tenant: tenant as TenantType,
+      },
     };
     return {
       no,

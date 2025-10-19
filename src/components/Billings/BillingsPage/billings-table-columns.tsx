@@ -3,8 +3,8 @@ import type {
   BillingStatus,
   BillingTableData,
 } from "@/types/billing/billingTableData.ts";
-import { Chip } from "@heroui/react";
 import BillingDetailsModal from "@/components/Billings/BillingDetails/billing-details-modal.tsx";
+import StatusCell from "@/components/Invoices/InovoiceTableCells/status-cell.tsx";
 
 export const billingTableColumnWidths: Record<string, string> = {
   no: "w-[6%]",
@@ -55,35 +55,7 @@ export const billingsTableColumns: ColumnDef<BillingTableData>[] = [
     cell: (info) => {
       const status = info.getValue() as BillingStatus;
 
-      let color: "default" | "success" | "warning" | "danger" = "default";
-
-      switch (status) {
-        case "Pending":
-          color = "warning";
-          break;
-        case "Paid":
-          color = "success";
-          break;
-        case "Overdue":
-          color = "danger";
-          break;
-        default:
-          color = "default";
-      }
-
-      return (
-        <Chip
-          color={color}
-          variant="flat"
-          radius="lg"
-          classNames={{
-            base: `min-w-20 h-6 px-2 `,
-            content: `text-xs capitalize text-center font-semibold`,
-          }}
-        >
-          {status}
-        </Chip>
-      );
+      return <StatusCell status={status} />;
     },
   },
   {

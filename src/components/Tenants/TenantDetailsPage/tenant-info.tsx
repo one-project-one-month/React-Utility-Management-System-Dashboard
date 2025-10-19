@@ -18,7 +18,7 @@ export default function TenantInfo({ tenant }: Props) {
     NRC: tenant.nrc,
     "Ph Number": tenant.phoneNo,
     "Emergency Number": tenant.emergencyNo,
-    "No Of Occupants": tenant.name.length,
+    "No Of Occupants": tenant.occupants.length + 1,
   };
 
   const roomAndContractInfo = {
