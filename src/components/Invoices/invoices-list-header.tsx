@@ -55,7 +55,9 @@ export default function InvoicesListHeader() {
         onPress={() => {
           setIsLoading(true);
         }}
-        className={"hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"}
+        className={
+          "min-w-50 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
+        }
       >
         {isLoading ? (
           "Creating New Invoice"

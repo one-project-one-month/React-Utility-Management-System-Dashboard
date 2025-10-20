@@ -4,6 +4,7 @@ import type { BillingStatus } from "@/types/billing/billingTableData.ts";
 interface Props {
   status: BillingStatus;
 }
+
 export default function StatusCell({ status }: Props) {
   let color: "default" | "success" | "warning" | "danger" = "default";
 
@@ -22,16 +23,10 @@ export default function StatusCell({ status }: Props) {
   }
 
   return (
-    <Chip
-      color={color}
-      variant="flat"
-      radius="lg"
-      classNames={{
-        base: `min-w-20 h-6 px-2 `,
-        content: `text-xs capitalize text-center font-semibold`,
-      }}
-    >
-      {status}
-    </Chip>
+    <div className="min-w-20 text-center">
+      <Chip color={color} variant="flat" radius="full">
+        {status}
+      </Chip>
+    </div>
   );
 }

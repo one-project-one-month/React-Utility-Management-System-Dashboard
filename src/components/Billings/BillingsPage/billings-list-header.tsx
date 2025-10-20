@@ -55,7 +55,9 @@ export default function BillingsListHeader() {
         onPress={() => {
           setIsLoading(true);
         }}
-        className={"hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"}
+        className={
+          "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
+        }
       >
         {isLoading ? (
           "Creating New Bill"

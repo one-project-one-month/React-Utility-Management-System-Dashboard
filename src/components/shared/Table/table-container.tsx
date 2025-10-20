@@ -13,6 +13,7 @@ import { mockInvoices } from "@/constants/mockData/billing/mockInvoices.ts";
 
 type TableContainerProps<T> = {
   tableName: string;
+  isLoading: boolean;
   columns: ColumnDef<T>[];
   columnWidths: Record<string, string>;
 };
@@ -32,12 +33,13 @@ type TenantTableProps = TableContainerProps<TenantTableData> & {
 type Props = BillingTableProps | TenantTableProps | InvoicesTableProps;
 type TableData = BillingTableData[] | TenantTableData[] | InvoicesTableData[];
 export default function TableContainer({
+  isLoading,
   tableName,
   columns,
   columnWidths,
 }: Props) {
   const [data, setData] = useState<TableData>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [totalElements, setTotalElements] = useState(0);
@@ -70,17 +72,13 @@ export default function TableContainer({
   // const columns = billingsTableColumns;
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
-    const timeout = setTimeout(() => {
-      const start = (page - 1) * pageSize;
-      const paginatedData = tableData.slice(start, start + pageSize);
-      setData(paginatedData);
-      setTotalElements(tableData.length);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
+    const start = (page - 1) * pageSize;
+    const paginatedData = tableData.slice(start, start + pageSize);
+    setData(paginatedData);
+    setTotalElements(tableData.length);
+    // setIsLoading(false);
   }, [page, pageSize]);
 
   const handlePageChange = (newPage: number) => {
