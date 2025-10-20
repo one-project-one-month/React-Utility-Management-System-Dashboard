@@ -59,10 +59,10 @@ export const roomMockData: Room[] = [
 ];
 
 export const statusColors = {
-    available: 'bg-green-600 text-white space-x-2 p-2',
-    rented: 'bg-blue-600 text-white space-x-2 p-2',
-    purchased: 'bg-pink-600 text-white space-x-2 p-2',
-    maintenance: 'bg-sky-600 text-white space-x-2 p-2',
+    available: 'bg-emerald-600 text-[13px] text-white p-2',
+    rented: 'bg-blue-600 text-[13px] text-white p-2',
+    purchased: 'bg-violet-600 text-[13px] text-white p-2',
+    maintenance: 'bg-yellow-600 text-[13px] text-white p-2',
 };
 
 export const statusLabels = {
@@ -71,3 +71,26 @@ export const statusLabels = {
     purchased: 'Purchased',
     maintenance: 'Maintenance',
 };
+
+export const FLOOR_OPTIONS = [
+    { key: "1", label: "1 Floor" },
+    { key: "2", label: "2 Floor" },
+    { key: "3", label: "3 Floor" },
+    { key: "4", label: "4 Floor" },
+    { key: "5", label: "5 Floor" },
+];
+
+export const STATUS_OPTIONS = [
+    { key: "available", label: "Available" },
+    { key: "rented", label: "Rented" },
+    { key: "purchased", label: "Purchased" },
+    { key: "maintenance", label: "Maintenance" },
+];
+
+export const BEDROOM_OPTIONS = [
+    { key: "1", label: "1 Bedroom" },
+    { key: "2", label: "2 Bedrooms" },
+    { key: "3", label: "3 Bedrooms" },
+    { key: "4", label: "4 Bedrooms" },
+    { key: "5", label: "5 Bedrooms" },
+];
