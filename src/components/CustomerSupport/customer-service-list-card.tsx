@@ -37,17 +37,17 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
     }, [service.description]);
 
     return (
-        <Card className="w-full rounded-lg shadow-none transition-colors">
-            <CardBody className={"p-3"}>
+        <Card className="w-full rounded-xl shadow-none transition delay-30 duration-300 ease-in-out hover:scale-101">
+            <CardBody className={"p-2"}>
                 <div className="flex flex-col md:flex-row gap-3 p-2">
                     <div
-                        className="flex-1 flex flex-col gap-3"
+                        className="flex-1 flex flex-col gap-2"
                     >
                         <div className="flex items-center gap-3 mb-2">
                             <h3 className="text-xl font-semibold">{service.roomNo}</h3>
                             <ServiceChip label={service.category} />
-                            <ServiceChip label={service.status} />
                             <ServiceChip label={service.priority} />
+                            <ServiceChip label={service.status} />
 
                         </div>
                         <div className="flex flex-col items-start gap-1 text-sm text-default-500">
@@ -65,7 +65,7 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                         </div>
                     </div>
 
-                    <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-3 md:min-w-fit">
+                    <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:min-w-fit">
                         <div className="text-lg font-semibold">
                             {/* ISSUED DATE */}
                             {service.issuedDate}

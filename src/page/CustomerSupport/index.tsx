@@ -118,16 +118,16 @@ export default function CustomerSupportPage() {
                         onChange={(val) => setFilters((prev) => ({ ...prev, category: val }))}
                     />
                     <ServiceFilterSelect
-                        label={"Status"}
-                        options={FILTER_OPTIONS.status}
-                        value={filters.status}
-                        onChange={(val) => setFilters((prev) => ({ ...prev, status: val }))}
-                    />
-                    <ServiceFilterSelect
                         label={"Priority"}
                         options={FILTER_OPTIONS.priority}
                         value={filters.priority}
                         onChange={(val) => setFilters((prev) => ({ ...prev, priority: val }))}
+                    />
+                    <ServiceFilterSelect
+                        label={"Status"}
+                        options={FILTER_OPTIONS.status}
+                        value={filters.status}
+                        onChange={(val) => setFilters((prev) => ({ ...prev, status: val }))}
                     />
                 </div>
             </div>
@@ -138,7 +138,7 @@ export default function CustomerSupportPage() {
                     Customer Services: <span className="text-gray-400">{filteredAndSortedServices.length}</span>
                 </h3>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                     {filteredAndSortedServices.map((service) => (
                         <CustomerServiceListCard
                             key={service.id}
@@ -154,6 +154,8 @@ export default function CustomerSupportPage() {
                     )}
                 </div>
             </div>
+
+            {/* edit modal */}
             <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl">
                 <ModalContent>
                     {() => {
@@ -178,6 +180,7 @@ export default function CustomerSupportPage() {
 
                                         {/* Status (editable) */}
                                         <Select
+                                            aria-label="Status"
                                             key={service.id}
                                             className="max-w-[40%]"
                                             selectedKeys={[service.status]} // current status
@@ -223,6 +226,7 @@ export default function CustomerSupportPage() {
                 </ModalContent>
             </Modal>
 
+            {/* delete confirmation modal */}
             <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
                 <ModalContent>
                     {() => (
