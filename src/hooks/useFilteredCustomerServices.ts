@@ -17,15 +17,15 @@ export function useFilteredCustomerServices(
             .filter((service) => {
                 const checks = [
                     !searchTerm ||
-                    service.roomNo.toLowerCase().includes(searchTerm.toLowerCase()) ,
+                    service.roomId.slice(0, 8).toLowerCase().includes(searchTerm.toLowerCase()) ,
 
                     !filters.category || service.category === filters.category,
                     filters.status === "All" || service.status === filters.status,
-                    !filters.priority || service.priority === filters.priority,
+                    !filters.priority || service.priorityLevel === filters.priority,
                 ];
 
                 return checks.every(Boolean);
             })
-            .sort((a, b) => a.roomNo.localeCompare(b.roomNo));
+            .sort((a, b) => a.roomId.slice(0, 8).localeCompare(b.roomId.slice(0, 8)));
     }, [services, searchTerm, filters]);
 }

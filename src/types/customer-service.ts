@@ -1,11 +1,21 @@
 export interface ServiceRequest {
-  id: string; // Case Id
-  roomNo: string; // Room number/identifier
+  id: string;
+  roomId: string;
+  roomNo: string;
   category: Category;
-  description: string;
+  priorityLevel: Priority;
   status: Status;
-  priority: Priority;
-  issuedDate: string; // DATE string (e.g., "YYYY-MM-DD")
+  description: string;
+  issuedDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CustomerServiceApiResponse {
+  success: boolean;
+  content: {
+    data: ServiceRequest[];
+  };
 }
 
 export type Category = "Complain" | "Maintenance" | "Other";

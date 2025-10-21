@@ -1,10 +1,9 @@
 import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-service-list-card";
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
-import { serviceRequestMockData } from "@/constants/customerServiceMockData";
 import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices";
 import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
 import { Filter, LucideTriangleAlert, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ServiceChip } from "@/components/CustomerSupport/service-chip";
 import {
     Input, Modal,
@@ -16,6 +15,8 @@ import {
     SelectItem,
     Textarea
 } from "@heroui/react";
+import { useCustomerService } from "@/hooks/useCustomerService";
+import { SkeletonLoader } from "@/components/skeleton-loader";
 
 const FILTER_OPTIONS = {
     category: ["Complain", "Maintenance", "Other"] as Category[],
@@ -36,11 +37,29 @@ const STATUS_OPTIONS = [
 ];
 
 export default function CustomerSupportPage() {
+    const { data, isLoading, isError } = useCustomerService();
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [services, setServices] = useState<ServiceRequest[]>(serviceRequestMockData);
+    const [services, setServices] = useState<ServiceRequest[]>([]);
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [filters, setFilters] = useState(INIT_FILTERS);
+
+    useEffect(() => {
+        // const fetchServices = async () => {
+        //     const res = await axiosInstance.get<CustomerServiceApiResponse>("https://node-utility-management-system.onrender.com/api/v1/customer-services?page=${page}&limit=3&prioty=high&category=other"); // your API endpoint
+        //     // console.log(res.data.content.data.map((service=> service)));
+        //     setServices(res.data.content.data);
+        // };
+        // fetchServices();
+        // const data = useCustomerService();
+        console.log(data)
+        console.log("isLoading", isLoading)
+        console.log("isError", isError)
+        if (data && data.content && data.content.data) {
+            setServices(data.content.data);
+        }
+        // setServices(data);
+    }, [data]);
 
     const {
         isOpen: isDeleteOpen,
@@ -133,27 +152,40 @@ export default function CustomerSupportPage() {
             </div>
 
             {/* service request */}
-            <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
-                <h3 className="text-lg font-medium">
-                    Customer Services: <span className="text-gray-400">{filteredAndSortedServices.length}</span>
-                </h3>
-
-                <div className="space-y-2">
-                    {filteredAndSortedServices.map((service) => (
-                        <CustomerServiceListCard
-                            key={service.id}
-                            service={service}
-                            onEdit={() => handleEditBtn(service.id)}
-                            onDelete={() => handleDeleteBtn(service.id)}
-                        />
-                    ))}
-                    {filteredAndSortedServices.length === 0 && (
-                        <div className="text-center p-6 text-gray-200">
-                            No rooms found matching the current filters.
-                        </div>
-                    )}
+            {isLoading ? (
+                <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
+                    <h3 className="text-lg font-medium">Loading Services...</h3>
+                    <div className="space-y-2">
+                        <SkeletonLoader height="6rem" />
+                        <SkeletonLoader height="6rem" />
+                        <SkeletonLoader height="6rem" />
+                        <SkeletonLoader height="6rem" />
+                        <SkeletonLoader height="6rem" />
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
+                    <h3 className="text-lg font-medium">
+                        Customer Services: <span className="text-gray-400">{filteredAndSortedServices.length}</span>
+                    </h3>
+
+                    <div className="space-y-2">
+                        {filteredAndSortedServices.map((service) => (
+                            <CustomerServiceListCard
+                                key={service.id}
+                                service={service}
+                                onEdit={() => handleEditBtn(service.id)}
+                                onDelete={() => handleDeleteBtn(service.id)}
+                            />
+                        ))}
+                        {filteredAndSortedServices.length === 0 && (
+                            <div className="text-center p-6 text-gray-200">
+                                No rooms found matching the current filters.
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* edit modal */}
             <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl">
@@ -166,7 +198,7 @@ export default function CustomerSupportPage() {
                             <>
                                 <ModalHeader className="flex items-center justify-between">
                                     <h2 className="text-2xl font-semibold">
-                                        Room {service.roomNo || service.id}
+                                        Room {service.roomId.slice(0, 8) || service.roomId.slice(0, 8)}
                                     </h2>
                                     <div className="font-light p-3">{service.issuedDate}</div>
                                 </ModalHeader>
@@ -175,7 +207,7 @@ export default function CustomerSupportPage() {
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <ServiceChip label={service.category} />
-                                            <ServiceChip label={service.priority} />
+                                            <ServiceChip label={service.priorityLevel} />
                                         </div>
 
                                         {/* Status (editable) */}
