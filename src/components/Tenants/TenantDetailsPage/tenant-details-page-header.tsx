@@ -18,8 +18,8 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
           className="object-cover w-17 h-17 rounded-full"
         />
         <div className="flex flex-col ml-2">
-          <h1 className="text-lg font-semibold">{tenant?.name[0]}</h1>
-          <h2 className="text-foreground/50">Tenant ID:{tenant?.id}</h2>
+          <h1 className="text-lg font-semibold">{tenant?.name}</h1>
+          <h2 className="text-foreground/50">Tenant ID : {tenant?.id}</h2>
         </div>
       </div>
 

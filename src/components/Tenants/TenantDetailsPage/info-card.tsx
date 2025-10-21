@@ -25,7 +25,7 @@ export default function InfoCard({ header, obj }: Props) {
                   "text-sm font-medium",
                   label === "Total Rent Fee"
                     ? "text-primary"
-                    : "text-foreground/40",
+                    : "text-foreground/60",
                 )}
               >
                 {label}

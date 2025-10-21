@@ -8,7 +8,7 @@ interface RoomCardProps {
 
 export function RoomCard({ title, children }: RoomCardProps) {
     return (
-        <Card className={"rounded-lg shadow-none"}>
+        <Card className={"rounded-2xl shadow-none"}>
             <CardBody className={"p-6"}>
                 <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
                     {title}

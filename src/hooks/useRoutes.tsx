@@ -10,9 +10,13 @@ const Components = lazy(() => import("@/page/Home"));
 // Billing
 const BillingPage = lazy(() => import("@/page/Billing"));
 
+//Invoices
+const InvoicesPage = lazy(() => import("@/page/Invoices"));
+
 // Rooms
 const RoomPage = lazy(() => import("@/page/Room"));
 const RoomDetailPage = lazy(() => import("@/page/Room/detail"));
+const CreateRoomPage = lazy(() => import("@/page/Room/create"));
 const EditRoomPage = lazy(() => import("@/page/Room/edit"));
 
 // User Management
@@ -52,6 +56,9 @@ export const useRoutes = () => {
     { title: "Billing", path: "/billing", element: <BillingPage /> },
     //{ title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
 
+    //Invoices
+    { title: "Invoices", path: "/invoices", element: <InvoicesPage /> },
+
     // Tenants
     { title: "Tenants", path: "/tenants", element: <TenantsPage /> },
     { title: "Create Tenants", path: "/tenants/create", element: <CreateTenantsPage /> },
@@ -62,6 +69,7 @@ export const useRoutes = () => {
     // Rooms
     { title: "Rooms", path: "/rooms", element: <RoomPage /> },
     { title: "Room Details", path: "/rooms/:id", element: <RoomDetailPage /> },
+    { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
     { title: "Edit Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
 
     // User Management

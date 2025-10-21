@@ -30,7 +30,8 @@ export default function TenantsListHeader() {
 
         <Select
           key={"noOfOccupants"}
-          placeholder="Select Ouucpancy"
+          aria-label={`Select Occupancy`}
+          placeholder="Select Occupancy"
           variant={"bordered"}
           // selectedKeys={}
           // onSelectionChange={}
@@ -41,9 +42,9 @@ export default function TenantsListHeader() {
             popoverContent: "w-auto min-w-[185px]  max-w-[300px]",
           }}
         >
-          {occupancyOptions.map((o) => (
-            <SelectItem key={o.key} textValue={o.label}>
-              {o.label}
+          {occupancyOptions.map((option) => (
+            <SelectItem key={option.key} textValue={option.label}>
+              {option.label}
             </SelectItem>
           ))}
         </Select>

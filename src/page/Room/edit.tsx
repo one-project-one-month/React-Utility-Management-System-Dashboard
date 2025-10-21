@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import {useNavigate, useParams} from "react-router";
 import {Textarea, Button} from "@heroui/react";
-import {roomMockData} from "@/constants/roomMockData.ts";
+import {BEDROOM_OPTIONS, FLOOR_OPTIONS, roomMockData, STATUS_OPTIONS} from "@/constants/roomMockData.ts";
 import {Controller, type Resolver, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormSelect} from "@/components/Form/form-select.tsx";
@@ -16,29 +16,6 @@ import {type EditRoomFormData, editRoomSchema} from "@/types/room.ts";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
-
-const FLOOR_OPTIONS = [
-    { key: "1", label: "1 Floor" },
-    { key: "2", label: "2 Floor" },
-    { key: "3", label: "3 Floor" },
-    { key: "4", label: "4 Floor" },
-    { key: "5", label: "5 Floor" },
-];
-
-const STATUS_OPTIONS = [
-    { key: "available", label: "Available" },
-    { key: "rented", label: "Rented" },
-    { key: "purchased", label: "Purchased" },
-    { key: "maintenance", label: "Maintenance" },
-];
-
-const BEDROOM_OPTIONS = [
-    { key: "1", label: "1 Bedroom" },
-    { key: "2", label: "2 Bedrooms" },
-    { key: "3", label: "3 Bedrooms" },
-    { key: "4", label: "4 Bedrooms" },
-    { key: "5", label: "5+ Bedrooms" },
-];
 
 export default function RoomEditPage() {
     const { id } = useParams();
@@ -53,12 +30,12 @@ export default function RoomEditPage() {
     } = useForm<EditRoomFormData>({
         resolver: zodResolver(editRoomSchema) as Resolver<EditRoomFormData>,
         defaultValues: {
-            roomNo: room?.roomNo || 0,
+            roomNo: room?.roomNo || 1,
             noOfBedRoom: room?.noOfBedRoom || 1,
             floor: room?.floor || 1,
             dimension: room?.dimension || "",
             status: room?.status || "available",
-            sellingPrice: room?.sellingPrice || 0,
+            sellingPrice: room?.sellingPrice || 1,
             maxNoPeople: room?.maxNoPeople || 1,
             description: room?.description || "",
         }
@@ -78,20 +55,11 @@ export default function RoomEditPage() {
     }
 
     const handleCancel = () => {
-        navigate(`/rooms/${id}`)
+        navigate(`/rooms`)
     }
 
     const onSubmit = (data: EditRoomFormData) => {
         console.log("Form submitted", data);
-        const submittedData = {
-            ...data,
-            noOfBedRoom: Number(data.noOfBedRoom),
-            floor: Number(data.floor),
-            dimension: Number(data.dimension),
-            price: Number(data.sellingPrice),
-            maxNoPeople: Number(data.maxNoPeople),
-        }
-        console.log("Converted data:", submittedData);
     }
 
     return (
@@ -255,18 +223,17 @@ export default function RoomEditPage() {
                     </div>
                 </div>
 
-                <div className={"flex flex-col sm:flex-row gap-3 pt-4 mb-12"}>
+                <div className={"flex justify-end gap-3 pt-4 mb-12"}>
                     <Button
+                        type={"button"}
                         variant="bordered"
-                        size="lg"
-                        className="flex-1 border-[0.5px] border-gray-400 bg-white dark:text-black"
+                        className="border-[0.5px] border-gray-400 bg-white dark:text-black"
                         onPress={handleCancel}
                     >
                         Cancel
                     </Button>
                     <Button
-                        className="bg-primary text-white flex-1"
-                        size="lg"
+                        className="bg-primary text-white"
                         type={"submit"}
                     >
                         Save

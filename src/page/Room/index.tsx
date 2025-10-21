@@ -1,8 +1,7 @@
 import { useState } from "react";
 import {Button} from "@heroui/react";
 import {
-    Filter,
-    Upload,
+    Filter, Plus,
 } from "lucide-react";
 import {useNavigate} from "react-router";
 import type {Room} from "@/types/room.ts";
@@ -38,6 +37,10 @@ export default function RoomPage() {
         navigate(`/rooms/${roomId}`);
     }
 
+    const handleCreateRoom = () => {
+        navigate(`/rooms/create`);
+    };
+
     const handleEditRoom = (roomId: string) => {
         navigate(`/rooms/${roomId}/edit`);
     };
@@ -68,12 +71,12 @@ export default function RoomPage() {
                         Reset Filters
                     </Button>
                     <Button
-                        color="default"
-                        variant="bordered"
-                        startContent={<Upload size={16} />}
-                        className="w-full sm:w-auto border-[0.5px]"
+                        color="primary"
+                        variant="solid"
+                        startContent={<Plus />}
+                        onPress={handleCreateRoom}
                     >
-                        Export to CSV
+                        Create New Room
                     </Button>
                 </div>
             </div>
