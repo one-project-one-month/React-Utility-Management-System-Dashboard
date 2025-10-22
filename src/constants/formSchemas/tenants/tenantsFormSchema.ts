@@ -9,12 +9,13 @@ const phoneSchema = z
 const nrcPattern = /^([1-9]|1[0-4])\/[A-Z]{1,3}\(N\)\d{1,10}$/;
 
 export const relationshipToTenantSchema = z.enum([
-  "Spouse",
-  "Child",
-  "Parent",
-  "Relative",
-  "Friend",
-  "Other",
+  "SPOUSE",
+  "PARENT",
+  "CHILD",
+  "SIBLING",
+  "RELATIVE",
+  "FRIEND",
+  "OTHER",
 ]);
 
 export const occupantSchema = z.object({
@@ -55,7 +56,7 @@ export const tenantFormSchema = z.object({
     .email("Invalid email address"),
   emergencyNo: phoneSchema,
   roomId: z.string().trim().min(1, "Room must be selected"),
-  contractId: z.string().trim().min(1, "Contract must be selected"),
+  // contractId: z.string().trim().min(1, "Contract must be selected"),
 });
 
 export type TenantFormValues = z.infer<typeof tenantFormSchema>;

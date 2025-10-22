@@ -77,6 +77,7 @@ export default function TableContainer({
   useEffect(() => {
     // setIsLoading(true);
 
+    console.log("tableData is", tableData);
     const start = (page - 1) * pageSize;
     const paginatedData = tableData.slice(start, start + pageSize);
     setData(paginatedData);

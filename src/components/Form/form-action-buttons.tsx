@@ -1,13 +1,12 @@
 import { Button } from "@heroui/button";
 import { useNavigate } from "react-router";
-import { useFakeLoading } from "@/hooks/useFakeLoading.ts";
-
 interface Props {
   action: "create" | "update";
+  isLoading: boolean;
 }
-export default function FormActionButtons({ action }: Props) {
+export default function FormActionButtons({ action, isLoading }: Props) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useFakeLoading();
+
   return (
     <div className="flex  justify-end gap-5 p-5 pt-2">
       <Button
@@ -23,9 +22,6 @@ export default function FormActionButtons({ action }: Props) {
       <Button
         type="submit"
         color="primary"
-        onPress={() => {
-          setIsLoading(true);
-        }}
         isLoading={isLoading}
         className="px-8 py-3 font-semibold shadow-md min-w-50"
       >

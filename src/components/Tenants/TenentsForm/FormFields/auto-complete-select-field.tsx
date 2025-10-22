@@ -2,7 +2,6 @@ import { type Control, Controller } from "react-hook-form";
 import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
 import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormAutoCompleteSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
-import { mockContracts } from "@/constants/mockData/tenants/mockContracts";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
   errorMessage: string;
   isInvalid: boolean;
   placeholder: string;
-  items: typeof mockRooms | typeof mockContracts;
+  items: typeof mockRooms;
 }
 export default function AutoCompleteSelectField({
   label,
@@ -44,14 +43,8 @@ export default function AutoCompleteSelectField({
           >
             {items.map((item) => {
               const roomNo = "roomNo" in item ? item.roomNo : null;
-              const contractName =
-                "contractName" in item ? item.contractName : null;
+              const textValue = roomNo ? `Room ${roomNo}` : "---";
 
-              const textValue = roomNo
-                ? `Room ${roomNo}`
-                : contractName
-                  ? contractName
-                  : "";
               return (
                 <AutocompleteItem key={item.id} textValue={textValue}>
                   {textValue}

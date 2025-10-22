@@ -7,14 +7,14 @@ import ActionsCell from "@/components/Tenants/TenantsPage/TenantTableCells/actio
 
 export const tenantTableColumnWidths: Record<string, string> = {
   no: "w-[6%]",
-  name: "w-[10%]",
-  nrc: "w-[20%]",
-  email: "w-[15%]",
+  name: "w-[17%]",
+  nrc: "w-[15%]",
+  email: "w-[16%]",
   phoneNo: "w-[15%]",
-  contractType: "w-[14%]",
+  contractType: "w-[12%]",
   roomNo: "w-[9.5%]",
   occupantsCount: "w-[11.5%]",
-  actions: "w-[12%]",
+  actions: "w-[11%]",
 };
 
 export const tenantsTableColumns: ColumnDef<TenantTableData>[] = [
@@ -45,7 +45,7 @@ export const tenantsTableColumns: ColumnDef<TenantTableData>[] = [
   },
   {
     accessorKey: "contractType",
-    header: "Contract Type",
+    header: "ContractType",
     cell: (info) => info.getValue(),
   },
   {

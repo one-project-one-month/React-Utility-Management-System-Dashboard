@@ -19,10 +19,13 @@ export default function ActionsCell({ actions }: ActionsCellProps) {
 
   const { sendingReceiptIds, onSendReceipt } = context;
   const { billing, invoice, tenant } = actions.actionData;
+  console.log("billing for pdf", billing);
+  console.log("invoice for pdf", invoice);
+  console.log("tenant for pdf", tenant);
   const isSendingReceipt = sendingReceiptIds.includes(invoice.id);
   return (
     <div className="flex justify-between items-center gap-2">
-      <BillingDetailsModal billingId={billing.id} />
+      <BillingDetailsModal billing={billing} />
 
       <PDFDownloadLink
         document={

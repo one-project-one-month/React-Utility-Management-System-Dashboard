@@ -16,12 +16,13 @@ export default function OccupantsInfoSection({
   remove,
 }: TenantFormSectionProps) {
   const relationshipOptions = [
-    { key: "Spouse", value: "Spouse" },
-    { key: "Child", value: "Child" },
-    { key: "Parent", value: "Parent" },
-    { key: "Relative", value: "Relative" },
-    { key: "Friend", value: "Friend" },
-    { key: "Other", value: "Other" },
+    { key: "SPOUSE", value: "SPOUSE", label: "Spouse" },
+    { key: "CHILD", value: "CHILD", label: "Child" },
+    { key: "PARENT", value: "PARENT", label: "Parent" },
+    { key: "SIBLING", value: "SIBLING", label: "Sibling" },
+    { key: "RELATIVE", value: "RELATIVE", label: "Relative" },
+    { key: "FRIEND", value: "FRIEND", label: "Friend" },
+    { key: "OTHER", value: "OTHER", label: "Other" },
   ];
   return (
     <FormSectionCard>

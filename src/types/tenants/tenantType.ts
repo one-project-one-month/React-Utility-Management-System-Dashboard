@@ -80,7 +80,7 @@ export interface Room {
   updatedAt: string;
 }
 
-export interface TenantType {
+export interface Tenant {
   id: string;
   name: string;
   email: string;
@@ -92,5 +92,5 @@ export interface TenantType {
   roomId: string;
   room: Room;
   occupants: Occupant[];
-  contract: Contract;
+  contract?: Contract;
 }

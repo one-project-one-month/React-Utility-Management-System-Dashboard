@@ -4,7 +4,6 @@ import HeaderForAllPages from "@/components/Tenants/shared/header-for-all-pages.
 import OccupantsInfoSection from "@/components/Tenants/TenentsForm/FormSections/occupants -info-section.tsx";
 import TenantInfoSection from "@/components/Tenants/TenentsForm/FormSections/tenant-info-section.tsx";
 import ContactInfoSection from "@/components/Tenants/TenentsForm/FormSections/contact-info-section.tsx";
-import RoomAndContractSection from "@/components/Tenants/TenentsForm/FormSections/room-and-contract-section.tsx";
 import FormActionButtons from "@/components/Form/form-action-buttons.tsx";
 
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
@@ -13,12 +12,14 @@ interface Props {
   tenantId?: string;
   action: "create" | "update";
   onSubmit: React.FormEventHandler<HTMLFormElement>;
+  isLoading: boolean;
   tenantsFormSectionProps: TenantFormSectionProps;
 }
 export default function TenantsFormContainer({
   tenantId,
   action,
   onSubmit,
+  isLoading,
   tenantsFormSectionProps,
 }: Props) {
   return (
@@ -33,9 +34,9 @@ export default function TenantsFormContainer({
                 <TenantInfoSection {...tenantsFormSectionProps} />
                 <OccupantsInfoSection {...tenantsFormSectionProps} />
                 <ContactInfoSection {...tenantsFormSectionProps} />
-                <RoomAndContractSection {...tenantsFormSectionProps} />
+                {/*<RoomAndContractSection {...tenantsFormSectionProps} />*/}
 
-                <FormActionButtons action={action} />
+                <FormActionButtons action={action} isLoading={isLoading} />
               </form>
             </CardBody>
           </Card>

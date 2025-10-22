@@ -6,9 +6,15 @@ import {
 } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
+import { useTenants } from "@/hooks/tenants/useTenant.ts";
+import { useEffect } from "react";
 
 export default function CreateTenantsPage() {
+  const { createTenantMutation } = useTenants();
+
+  const { isPending, isSuccess } = createTenantMutation;
   const {
+    reset,
     register,
     handleSubmit,
     control,
@@ -21,7 +27,7 @@ export default function CreateTenantsPage() {
       email: "",
       emergencyNo: "",
       roomId: "",
-      contractId: "",
+      // contractId: "",
     },
     mode: "onChange",
   });
@@ -32,8 +38,15 @@ export default function CreateTenantsPage() {
   });
 
   const onSubmit = (data: TenantFormValues) => {
-    console.log("Form Data:", data);
+    createTenantMutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert("Tenant created successfully!");
+      reset();
+    }
+  }, [isSuccess]);
 
   const tenantsFormSectionProps = {
     register,
@@ -48,6 +61,7 @@ export default function CreateTenantsPage() {
     <TenantsFormContainer
       action={"create"}
       onSubmit={handleSubmit(onSubmit)}
+      isLoading={isPending}
       tenantsFormSectionProps={tenantsFormSectionProps}
     />
   );

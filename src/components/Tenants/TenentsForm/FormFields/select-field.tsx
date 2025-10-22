@@ -7,6 +7,7 @@ import { SelectItem } from "@heroui/react";
 interface Item {
   key: string;
   value: string;
+  label: string;
 }
 interface Props {
   label: string;
@@ -50,8 +51,8 @@ export default function SelectField({
           >
             {items.map((item) => {
               return (
-                <SelectItem key={item.key} textValue={item.value}>
-                  {item.value}
+                <SelectItem key={item.key} textValue={item.label}>
+                  {item.label}
                 </SelectItem>
               );
             })}

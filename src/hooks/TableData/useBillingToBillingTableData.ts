@@ -1,6 +1,5 @@
-import type { Billing } from "@/types/billing/billingType.ts";
 import type { BillingTableData } from "@/types/billing/billingTableData.ts";
-import { formatDate } from "@/lib/utils.ts";
+import type { Billing } from "@/types/billing/billingType.ts";
 
 interface Props {
   // page: number;
@@ -39,13 +38,16 @@ export const useBillingToBillingTableData: (p: Props) => BillingTableData[] = ({
     // );
     // const status = invoice?.status as BillingStatus;
 
+    console.log("tenant in billing is ", billing.room.tenant);
+    console.log("room in billing is ", billing.room);
+    console.log(" billing is ", billing);
     const tenantId = billing.room.tenant.id.split("-")[0];
     const tenantName = billing.room.tenant.name;
     const roomNo = billing.room.roomNo;
-    const contractType = "Backend ကိုပြောရဦးမယ်";
+    const contractType = billing.room.contract[0].contractType.name;
     const totalAmount = +billing.totalAmount;
 
-    const dueDate = formatDate(billing.dueDate);
+    const dueDate = new Date(billing.dueDate).toLocaleDateString();
 
     const status = billing.invoice.status;
 

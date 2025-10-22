@@ -19,7 +19,7 @@ export default function DueDateAndBillingDetails({ tenant, billing }: Props) {
     { label: "Tenant ID", value: tenant.id },
     {
       label: "Created Date",
-      value: new Date(billing.createdDate).toLocaleDateString(),
+      value: new Date(billing.invoice.createdAt).toLocaleDateString(),
     },
   ];
 

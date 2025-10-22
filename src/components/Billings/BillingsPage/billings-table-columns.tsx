@@ -9,10 +9,10 @@ import type { Billing } from "@/types/billing/billingType.ts";
 
 export const billingTableColumnWidths: Record<string, string> = {
   no: "w-[6%]",
-  tenantId: "w-[10%]",
-  tenantName: "w-[14%]",
+  tenantId: "w-[11%]",
+  tenantName: "w-[20%]",
   roomNo: "w-[9%]",
-  contractType: "w-[20%]",
+  contractType: "w-[13%]",
   totalAmount: "w-[11%]",
   dueDate: "w-[11%]",
   status: "w-[11%]",

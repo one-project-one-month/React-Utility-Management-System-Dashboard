@@ -1,6 +1,5 @@
 import ModalHeaderItem from "@/components/Billings/BillingDetails/modal-header-item.tsx";
 import { FileSignature, Home, User } from "lucide-react";
-import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
 import type { Billing } from "@/types/billing/billingType.ts";
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 export default function DetailsModalHeader({ billing }: Props) {
   const tenant = billing.room.tenant;
   const room = billing.room;
-  const contract = mockContracts[0];
+  const contract = billing.room.contract[0];
   return (
     <div className="flex flex-wrap justify-between items-center mt-2 gap-3">
       <ModalHeaderItem

@@ -11,13 +11,13 @@ import StatusCell from "@/components/Invoices/InovoiceTableCells/status-cell.tsx
 export const invoicesTableColumnWidths: Record<string, string> = {
   no: "w-[5%]",
   invoiceNo: "w-[10%]",
-  tenantName: "w-[12%]",
+  tenantName: "w-[15%]",
   roomNo: "w-[8%]",
-  totalAmount: "w-[10%]",
+  totalAmount: "w-[9%]",
   issueDate: "w-[10%]",
   dueDate: "w-[10%]",
-  status: "w-[10%]",
-  actions: "w-[15%]",
+  status: "w-[8%]",
+  actions: "w-[15%] max-w-[150px]",
 };
 export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
   {

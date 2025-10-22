@@ -1,19 +1,3 @@
-// export type Billing = {
-//   id: string;
-//   roomId: string;
-//   rentalFee: number;
-//   electricityFee: number;
-//   waterFee: number;
-//   fineFee?: number | null;
-//   serviceFee: number;
-//   groundFee: number;
-//   carParkingFee?: number | null;
-//   wifiFee?: number | null;
-//   totalAmount: number;
-//   dueDate: string;
-//   createdDate: string;
-// };
-
 export interface Receipt {
   id: string;
   paymentMethod: string;
@@ -55,6 +39,27 @@ export interface Tenant {
   roomId: string;
 }
 
+export interface ContractType {
+  id: string;
+  name: string;
+  duration: number;
+  price: string;
+  facilities: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Contract {
+  id: string;
+  expiryDate: string;
+  createdDate: string;
+  updatedDate: string;
+  roomId: string;
+  tenantId: string;
+  contractTypeId: string;
+  contractType: ContractType;
+}
+
 export interface Room {
   id: string;
   roomNo: number;
@@ -68,6 +73,7 @@ export interface Room {
   createdAt: string;
   updatedAt: string;
   tenant: Tenant;
+  contract: Contract[];
 }
 
 export interface Billing {

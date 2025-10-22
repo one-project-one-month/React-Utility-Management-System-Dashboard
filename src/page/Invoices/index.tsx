@@ -44,7 +44,7 @@ export default function InvoicesPage() {
             <TableContainer
               tableName={"InvoicesTable"}
               isLoading={isLoading}
-              items={invoices ?? []}
+              tableData={invoiceTableData}
               columns={invoicesTableColumns}
               columnWidths={invoicesTableColumnWidths}
             />

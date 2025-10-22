@@ -5,9 +5,18 @@ import {
   tenantTableColumnWidths,
 } from "@/components/Tenants/TenantsPage/tenants-table-columns.tsx";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
+import { useTenants } from "@/hooks/tenants/useTenant.ts";
+import { useTenantToTenantTableData } from "@/hooks/TableData/useTenantToTenantTableData.ts";
 
 export default function TenantsPage() {
+  const { getAllTenantsQuery } = useTenants();
+
+  const { data: content, isLoading } = getAllTenantsQuery;
+  const tenants = content?.data;
+
+  const tenantsTableData = useTenantToTenantTableData({
+    tenants: tenants ?? [],
+  });
   return (
     <div className="h-[84vh] px-2 overflow-y-auto custom-scrollbar-3">
       <div className="min-h-[90vh]  rounded-xl ">
@@ -22,9 +31,9 @@ export default function TenantsPage() {
         <div className="h-[68vh] overflow-y-auto rounded-xl   custom-scrollbar">
           {/*<TenantsTableContainer />*/}
           <TableContainer
-            isLoading={false}
+            isLoading={isLoading}
             tableName={"TenantTable"}
-            items={mockTenants}
+            tableData={tenantsTableData}
             columns={tenantsTableColumns}
             columnWidths={tenantTableColumnWidths}
           />
