@@ -11,14 +11,14 @@ import ContractTable from "./components/contract-table";
 type Contracts = {
     name: string;
     duration: string;
-    price: string;
+    price: number;
     facilities?: string[];
 };
 
 export default function ContractTypePage() {
     const form = useForm<Contracts>({
         resolver: zodResolver(contractTypeValidationSchema),
-        defaultValues: { name: "", duration: "", price: "" }
+        defaultValues: { name: "", duration: "", price: 0 }
     });
 
     const onSubmit = (data: Contracts) => {
