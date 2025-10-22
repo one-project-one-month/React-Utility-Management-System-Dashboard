@@ -5,13 +5,14 @@ import type {
 } from "@/types/billing/billingTableData.ts";
 import BillingDetailsModal from "@/components/Billings/BillingDetails/billing-details-modal.tsx";
 import StatusCell from "@/components/Invoices/InovoiceTableCells/status-cell.tsx";
+import type { Billing } from "@/types/billing/billingType.ts";
 
 export const billingTableColumnWidths: Record<string, string> = {
   no: "w-[6%]",
-  tenantId: "w-[9%]",
+  tenantId: "w-[10%]",
   tenantName: "w-[14%]",
   roomNo: "w-[9%]",
-  contractType: "w-[21%]",
+  contractType: "w-[20%]",
   totalAmount: "w-[11%]",
   dueDate: "w-[11%]",
   status: "w-[11%]",
@@ -64,10 +65,10 @@ export const billingsTableColumns: ColumnDef<BillingTableData>[] = [
     cell: (info) => info.getValue(),
   },
   {
-    accessorKey: "billingIdForAction",
+    accessorKey: "billingForAction",
     header: "Actions",
     cell: (info) => {
-      return <BillingDetailsModal billingId={info.getValue() as string} />;
+      return <BillingDetailsModal billing={info.getValue() as Billing} />;
     },
   },
 ];

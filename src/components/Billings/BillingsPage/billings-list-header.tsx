@@ -2,10 +2,17 @@ import { Button } from "@heroui/button";
 import { Plus, Search } from "lucide-react";
 import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
-import { useFakeLoading } from "@/hooks/useFakeLoading.ts";
+import { useBillings } from "@/hooks/billings/useBillings.ts";
 
 export default function BillingsListHeader() {
-  const [isLoading, setIsLoading] = useFakeLoading();
+  const { autoGenerateBillingMutation } = useBillings();
+
+  const handleCreateNewBill = () => {
+    autoGenerateBillingMutation.mutate();
+  };
+
+  const isLoading = autoGenerateBillingMutation.isPending;
+
   const statusOptions = [
     { key: "1", label: "All Status" },
     { key: "2", label: "Pending" },
@@ -52,9 +59,7 @@ export default function BillingsListHeader() {
       <Button
         color={"primary"}
         isLoading={isLoading}
-        onPress={() => {
-          setIsLoading(true);
-        }}
+        onPress={handleCreateNewBill}
         className={
           "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
         }

@@ -1,22 +1,21 @@
 import ModalHeaderItem from "@/components/Billings/BillingDetails/modal-header-item.tsx";
 import { FileSignature, Home, User } from "lucide-react";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
-
-import type { Contract } from "@/constants/mockData/tenants/mockContracts.ts";
-import type { Room } from "@/constants/mockData/tenants/mockRooms.ts";
+import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
+import type { Billing } from "@/types/billing/billingType.ts";
 
 interface Props {
-  tenant: TenantType;
-  room: Room;
-  contract: Contract;
+  billing: Billing;
 }
 
-export default function DetailsModalHeader({ tenant, room, contract }: Props) {
+export default function DetailsModalHeader({ billing }: Props) {
+  const tenant = billing.room.tenant;
+  const room = billing.room;
+  const contract = mockContracts[0];
   return (
     <div className="flex flex-wrap justify-between items-center mt-2 gap-3">
       <ModalHeaderItem
         icon={<User size={18} className="text-primary" />}
-        data={tenant?.name || "Unknown Tenant"}
+        data={tenant.name || "Unknown Tenant"}
         tooltipContent={"See Tenant Info"}
         color={"primary"}
         href={`/tenants/${tenant?.id}/details`}
@@ -24,7 +23,7 @@ export default function DetailsModalHeader({ tenant, room, contract }: Props) {
 
       <ModalHeaderItem
         icon={<Home size={18} className="text-success" />}
-        data={` Room ${room?.roomNo || "N/A"}`}
+        data={` Room ${room.roomNo || "N/A"}`}
         tooltipContent={"See Room Info"}
         color={"success"}
         href={`/rooms/details/${room?.id}`}
@@ -32,7 +31,7 @@ export default function DetailsModalHeader({ tenant, room, contract }: Props) {
 
       <ModalHeaderItem
         icon={<FileSignature size={18} className="text-warning" />}
-        data={contract?.contractName || "Monthly Contract"}
+        data={contract.contractType.name || "Monthly Contract"}
         tooltipContent={"See Contract Info"}
         color={"warning"}
         href={`/contracts/details/${contract?.id}`}

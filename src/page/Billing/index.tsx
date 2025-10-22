@@ -6,13 +6,16 @@ import {
   billingTableColumnWidths,
 } from "@/components/Billings/BillingsPage/billings-table-columns.tsx";
 import { useBillings } from "@/hooks/billings/useBillings.ts";
+import { useBillingToBillingTableData } from "@/hooks/TableData/useBillingToBillingTableData.ts";
 
 export default function BillingPage() {
   const { getAllBillingsQuery } = useBillings();
-  const { data: content, isLoading, isError } = getAllBillingsQuery;
+  const { data: content, isLoading } = getAllBillingsQuery;
   const billings = content?.data;
 
-  console.log("responsein page", content);
+  const billingTableData = useBillingToBillingTableData({
+    billings: billings ?? [],
+  });
   return (
     <div className="h-[84vh] px-2 overflow-y-auto custom-scrollbar-3">
       <div className="min-h-[90vh]  rounded-xl    ">
@@ -29,6 +32,7 @@ export default function BillingPage() {
           <TableContainer
             isLoading={isLoading}
             tableName={"BillingTable"}
+            tableData={billingTableData}
             columns={billingsTableColumns}
             columnWidths={billingTableColumnWidths}
           />

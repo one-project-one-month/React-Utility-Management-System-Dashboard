@@ -10,3 +10,20 @@ export const getAllBillings = async (): Promise<ApiContent<Billing[]>> => {
 
   return response.data.content;
 };
+
+export const getBillingsById = async (
+  billingId: string,
+): Promise<ApiContent<Billing>> => {
+  const response = await axiosInstance.get<ApiResponse<Billing>>(
+    `bills/${billingId}`,
+  );
+
+  return response.data.content;
+};
+
+export const autoGenerateBill = async (): Promise<ApiContent<Billing>> => {
+  const response = await axiosInstance.get<ApiResponse<Billing>>(
+    "bills/auto-generate",
+  );
+  return response.data.content;
+};

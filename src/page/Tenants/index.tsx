@@ -5,6 +5,7 @@ import {
   tenantTableColumnWidths,
 } from "@/components/Tenants/TenantsPage/tenants-table-columns.tsx";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
+import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 
 export default function TenantsPage() {
   return (
@@ -21,7 +22,9 @@ export default function TenantsPage() {
         <div className="h-[68vh] overflow-y-auto rounded-xl   custom-scrollbar">
           {/*<TenantsTableContainer />*/}
           <TableContainer
+            isLoading={false}
             tableName={"TenantTable"}
+            items={mockTenants}
             columns={tenantsTableColumns}
             columnWidths={tenantTableColumnWidths}
           />

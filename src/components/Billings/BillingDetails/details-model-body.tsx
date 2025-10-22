@@ -1,6 +1,7 @@
 import { Divider } from "@heroui/divider";
 import { Card } from "@heroui/card";
 import type { Billing } from "@/types/billing/billingType.ts";
+import { formatDate } from "@/lib/utils.ts";
 
 interface Props {
   billing: Billing;
@@ -48,7 +49,7 @@ export default function DetailsModalBody({ billing }: Props) {
           <div className="flex items-center justify-between bg-warning/10 px-5 py-3 rounded-xl">
             <p className="text-base font-semibold text-warning">Due Date</p>
             <p className="text-base font-bold text-warning">
-              {billing.dueDate}
+              {formatDate(billing.dueDate)}
             </p>
           </div>
 
@@ -57,7 +58,7 @@ export default function DetailsModalBody({ billing }: Props) {
               Created Date
             </p>
             <p className="text-base font-bold text-foreground">
-              {billing.createdDate}
+              {formatDate(billing.invoice.createdAt)}
             </p>
           </div>
         </div>

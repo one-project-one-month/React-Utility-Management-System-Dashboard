@@ -1,41 +1,63 @@
-import type { BillingStatus } from "@/types/billing/billingTableData.ts";
-import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
-import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
+
 import type { Invoice } from "@/types/invoices/invoiceType.ts";
 import type { InvoicesTableData } from "@/types/invoices/invoicesTableData.ts";
-import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
 import type { Billing } from "@/types/billing/billingType.ts";
 import type { TenantType } from "@/types/tenants/tenantType.ts";
-// import { useState } from "react";
+import { useBillingById } from "@/hooks/billings/useBillingById.ts";
+import { getBillingsById } from "@/services/billingServices.ts";
+
 
 interface Props {
-  page: number;
-  pageSize: number;
+  // page: number;
+  // pageSize: number;
   invoices: Invoice[];
 }
 
 export const useInvoiceToInvoiceTableData: (
   p: Props,
-) => InvoicesTableData[] = ({ page, pageSize, invoices }: Props) => {
+) => InvoicesTableData[] = ({  invoices }: Props) => {
+  // const { getAllBillingsQuery } = useBillings();
+  // const { data: content } = getAllBillingsQuery;
+  // const billings = content?.data;
+
+  const {getBillingByIdQuery} = useBillingById({ billingId:invoice.billId })
+
+  const {data:content} = getBillingByIdQuery
+  const billing = content?.bill
+
   return invoices.map((invoice, index) => {
-    const no = (page - 1) * pageSize + index + 1;
-    const invoiceNo = invoice.invoiceNo;
+    const no = index + 1;
 
-    const billing = mockBillings.find(
-      (billing) => billing.id === invoice.billingId,
-    );
-    const roomId = billing?.roomId;
+    const {getBillingByIdQuery} = useBillingById({ billingId:invoice.billId })
 
-    const room = mockRooms.find((room) => room.id === roomId);
+    const {data:content} = getBillingByIdQuery
+    const billing = content?.bill
 
-    const tenant = mockTenants.find((tenant) => tenant.roomId === roomId);
-    const tenantName = tenant?.name[0] ?? "Not found";
+    // const invoiceNo = invoice.invoiceNo;
+    //
+    // const billing = billings?.find(
+    //   (billing) => billing.id === "39c29cc9-f27e-4f28-94d0-ef1044a9f2b6",
+    // );
+    // const roomId = billing?.roomId;
+    //
+    // const room = mockRooms.find((room) => room.id === "r1");
+    //
+    // const tenant = mockTenants.find((tenant) => tenant.roomId === "r1");
+    // const tenantName = tenant?.name ?? "Not found";
+    //
+    // const roomNo = room?.roomNo ?? 0;
+    // const totalAmount = billing?.totalAmount ?? 0;
+    // const issueDate = billing?.createdDate ?? "";
+    // const dueDate = billing?.dueDate ?? "";
+    // const status = invoice?.status as BillingStatus;
+    //
+    // console.log("blling in invoice to table data: ", billing);
+    // console.log("invoice in invoice to table data: ", invoice);
 
-    const roomNo = room?.roomNo ?? 0;
-    const totalAmount = billing?.totalAmount ?? 0;
-    const issueDate = billing?.createdDate ?? "";
-    const dueDate = billing?.dueDate ?? "";
-    const status = invoice?.status as BillingStatus;
+    const invoiceNo = invoice.invoiceNo
+    const tenantName = billing.
+
+
 
     const actions = {
       actionData: {
@@ -44,6 +66,8 @@ export const useInvoiceToInvoiceTableData: (
         tenant: tenant as TenantType,
       },
     };
+
+
     return {
       no,
       invoiceNo,

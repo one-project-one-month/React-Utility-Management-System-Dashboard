@@ -1,9 +1,11 @@
-export type InvoiceStatus = "Overdue" | "Paid" | "Pending";
+export type InvoiceStatus = "Overdue" | "Paid" | "Pending" | "Cancelled";
 
 export interface Invoice {
   id: string;
-  billingId: string;
-  invoiceNo: string;
   status: InvoiceStatus;
   receiptSent: boolean;
+  billId: string;
+  invoiceNo: string;
+  createdAt: string;
+  updatedAt: string;
 }

@@ -7,10 +7,19 @@ import {
 } from "@/components/Invoices/invoices-table-columns.tsx";
 import { useState } from "react";
 import { InvoiceTableContext } from "@/components/Invoices/invoice-table-context";
+import { useInvoices } from "@/hooks/invoices/useInvoices.ts";
+import { useInvoiceToInvoiceTableData } from "@/hooks/TableData/useInvoiceToInvoiceTableData.ts";
 
 export default function InvoicesPage() {
   const [sendingReceiptIds, setSendingReceiptIds] = useState<string[]>([]);
 
+  const { getAllInvoicesQuery } = useInvoices();
+  const { data: content, isLoading } = getAllInvoicesQuery;
+  const invoices = content?.data;
+
+  const invoiceTableData = useInvoiceToInvoiceTableData({
+    invoices: invoices ?? [],
+  });
   const onSendReceipt = (invoiceId: string) => {
     console.log("on send receipt is run");
     setSendingReceiptIds((prev) => [...prev, invoiceId]);
@@ -34,6 +43,8 @@ export default function InvoicesPage() {
           <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl   custom-scrollbar">
             <TableContainer
               tableName={"InvoicesTable"}
+              isLoading={isLoading}
+              items={invoices ?? []}
               columns={invoicesTableColumns}
               columnWidths={invoicesTableColumnWidths}
             />
