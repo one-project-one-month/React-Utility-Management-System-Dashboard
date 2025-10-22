@@ -2,96 +2,23 @@ import type {ColumnDef} from "@tanstack/react-table";
 import type {UserList} from "@/types/user.ts";
 import {roleColors, roleLabels} from "@/constants/userMockData.ts";
 import DataTable from "@/components/data-table.tsx";
-import {Chip, Tooltip} from "@heroui/react";
+import {Button, Chip, Tooltip} from "@heroui/react";
 import {Eye, Pencil, Trash2} from "lucide-react";
 import {useMemo, useState} from "react";
-
-const columns: ColumnDef<UserList>[] = [
-    {
-        accessorKey: "id",
-        header: "ID",
-    },
-    {
-        accessorKey: "userName",
-        header: "Username",
-    },
-    {
-        accessorKey: "email",
-        header: "Email",
-    },
-    {
-        accessorKey: "role",
-        header: "Role",
-        cell: ({ row }) => {
-            const role = row.original.role as keyof typeof roleColors;
-
-            return (
-                <Chip className={roleColors[role]} radius={"md"}>
-                    {roleLabels[role]}
-                </Chip>
-            )
-        }
-    },
-    {
-        accessorKey: "phNumber",
-        header: "Phone No",
-    },
-    {
-        accessorKey: "emergencyNo",
-        header: "Emergency No",
-    },
-    {
-        id: "actions",
-        header: "Actions",
-        cell: ({ row }) => {
-            const user = row.original;
-
-            const handleView = () => {
-                window.location.href = `/user-management/users/${user.id}`;
-            }
-
-            const handleEdit = () => {
-                window.location.href = `/user-management/users/${user.id}/edit`;
-            }
-
-            return (
-                <div className="relative flex items-center gap-2">
-                    <Tooltip content="Details">
-                        <span
-                            onClick={handleView}
-                            className="py-2 px-3 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg text-sm text-default-400 cursor-pointer active:opacity-50"
-                        >
-                            <Eye className={"w-4 h-4"} />
-                        </span>
-                    </Tooltip>
-                    <Tooltip content="Edit user">
-                        <span
-                            onClick={handleEdit}
-                            className="py-2 px-3 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg text-sm text-default-400 cursor-pointer active:opacity-40"
-                        >
-                            <Pencil className={"w-4 h-4"} />
-                        </span>
-                    </Tooltip>
-                    <Tooltip color="danger" content="Delete user">
-                        <span className="py-2 px-3 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg text-sm text-danger cursor-pointer active:opacity-40">
-                            <Trash2 className={"w-4 h-4"} />
-                        </span>
-                    </Tooltip>
-                </div>
-            )
-        }
-    }
-];
+import {useConfirmDialog} from "@/hooks/useConfirmDialog.tsx";
 
 interface UserDataTableProps {
     data: UserList[];
     isLoading?: boolean;
+    onDeleteUser?: (userId: string) => void;
 }
 
-export function UserDataTable({ data, isLoading = false }: UserDataTableProps) {
+export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDataTableProps) {
     const [page, setPage] = useState(1);
     const [pageSize] = useState(10);
     const [totalElements, setTotalElements] = useState(0);
+
+    const { showConfirm, ConfirmDialog } = useConfirmDialog();
 
     const paginatedData = useMemo(() => {
         const start = (page - 1) * pageSize;
@@ -102,6 +29,103 @@ export function UserDataTable({ data, isLoading = false }: UserDataTableProps) {
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
     }
+
+    const columns: ColumnDef<UserList>[] = useMemo(() => [
+        {
+            accessorKey: "userName",
+            header: "Username",
+        },
+        {
+            accessorKey: "email",
+            header: "Email",
+        },
+        {
+            accessorKey: "role",
+            header: "Role",
+            cell: ({ row }) => {
+                const role = row.original.role as keyof typeof roleColors;
+
+                return (
+                    <Chip className={roleColors[role]} radius={"md"}>
+                        {roleLabels[role]}
+                    </Chip>
+                )
+            }
+        },
+        {
+            accessorKey: "phNumber",
+            header: "Phone No",
+        },
+        {
+            accessorKey: "emergencyNo",
+            header: "Emergency No",
+        },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const user = row.original;
+
+                const handleView = () => {
+                    window.location.href = `/user-management/users/${user.id}`;
+                }
+
+                const handleEdit = () => {
+                    window.location.href = `/user-management/users/${user.id}/edit`;
+                }
+
+                const handleDelete = () => {
+                    showConfirm({
+                        title: "Delete User",
+                        message: `Are you sure you want to delete ${user.userName}? This action cannot be undone.`,
+                        confirmText: "Delete",
+                        cancelText: "Cancel",
+                        confirmColor: "danger",
+                        onConfirm: () => {
+                            if (onDeleteUser) {
+                                onDeleteUser(user.id);
+                            }
+                        }
+                    })
+                }
+
+                return (
+                    <div className="relative flex items-center gap-2">
+                        <Tooltip content="Details">
+                            <Button
+                                onPress={handleView}
+                                isIconOnly
+                                variant="light"
+                                color="default"
+                            >
+                                <Eye size={18} className={"text-default-500"} />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip content="Edit user">
+                            <Button
+                                onPress={handleEdit}
+                                isIconOnly
+                                variant="light"
+                                color="primary"
+                            >
+                                <Pencil size={18} className={"text-primary"} />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip color="danger" content="Delete user">
+                            <Button
+                                onPress={handleDelete}
+                                isIconOnly
+                                variant="light"
+                                color="danger"
+                            >
+                                <Trash2 size={18} className={"text-danger"} />
+                            </Button>
+                        </Tooltip>
+                    </div>
+                )
+            }
+        }
+    ], [showConfirm]);
 
     return (
         <div>
@@ -115,6 +139,7 @@ export function UserDataTable({ data, isLoading = false }: UserDataTableProps) {
                 totalElements={totalElements}
                 onPageChange={handlePageChange}
             />
+            <ConfirmDialog />
         </div>
     )
 }

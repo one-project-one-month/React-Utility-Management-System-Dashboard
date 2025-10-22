@@ -108,7 +108,8 @@ const TablePresentation = <TData, TValue>({
               className={clsx(
                 (columnWidths && columnWidths[header.column.id]) || "w-auto",
                 (header.column.id === "actions" ||
-                  header.column.id === "billingIdForAction") &&
+                  header.column.id === "billingIdForAction" ||
+                  header.column.id === "status") &&
                   "text-center",
               )}
             >

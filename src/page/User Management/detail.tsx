@@ -4,7 +4,6 @@ import {Button, Card, CardBody, CardHeader, Chip} from "@heroui/react";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {InfoRow} from "@/components/common/info-row.tsx";
-import {Pencil, Trash2} from "lucide-react";
 
 export default function RoomDetailPage() {
     const { id } = useParams();
@@ -37,21 +36,13 @@ export default function RoomDetailPage() {
                     <h1 className={"text-2xl font-medium"}>User Detail</h1>
                 </div>
 
-                <div className={"flex gap-2"}>
+                <div>
                     <Button
                         onPress={handleEditUser}
                         variant={"bordered"}
-                        className={"border-[0.5px] bg-white dark:text-black"}
-                        startContent={<Pencil size={16} />}
+                        className={"border-[0.5px] bg-white text-primary dark:bg-transparent"}
                     >
                         Edit
-                    </Button>
-                    <Button
-                        variant={"bordered"}
-                        className={"border-[0.5px] text-red-500 bg-white"}
-                        startContent={<Trash2 size={16} />}
-                    >
-                        Delete
                     </Button>
                 </div>
             </div>

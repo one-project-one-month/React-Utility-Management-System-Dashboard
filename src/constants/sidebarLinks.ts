@@ -1,4 +1,4 @@
-import { Grid, type LucideIcon } from "lucide-react";
+import {Grid, type LucideIcon, ShieldUser} from "lucide-react";
 import {
 	Home,
 	CreditCard,

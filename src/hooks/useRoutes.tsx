@@ -10,9 +10,13 @@ const Components = lazy(() => import("@/page/Home"));
 // Billing
 const BillingPage = lazy(() => import("@/page/Billing"));
 
+//Invoices
+const InvoicesPage = lazy(() => import("@/page/Invoices"));
+
 // Rooms
 const RoomPage = lazy(() => import("@/page/Room"));
 const RoomDetailPage = lazy(() => import("@/page/Room/detail"));
+const CreateRoomPage = lazy(() => import("@/page/Room/create"));
 const EditRoomPage = lazy(() => import("@/page/Room/edit"));
 
 // User Management

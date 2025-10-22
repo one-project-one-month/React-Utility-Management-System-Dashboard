@@ -8,7 +8,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
-import { FileText, X } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
 
 import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
@@ -23,17 +23,20 @@ interface Props {
 
 export default function BillingDetailsModal({ billingId }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const billing = mockBillings.find((b) => b.id === billingId);
-
-  const tenant = mockTenants.find((t) => t.roomId === billing?.roomId);
-  const room = mockRooms.find((r) => r.id === billing?.roomId);
-  const contract = mockContracts.find((c) => c.tenantId === tenant?.id);
+  const billing = mockBillings.find((billing) => billing.id === billingId);
+  const tenant = mockTenants.find(
+    (tenant) => tenant.roomId === billing?.roomId,
+  );
+  const room = mockRooms.find((room) => room.id === billing?.roomId);
+  const contract = mockContracts.find(
+    (contract) => contract.tenantId === tenant?.id,
+  );
 
   if (!billing || !tenant || !room || !contract) return null;
 
   return (
     <>
-      <Tooltip content="See Billing Details" placement="top">
+      <Tooltip content={"See  Details"} placement="top">
         <Button
           isIconOnly
           variant="light"
@@ -41,7 +44,7 @@ export default function BillingDetailsModal({ billingId }: Props) {
           radius="full"
           onPress={onOpen}
         >
-          <FileText size={18} />
+          <Eye size={18} />
         </Button>
       </Tooltip>
 
@@ -73,7 +76,7 @@ export default function BillingDetailsModal({ billingId }: Props) {
               <ModalFooter>
                 <Button
                   color="danger"
-                  variant="light"
+                  variant={"light"}
                   startContent={<X size={16} />}
                   onPress={onClose}
                 >
