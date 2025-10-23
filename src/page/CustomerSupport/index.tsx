@@ -2,7 +2,7 @@ import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-s
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
 import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices";
 import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
-import { Filter, LucideTriangleAlert, Search } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ServiceChip } from "@/components/CustomerSupport/service-chip";
 import {
@@ -13,10 +13,13 @@ import {
     ModalFooter, Button, useDisclosure,
     Select,
     SelectItem,
-    Textarea
+    Textarea,
+    addToast,
+    Pagination
 } from "@heroui/react";
-import { useCustomerService } from "@/hooks/useCustomerService";
+import { useCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
 import { SkeletonLoader } from "@/components/skeleton-loader";
+import { formatDate } from "@/helpers/date";
 
 const FILTER_OPTIONS = {
     category: ["Complain", "Maintenance", "Other"] as Category[],
@@ -37,7 +40,10 @@ const STATUS_OPTIONS = [
 ];
 
 export default function CustomerSupportPage() {
-    const { data, isLoading, isError } = useCustomerService();
+    const [page, setPage] = useState(1);
+    const limit = 20;
+    const { data, isLoading } = useCustomerService(page, limit);
+    const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
 
     const [searchTerm, setSearchTerm] = useState("");
     const [services, setServices] = useState<ServiceRequest[]>([]);
@@ -52,20 +58,14 @@ export default function CustomerSupportPage() {
         // };
         // fetchServices();
         // const data = useCustomerService();
-        console.log(data)
-        console.log("isLoading", isLoading)
-        console.log("isError", isError)
+        // console.log(data)
+        // console.log("isLoading", isLoading)
+        // console.log("isError", isError)
         if (data && data.content && data.content.data) {
             setServices(data.content.data);
         }
         // setServices(data);
     }, [data]);
-
-    const {
-        isOpen: isDeleteOpen,
-        onOpen: onDeleteOpen,
-        onClose: onDeleteClose,
-    } = useDisclosure();
 
     const {
         isOpen: isEditOpen,
@@ -86,15 +86,6 @@ export default function CustomerSupportPage() {
 
     const handleDeleteBtn = (id: string) => {
         setSelectedServiceId(id);
-        onDeleteOpen();
-    };
-
-    const handleConfirmDelete = () => {
-        if (selectedServiceId) {
-            setServices((prev) => prev.filter((s) => s.id !== selectedServiceId));
-        }
-        setSelectedServiceId(null);
-        onDeleteClose();
     };
 
     const filteredAndSortedServices = useFilteredCustomerServices(services, searchTerm, filters);
@@ -180,10 +171,16 @@ export default function CustomerSupportPage() {
                         ))}
                         {filteredAndSortedServices.length === 0 && (
                             <div className="text-center p-6 text-gray-200">
-                                No rooms found matching the current filters.
+                                No services found matching the current filters.
                             </div>
                         )}
-                    </div>
+                        </div>
+                        <Pagination
+                            className="mt-4"
+                            total={data?.content?.meta?.lastPage ?? 1}
+                            page={page}
+                            onChange={(newPage) => setPage(newPage)}
+                        />
                 </div>
             )}
 
@@ -198,9 +195,9 @@ export default function CustomerSupportPage() {
                             <>
                                 <ModalHeader className="flex items-center justify-between">
                                     <h2 className="text-2xl font-semibold">
-                                        Room {service.roomId.slice(0, 8) || service.roomId.slice(0, 8)}
+                                        Room {service.roomNo}
                                     </h2>
-                                    <div className="font-light p-3">{service.issuedDate}</div>
+                                    <div className="font-light p-3">{formatDate(service.issuedDate)}</div>
                                 </ModalHeader>
 
                                 <ModalBody className="space-y-4">
@@ -248,7 +245,45 @@ export default function CustomerSupportPage() {
                                     <Button variant="light" onPress={onEditClose}>
                                         Cancel
                                     </Button>
-                                    <Button color="primary" onPress={onEditClose}>
+                                    <Button
+                                        color="primary"
+                                        isDisabled={isUpdating}
+                                        onPress={ () => {
+                                            if (!selectedServiceId) return;
+
+                                            const updatedService = services.find(s => s.id === selectedServiceId);
+                                            if (!updatedService) return;
+
+                                            try {
+                                                 updateService({
+                                                    id: selectedServiceId,
+                                                    updates: {
+                                                        status: updatedService.status,
+                                                        priorityLevel: updatedService.priorityLevel,
+                                                    },
+                                                });
+                                                addToast({
+                                                    title: "Update Successful",
+                                                    description: "Service status has been updated successfully.",
+                                                    color: "success",
+                                                    shouldShowTimeoutProgress: true,
+                                                    timeout: 3000,
+                                                    radius: "sm",
+                                                });
+                                            } catch (error) {
+                                                addToast({
+                                                    title: "Update Failed",
+                                                    description: "Something went wrong while updating the service.",
+                                                    color: "danger",
+                                                    shouldShowTimeoutProgress: true,
+                                                    timeout: 3000,
+                                                    radius: "sm",
+                                                });
+                                            } finally {
+                                                onEditClose();
+                                            }
+                                        }}
+                                    >
                                         Save Changes
                                     </Button>
                                 </ModalFooter>
@@ -259,7 +294,7 @@ export default function CustomerSupportPage() {
             </Modal>
 
             {/* delete confirmation modal */}
-            <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+            {/* <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
                 <ModalContent>
                     {() => (
                         <>
@@ -283,7 +318,7 @@ export default function CustomerSupportPage() {
                         </>
                     )}
                 </ModalContent>
-            </Modal>
+            </Modal> */}
         </div>
     )
 }

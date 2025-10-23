@@ -15,6 +15,16 @@ export interface CustomerServiceApiResponse {
   success: boolean;
   content: {
     data: ServiceRequest[];
+    links: {
+      next: string | null;
+      prev: string | null;
+    };
+    meta: {
+      currentPage: number;
+      lastPage: number;
+      perPage: number;
+      total: number;
+    };
   };
 }
 
