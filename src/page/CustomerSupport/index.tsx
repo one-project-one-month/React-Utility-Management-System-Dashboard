@@ -4,6 +4,7 @@ import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices
 import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
 import { Filter, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 import { ServiceChip } from "@/components/CustomerSupport/service-chip";
 import {
     Input, Modal,
@@ -17,7 +18,7 @@ import {
     addToast,
     Pagination
 } from "@heroui/react";
-import { useCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
+import { useCustomerService, useDeleteCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
 import { SkeletonLoader } from "@/components/skeleton-loader";
 import { formatDate } from "@/helpers/date";
 
@@ -41,26 +42,36 @@ const STATUS_OPTIONS = [
 
 export default function CustomerSupportPage() {
     const [page, setPage] = useState(1);
-    const limit = 20;
-    const { data, isLoading } = useCustomerService(page, limit);
-    const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
+    const limit = 10;
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [filters, setFilters] = useState(INIT_FILTERS);
+    const debouncedSearch = useDebounce(searchTerm, 400);
+
+    const { data, isLoading, isError } = useCustomerService(page, limit, {
+        category: filters.category ? filters.category : undefined,
+        status: filters.status && filters.status !== "All" ? filters.status : undefined,
+        priorityLevel: filters.priority ? filters.priority : undefined,
+        search: debouncedSearch ? debouncedSearch : undefined,
+    });
+
+    const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
+    const { mutate: deleteService, isPending: isDeleting } = useDeleteCustomerService();
+
     const [services, setServices] = useState<ServiceRequest[]>([]);
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
-    const [filters, setFilters] = useState(INIT_FILTERS);
 
     useEffect(() => {
-        // const fetchServices = async () => {
-        //     const res = await axiosInstance.get<CustomerServiceApiResponse>("https://node-utility-management-system.onrender.com/api/v1/customer-services?page=${page}&limit=3&prioty=high&category=other"); // your API endpoint
-        //     // console.log(res.data.content.data.map((service=> service)));
-        //     setServices(res.data.content.data);
-        // };
-        // fetchServices();
-        // const data = useCustomerService();
-        // console.log(data)
-        // console.log("isLoading", isLoading)
-        // console.log("isError", isError)
+        console.log(data);
+        if (isError) {
+            addToast({
+                title: "Load failed",
+                description: "Unable to load customer services. Please check your network or try again.",
+                color: "danger",
+                timeout: 4000,
+                radius: "sm",
+            });
+        }
         if (data && data.content && data.content.data) {
             setServices(data.content.data);
         }
@@ -85,7 +96,29 @@ export default function CustomerSupportPage() {
     };
 
     const handleDeleteBtn = (id: string) => {
-        setSelectedServiceId(id);
+        deleteService(id, {
+            onSuccess: () => {
+                setServices(prev => prev.filter(s => s.id !== id)); // remove locally
+                addToast({
+                    title: "Service Deleted",
+                    description: `Service ${id} has been deleted successfully.`,
+                    color: "success",
+                    shouldShowTimeoutProgress: true,
+                    timeout: 3000,
+                    radius: "sm",
+                });
+            },
+            onError: () => {
+                addToast({
+                    title: "Delete Failed",
+                    description: "Something went wrong while deleting the service.",
+                    color: "danger",
+                    shouldShowTimeoutProgress: true,
+                    timeout: 3000,
+                    radius: "sm",
+                });
+            },
+        });
     };
 
     const filteredAndSortedServices = useFilteredCustomerServices(services, searchTerm, filters);
@@ -174,13 +207,13 @@ export default function CustomerSupportPage() {
                                 No services found matching the current filters.
                             </div>
                         )}
-                        </div>
-                        <Pagination
-                            className="mt-4"
-                            total={data?.content?.meta?.lastPage ?? 1}
-                            page={page}
-                            onChange={(newPage) => setPage(newPage)}
-                        />
+                    </div>
+                    <Pagination
+                        className="mt-4"
+                        total={data?.content?.meta?.lastPage ?? 1}
+                        page={page}
+                        onChange={(newPage) => setPage(newPage)}
+                    />
                 </div>
             )}
 
@@ -248,14 +281,14 @@ export default function CustomerSupportPage() {
                                     <Button
                                         color="primary"
                                         isDisabled={isUpdating}
-                                        onPress={ () => {
+                                        onPress={() => {
                                             if (!selectedServiceId) return;
 
                                             const updatedService = services.find(s => s.id === selectedServiceId);
                                             if (!updatedService) return;
 
                                             try {
-                                                 updateService({
+                                                updateService({
                                                     id: selectedServiceId,
                                                     updates: {
                                                         status: updatedService.status,

@@ -25,7 +25,6 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
 
     const handleDelete = (e: PressEvent) => {
         e.continuePropagation();
-        onDelete(service.id);
         console.log("delete", service.id);
         showConfirm({
             title: "Delete Service",
