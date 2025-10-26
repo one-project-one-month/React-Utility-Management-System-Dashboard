@@ -44,12 +44,15 @@ export default function FormContractType() {
                 control={control}
                 render={({ field, fieldState }) => (
                     <Input
-                        {...field}
                         label="Price"
                         placeholder="Enter Price"
                         errorMessage={fieldState.error?.message}
                         isInvalid={!!fieldState.invalid}
                         variant="bordered"
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            field.onChange(val === '' ? undefined : Number(val));
+                        }}
                     />
                 )}
             />
