@@ -21,8 +21,6 @@ const INIT_FILTERS = {
 }
 
 export default function CustomerSupportPage() {
-
-
     const [searchTerm, setSearchTerm] = useState("");
     const [services] = useState<ServiceRequest[]>(serviceRequestMockData);
     const [filters, setFilters] = useState(INIT_FILTERS);

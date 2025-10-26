@@ -12,6 +12,7 @@ export const roomSchema = z.object({
     noOfBedRoom: z.coerce.number({
         message: "Number of bedrooms is required"
     }).min(1, "Bedroom number must be at least 1"),
+    // use RoomAvailability enum values
     status: z.enum(["available", "rented", "purchased", "maintenance"], { message: "Select room status" }),
     sellingPrice: z.coerce.number({
         message: "Price is required"
@@ -26,3 +27,9 @@ export const editRoomSchema = roomSchema.omit({ id: true });
 export type Room = z.infer<typeof roomSchema>;
 export type CreateRoomFormData = z.infer<typeof editRoomSchema>;
 export type EditRoomFormData = z.infer<typeof editRoomSchema>;
+
+export enum RoomAvailability {
+  AVAILABLE = "Available",
+  RENTED = "Rented",
+  MAINTENANCE = "InMaintenance",
+}

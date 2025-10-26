@@ -4,14 +4,14 @@ import {
     Filter, Plus,
 } from "lucide-react";
 import {useNavigate} from "react-router";
-import type {Room} from "@/types/room.ts";
+import {RoomAvailability, type Room} from "@/types/room.ts";
 import {roomMockData} from "@/constants/roomMockData";
 import {useFilteredRooms} from "@/hooks/useFilteredRooms.ts";
 import {RoomListCard} from "@/components/Room/room-list-card.tsx";
-import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import {FilterAutocomplete} from "@/components/common/filter-autocomplete.tsx";
 import {SearchInput} from "@/components/common/search-input.tsx";
+import { useFetchRooms } from "@/hooks/useFetchRoom";
+import type { Pagination } from "@/types/pagination";
 
 const FILTER_OPTIONS = {
     noOfBedRoom: ["1", "2", "3", "4", "5"],
@@ -28,10 +28,20 @@ const INIT_FILTERS = {
 }
 
 export default function RoomPage() {
+    const [pagination, setPagination] = useState<Pagination>({
+        page: 1,
+        limit: 10,
+        // filter: {
+        //     status: RoomAvailability.AVAILABLE
+        // }
+    })
     const navigate = useNavigate();
     const [rooms] = useState<Room[]>(roomMockData);
     const [searchTerm, setSearchTerm] = useState("");
     const [filters, setFilters] = useState(INIT_FILTERS);
+    const { data } = useFetchRooms(pagination)
+
+    console.log('rooms', data?.content.data)
 
     const handleViewRoom = (roomId: string) => {
         navigate(`/rooms/${roomId}`);

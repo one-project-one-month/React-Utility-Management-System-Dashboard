@@ -4,6 +4,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { ServiceRequest } from "@/types/customer-service";
 import { ServiceChip } from "./service-chip";
 import { useState, useRef, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface CustomerServiceCardProps {
     service: ServiceRequest;
@@ -47,10 +48,10 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                             <ServiceChip label={service.category} />
                             <ServiceChip label={service.status} />
                             <ServiceChip label={service.priority} />
-
                         </div>
                         <div className="flex flex-col items-start gap-1 text-sm text-default-500">
-                            <span ref={descRef} className={`${isLineClamp ? "line-clamp-2" : ""}`}>{service.description}
+                            <span ref={descRef} className={cn(isLineClamp ? "line-clamp-2" : "", "whitespace-pre-wrap")}>
+                                {service.description}
                             </span>
                             {isOverflowing && (
                                 <button
