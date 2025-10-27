@@ -1,6 +1,6 @@
 import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-service-list-card";
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
-import { useFilteredCustomerServices } from "@/hooks/useFilteredCustomerServices";
+import { useFilteredCustomerServices, type Filters } from "@/hooks/useFilteredCustomerServices";
 import type { Category, Priority, ServiceRequest, Status } from "@/types/customer-service";
 import { Filter, Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ const FILTER_OPTIONS = {
     priority: ["Low", "Medium", "High"] as Priority[],
 };
 
-const INIT_FILTERS = {
+const INIT_FILTERS: Filters = {
     category: "",
     status: "All",
     priority: "",
@@ -46,7 +46,7 @@ export default function CustomerSupportPage() {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filters, setFilters] = useState(INIT_FILTERS);
-    const debouncedSearch = useDebounce(searchTerm, 400);
+    const debouncedSearch = useDebounce(searchTerm, 500);
 
     const { data, isLoading, isError } = useCustomerService(page, limit, {
         category: filters.category ? filters.category : undefined,
@@ -56,7 +56,7 @@ export default function CustomerSupportPage() {
     });
 
     const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
-    const { mutate: deleteService, isPending: isDeleting } = useDeleteCustomerService();
+    const { mutate: deleteService } = useDeleteCustomerService();
 
     const [services, setServices] = useState<ServiceRequest[]>([]);
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
@@ -98,7 +98,7 @@ export default function CustomerSupportPage() {
     const handleDeleteBtn = (id: string) => {
         deleteService(id, {
             onSuccess: () => {
-                setServices(prev => prev.filter(s => s.id !== id)); // remove locally
+                setServices(prev => prev.filter(s => s.id !== id));
                 addToast({
                     title: "Service Deleted",
                     description: `Service ${id} has been deleted successfully.`,
@@ -158,19 +158,19 @@ export default function CustomerSupportPage() {
                         label={"Category"}
                         options={FILTER_OPTIONS.category}
                         value={filters.category}
-                        onChange={(val) => setFilters((prev) => ({ ...prev, category: val }))}
+                        onChange={(val) => setFilters(prev => ({ ...prev, category: val as Category | "" }))}
                     />
                     <ServiceFilterSelect
                         label={"Priority"}
                         options={FILTER_OPTIONS.priority}
                         value={filters.priority}
-                        onChange={(val) => setFilters((prev) => ({ ...prev, priority: val }))}
+                        onChange={(val) => setFilters(prev => ({ ...prev, priority: val as Priority | "" }))}
                     />
                     <ServiceFilterSelect
                         label={"Status"}
                         options={FILTER_OPTIONS.status}
                         value={filters.status}
-                        onChange={(val) => setFilters((prev) => ({ ...prev, status: val }))}
+                        onChange={(val) => setFilters(prev => ({ ...prev, status: val as Status | "All" | "" }))}
                     />
                 </div>
             </div>
@@ -326,32 +326,6 @@ export default function CustomerSupportPage() {
                 </ModalContent>
             </Modal>
 
-            {/* delete confirmation modal */}
-            {/* <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
-                <ModalContent>
-                    {() => (
-                        <>
-                            <ModalHeader className="flex items-center gap-3">
-                                <LucideTriangleAlert className="text-danger" size={24} />
-                                <span className="text-2xl">Delete Service?</span>
-                            </ModalHeader>
-                            <ModalBody>
-                                <p>
-                                    Are you sure you want to delete this service? This action cannot be undone.
-                                </p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onDeleteClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={handleConfirmDelete}>
-                                    Delete
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal> */}
         </div>
     )
 }
