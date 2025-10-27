@@ -1,17 +1,17 @@
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {UserDataTable} from "@/components/UserDataTable";
 import FormDrawer from "@/components/form-drawer.tsx";
 import UserCreatePage from "@/page/User Management/create.tsx";
-import { Select, SelectItem} from "@heroui/react";
+import {Select, SelectItem} from "@heroui/react";
 import {useFilteredUsers} from "@/hooks/useFilteredUsers.ts";
-import type {UserList} from "@/types/user.ts";
-import {userMockData} from "@/constants/userMockData.ts";
 import {SearchInput} from "@/components/common/search-input.tsx";
+import {useDeleteUser, useFetchUsers} from "@/hooks/useUsers.ts";
+import {useConfirmDialog} from "@/hooks/useConfirmDialog.tsx";
 
 const FILTER_OPTIONS = {
-    role: ["all", "tenant", "staff", "admin"]
+    role: ["all", "Tenant", "Staff", "Admin"]
 };
 
 const INIT_FILTERS = {
@@ -19,20 +19,12 @@ const INIT_FILTERS = {
 }
 
 export default function UserPage() {
-    const [users, setUsers] = useState<UserList[]>(userMockData);
+    const { data: users, isLoading } = useFetchUsers();
+    const { mutate, isPending } = useDeleteUser();
+    const { showConfirm, ConfirmDialog, closeDialog } = useConfirmDialog();
+
     const [searchTerm, setSearchTerm] = useState("");
     const [filters, setFilters] = useState(INIT_FILTERS);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        setIsLoading(true);
-        const timeout = setTimeout(() => {
-            setUsers(users);
-            setIsLoading(false);
-        }, 500)
-
-        return () => clearTimeout(timeout);
-    }, []);
 
     const filteredUsers = useFilteredUsers(users, searchTerm, filters)
 
@@ -41,15 +33,18 @@ export default function UserPage() {
     }
 
     const handleDelete = (userId: string) => {
-        const userToDelete = users.find(user => user.id === userId);
-        console.log("Deleted user:", {
-            userId: userToDelete?.id,
-            name: userToDelete?.userName
-        })
+        mutate(userId, {
+            onSuccess: () => {
+                closeDialog();
+            },
+            onError: () => {
+                closeDialog();
+            }
+        });
     }
 
     return (
-        <div className="p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3">
+        <div className="p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3 pb-6">
             <NavigationBreadCrumbs items={breadcrumbs.userList} />
             <div className="flex flex-col sm:flex-row gap-2 sm:items-end">
                 <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -78,7 +73,14 @@ export default function UserPage() {
                 </FormDrawer>
             </div>
 
-            <UserDataTable data={filteredUsers} isLoading={isLoading} onDeleteUser={handleDelete} />
+            <UserDataTable
+                data={filteredUsers}
+                isLoading={isLoading}
+                onDeleteUser={handleDelete}
+                isDeletingUser={isPending}
+                showConfirm={showConfirm}
+            />
+            <ConfirmDialog />
         </div>
     )
 }

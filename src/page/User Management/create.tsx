@@ -4,9 +4,15 @@ import {type CreateUserFormData, createUserSchema} from "@/types/user.ts";
 import {Button} from "@heroui/react";
 import {FormSelect} from "@/components/Form/form-select.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
-import {ROLE_OPTIONS, TENANT_OPTIONS} from "@/constants/userMockData.ts";
+import {ROLE_OPTIONS} from "@/constants/userMockData.ts";
+import {useCreateUser, useFetchTenants} from "@/hooks/useUsers.ts";
+import {useMemo} from "react";
+import type {TenantType} from "@/types/tenants/tenantType.ts";
 
-export default function UserCreatePage() {
+export default function UserCreatePage({ onClose }: { onClose?: () => void }) {
+    const { data: tenants, isLoading  } = useFetchTenants();
+    const { mutate, isPending } = useCreateUser();
+
     const {
         control,
         handleSubmit,
@@ -15,7 +21,22 @@ export default function UserCreatePage() {
         setValue
     } = useForm<CreateUserFormData>({
         resolver: zodResolver(createUserSchema) as Resolver<CreateUserFormData>,
+        defaultValues: {
+            userName: "",
+            email: "",
+            password: "",
+            role: "Tenant",
+            tenantId: null,
+        }
     });
+
+    const tenantOptions = useMemo(() => {
+        if (!tenants) return [];
+        return tenants.map((tenant: TenantType) => ({
+            key: tenant.id,
+            label: tenant.name || tenant.id
+        }));
+    }, [tenants]);
 
     const selectedRole = watch("role");
 
@@ -24,7 +45,12 @@ export default function UserCreatePage() {
             ...data,
             tenantId: data.tenantId == "" ? null : data.tenantId
         }
-        console.log("Form submitted", transformedData);
+
+        mutate(transformedData, {
+            onSuccess: () => {
+                onClose?.();
+            }
+        });
     }
 
     return (
@@ -98,29 +124,32 @@ export default function UserCreatePage() {
                     )}
                 />
 
-                <Controller
-                    name={"tenantId"}
-                    control={control}
-                    render={({ field }) => (
-                        <FormSelect
-                            {...field}
-                            label={"Tenant ID"}
-                            placeholder={"Select tenant ID"}
-                            value={field.value || ""}
-                            options={TENANT_OPTIONS}
-                            onChange={field.onChange}
-                            isInvalid={!!errors.tenantId}
-                            errorMessage={errors.tenantId?.message}
-                            isDisabled={selectedRole !== "tenant"}
-                        />
-                    )}
-                />
+                {selectedRole === "Tenant" && (
+                    <Controller
+                        name={"tenantId"}
+                        control={control}
+                        render={({ field }) => (
+                            <FormSelect
+                                {...field}
+                                label={"Tenant"}
+                                placeholder={"Select tenant"}
+                                value={field.value || ""}
+                                options={tenantOptions}
+                                onChange={field.onChange}
+                                isInvalid={!!errors.tenantId}
+                                errorMessage={errors.tenantId?.message}
+                                isDisabled={isLoading}
+                            />
+                        )}
+                    />
+                )}
 
                 <Button
                     type={"submit"}
                     className={"text-white bg-primary"}
+                    isLoading={isPending}
                 >
-                    Create
+                    {isPending ? "Creating" : "Create"}
                 </Button>
             </div>
         </form>
