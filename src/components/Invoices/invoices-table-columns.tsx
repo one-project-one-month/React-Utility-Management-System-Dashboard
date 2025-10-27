@@ -19,6 +19,7 @@ export const invoicesTableColumnWidths: Record<string, string> = {
   status: "w-[8%]",
   actions: "w-[15%] max-w-[150px]",
 };
+
 export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
   {
     accessorKey: "no",

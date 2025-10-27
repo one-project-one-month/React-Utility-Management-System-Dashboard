@@ -6,6 +6,7 @@ import {Button, Chip, Tooltip} from "@heroui/react";
 import {Eye, Pencil, Trash2} from "lucide-react";
 import {useMemo, useState} from "react";
 import {useConfirmDialog} from "@/hooks/useConfirmDialog.tsx";
+import { useNavigate } from "react-router";
 
 interface UserDataTableProps {
     data: UserList[];
@@ -19,6 +20,8 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
     const [totalElements, setTotalElements] = useState(0);
 
     const { showConfirm, ConfirmDialog } = useConfirmDialog();
+
+    const navigate = useNavigate()
 
     const paginatedData = useMemo(() => {
         const start = (page - 1) * pageSize;
@@ -66,14 +69,6 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
             cell: ({ row }) => {
                 const user = row.original;
 
-                const handleView = () => {
-                    window.location.href = `/user-management/users/${user.id}`;
-                }
-
-                const handleEdit = () => {
-                    window.location.href = `/user-management/users/${user.id}/edit`;
-                }
-
                 const handleDelete = () => {
                     showConfirm({
                         title: "Delete User",
@@ -93,7 +88,7 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
                     <div className="relative flex items-center gap-2">
                         <Tooltip content="Details">
                             <Button
-                                onPress={handleView}
+                                onPress={() => navigate(`/user-management/users/${user.id}`)}
                                 isIconOnly
                                 variant="light"
                                 color="default"
@@ -103,7 +98,7 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
                         </Tooltip>
                         <Tooltip content="Edit user">
                             <Button
-                                onPress={handleEdit}
+                                onPress={() => navigate(`/user-management/users/${user.id}/edit`)}
                                 isIconOnly
                                 variant="light"
                                 color="primary"
