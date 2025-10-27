@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-=======
 "use client";
 
->>>>>>> d147e57 (Cursor)
 import { useEffect, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/data-table";
 
 type User = {
-<<<<<<< HEAD
   id: number;
   name: string;
   email: string;
@@ -76,7 +72,6 @@ const ExamplePage = () => {
       />
     </div>
   );
-=======
      id: number;
      name: string;
      email: string;
@@ -146,20 +141,16 @@ const ExamplePage = () => {
                />
           </div>
      );
->>>>>>> d147e57 (Cursor)
 };
 
 // Mock dataset
 const mockUsers: User[] = Array.from({ length: 42 }, (_, i) => ({
-<<<<<<< HEAD
   id: i + 1,
   name: `User ${i + 1}`,
   email: `user${i + 1}@example.com`,
-=======
      id: i + 1,
      name: `User ${i + 1}`,
      email: `user${i + 1}@example.com`,
->>>>>>> d147e57 (Cursor)
 }));
 
 export default ExamplePage;

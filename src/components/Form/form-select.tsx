@@ -24,6 +24,8 @@ export function FormSelect({
     errorMessage,
     isDisabled = false
 }: FormSelectProps) {
+    const validKeys = value && options.some(option => option.key === value) ? [value] : [];
+
     return (
         <Select
             label={label}
@@ -34,7 +36,7 @@ export function FormSelect({
                 trigger: "bg-white border-[0.5px] shadow-none dark:text-default-600 dark:bg-transparent",
                 value: "dark:text-default-600"
             }}
-            selectedKeys={value ? [value] : []}
+            selectedKeys={validKeys}
             onSelectionChange={(keys) => {
                 const selectedValue = Array.from(keys)[0]?.toString() || "";
                 onChange(selectedValue);
@@ -43,7 +45,10 @@ export function FormSelect({
             isInvalid={isInvalid}
             errorMessage={errorMessage}
             isDisabled={isDisabled}
-
+            disallowEmptySelection
+            scrollShadowProps={{
+                isEnabled: false
+            }}
         >
             {options.map((option) => (
                 <SelectItem key={option.key}>{option.label}</SelectItem>

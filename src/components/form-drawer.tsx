@@ -8,11 +8,12 @@ import {
     useDisclosure,
 } from "@heroui/react";
 import { Plus } from "lucide-react";
+import React from "react";
 
 type DrawerProps = {
     btnText: string
     title: string
-    children: React.ReactNode
+    children: React.ReactElement<{ onClose?: () => void }>
     position?: "left" | "right"
     icon?: React.ReactNode
 }
@@ -79,7 +80,7 @@ const FormDrawer = ({ btnText, title, children, position = "right", icon }: Draw
                                 {title}
                             </DrawerHeader>
                             <DrawerBody>
-                                {children}
+                                {React.cloneElement(children, { onClose })}
                             </DrawerBody>
                             <DrawerFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>

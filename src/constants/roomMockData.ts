@@ -1,6 +1,5 @@
-import type {Room} from "@/types/room.ts";
 
-export const roomMockData: Room[] = [
+/*export const roomMockData: Room[] = [
     {
         id: '1',
         roomNo: 101,
@@ -56,20 +55,20 @@ export const roomMockData: Room[] = [
         maxNoPeople: 5,
         description: "Valia Hotel Bangkok, a 5-star hotel in Sukhumvit amidst vibrant shopping and dining, offers 279 elegant guest rooms blending oriental luxury. Each room includes a seating area, HD-LED TV, minibar, and private bathroom. Some room types also feature a microwave, kitchenette, coffee machine, Executive Lounge access. The hotel boasts a high-tech gym, free parking, swimming pool, BelleValia Pool Bar, culinary delights at Florae Restaurant, and the exclusive Eastern Elixir Social Lounge & Bar."
     }
-];
+];*/
 
 export const statusColors = {
-    available: 'bg-emerald-600 text-[13px] text-white p-2',
-    rented: 'bg-blue-600 text-[13px] text-white p-2',
-    purchased: 'bg-violet-600 text-[13px] text-white p-2',
-    maintenance: 'bg-yellow-600 text-[13px] text-white p-2',
+    Available: 'bg-emerald-600 text-[13px] text-white p-2',
+    Rented: 'bg-blue-600 text-[13px] text-white p-2',
+    Purchased: 'bg-violet-600 text-[13px] text-white p-2',
+    InMaintenance: 'bg-yellow-600 text-[13px] text-white p-2',
 };
 
 export const statusLabels = {
-    available: 'Available',
-    rented: 'Rented',
-    purchased: 'Purchased',
-    maintenance: 'Maintenance',
+    Available: 'Available',
+    Rented: 'Rented',
+    Purchased: 'Purchased',
+    InMaintenance: 'In Maintenance',
 };
 
 export const FLOOR_OPTIONS = [
@@ -80,11 +79,15 @@ export const FLOOR_OPTIONS = [
     { key: "5", label: "5 Floor" },
 ];
 
-export const STATUS_OPTIONS = [
-    { key: "available", label: "Available" },
-    { key: "rented", label: "Rented" },
-    { key: "purchased", label: "Purchased" },
-    { key: "maintenance", label: "Maintenance" },
+export const CREATE_ROOM_STATUS_OPTIONS = [
+    { key: "Available", label: "Available" },
+];
+
+export const EDIT_ROOM_STATUS_OPTIONS = [
+    { key: "Available", label: "Available" },
+    { key: "Rented", label: "Rented" },
+    { key: "Purchased", label: "Purchased" },
+    { key: "InMaintenance", label: "Maintenance" },
 ];
 
 export const BEDROOM_OPTIONS = [
