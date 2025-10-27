@@ -1,6 +1,6 @@
 import { type Control, Controller } from "react-hook-form";
 import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
-import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
+import type { TenantFormValues } from "@/schemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormAutoCompleteSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 

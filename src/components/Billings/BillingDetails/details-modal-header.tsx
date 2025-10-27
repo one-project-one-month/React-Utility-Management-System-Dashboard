@@ -1,17 +1,16 @@
 import ModalHeaderItem from "@/components/Billings/BillingDetails/modal-header-item.tsx";
 import { FileSignature, Home, User } from "lucide-react";
-import type { Billing } from "@/types/billing/billingType.ts";
+import type { Room } from "@/types/billing/billingType.ts";
 
 interface Props {
-  billing: Billing;
+  room: Room;
 }
 
-export default function DetailsModalHeader({ billing }: Props) {
-  const tenant = billing.room.tenant;
-  const room = billing.room;
-  const contract = billing.room.contract[0];
+export default function DetailsModalHeader({ room }: Props) {
+  const tenant = room.tenant;
+  const contract = room.contract[0];
   return (
-    <div className="flex flex-wrap justify-between items-center mt-2 gap-3">
+    <div className="w-full flex  gap-3 border-b border-divider mt-5 pb-3 flex-wrap justify-between items-center  ">
       <ModalHeaderItem
         icon={<User size={18} className="text-primary" />}
         data={tenant.name || "Unknown Tenant"}
@@ -25,7 +24,7 @@ export default function DetailsModalHeader({ billing }: Props) {
         data={` Room ${room.roomNo || "N/A"}`}
         tooltipContent={"See Room Info"}
         color={"success"}
-        href={`/rooms/details/${room?.id}`}
+        href={`/rooms/${room?.id}`}
       />
 
       <ModalHeaderItem

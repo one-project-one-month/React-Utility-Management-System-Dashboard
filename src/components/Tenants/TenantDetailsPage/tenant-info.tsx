@@ -1,16 +1,12 @@
 import InfoCard from "@/components/Tenants/TenantDetailsPage/info-card.tsx";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
-import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
-import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
 
 interface Props {
-  tenant: TenantType;
+  tenant: Tenant;
 }
 export default function TenantInfo({ tenant }: Props) {
-  const room = mockRooms.find((room) => room.id === tenant.roomId);
-  const contract = mockContracts.find(
-    (contract) => contract.id === tenant.contractId,
-  );
+  const room = tenant.room;
+  const contract = tenant.contract;
 
   const personalAndContactInfo = {
     "Full Name": tenant.name,
@@ -18,16 +14,17 @@ export default function TenantInfo({ tenant }: Props) {
     NRC: tenant.nrc,
     "Ph Number": tenant.phoneNo,
     "Emergency Number": tenant.emergencyNo,
-    "No Of Occupants": tenant.occupants.length + 1,
+    "No Of Occupants": (tenant.occupants?.length ?? 0) + 1,
   };
 
   const roomAndContractInfo = {
     "Room Number": room?.roomNo,
-    "Contract Type": contract?.contractName,
-    "Monthly Rent Fee": contract?.monthlyRentFee,
-    "Contract Start": contract?.startDate,
-    "Contract End": contract?.endDate,
-    "Total Rent Fee": "1,200,000MMK",
+    "Contract Type": contract?.contractType.name,
+    "Monthly Rent Fee": contract?.contractType.price,
+    // "Contract Start": contract?.contractType.duration,
+    // "Contract End": contract?.endDate,
+    Duration: contract?.contractType.duration,
+    "Total Rent Fee": contract?.contractType.price,
   };
 
   return (
@@ -41,13 +38,21 @@ export default function TenantInfo({ tenant }: Props) {
           header={"  Room & Contract Information"}
           obj={roomAndContractInfo}
         />
-        {tenant.occupants.map((occupant, index) => (
-          <InfoCard
-            key={occupant.id}
-            header={`Occupant ${index + 1}`}
-            obj={occupant}
-          />
-        ))}
+        {tenant.occupants?.length &&
+          tenant.occupants.map((occupant, index) => {
+            const occupantInfo = {
+              "Full Name": occupant.name,
+              NRC: occupant.nrc,
+              RelationshipToTenant: occupant.relationshipToTenant,
+            };
+            return (
+              <InfoCard
+                key={occupant.id}
+                header={`Occupant ${index + 1}`}
+                obj={occupantInfo}
+              />
+            );
+          })}
       </div>{" "}
     </div>
   );

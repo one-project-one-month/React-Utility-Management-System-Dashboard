@@ -23,7 +23,7 @@ export const billingsTableColumns: ColumnDef<BillingTableData>[] = [
   {
     accessorKey: "no",
     header: "No.",
-    cell: (info) => info.getValue(),
+    cell: (info) => `${info.getValue()}.`,
   },
   {
     accessorKey: "tenantId",

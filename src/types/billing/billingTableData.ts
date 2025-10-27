@@ -1,6 +1,6 @@
 import type { Billing } from "@/types/billing/billingType.ts";
 
-export type BillingStatus = "Pending" | "Paid" | "Cancelled" | "Overdue";
+export type BillingStatus = "Pending" | "Paid" | "Overdue";
 
 export interface BillingTableData {
   no: number;

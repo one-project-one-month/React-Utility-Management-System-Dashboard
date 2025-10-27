@@ -1,45 +1,32 @@
-import type { Invoice } from "@/types/invoices/invoiceType.ts";
 import type { InvoicesTableData } from "@/types/invoices/invoicesTableData.ts";
-import type { Billing } from "@/types/billing/billingType.ts";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
-import { useBillings } from "@/hooks/billings/useBillings.ts";
 
+import type { Billing } from "@/types/billing/billingType.ts";
 interface Props {
-  // page: number;
-  // pageSize: number;
-  invoices: Invoice[];
+  page: number;
+  pageSize: number;
+  billings: Billing[];
 }
 
 export const useInvoiceToInvoiceTableData: (
   p: Props,
-) => InvoicesTableData[] = ({ invoices }: Props) => {
-  const { getAllBillingsQuery } = useBillings();
-  const { data: content } = getAllBillingsQuery;
-  const billings = content?.data;
-
-  return invoices.map((invoice, index) => {
-    const no = index + 1;
-    const invoiceNo = invoice.invoiceNo;
-
-    const billing = billings?.find((billing) => billing.id === invoice.billId);
-
-    console.log("billing is", billing);
-
-    const tenant = billing?.room.tenant;
-    const tenantName = tenant?.name ?? "";
-    const roomNo = billing?.room.roomNo ?? 0;
-    const totalAmount = Number(billing?.totalAmount);
-    const issueDate = new Date(
-      billing?.invoice.createdAt ?? "",
-    ).toLocaleDateString();
-    const dueDate = new Date(billing?.dueDate ?? "").toLocaleDateString();
-    const status = invoice.status;
+) => InvoicesTableData[] = ({ page, pageSize, billings }: Props) => {
+  return billings.map((billing, index) => {
+    const no = (page - 1) * pageSize + index + 1;
+    const invoiceNo = billing.invoice.invoiceNo;
+    const tenantName = billing.room.tenant.name;
+    const roomNo = billing.room.roomNo;
+    const totalAmount = billing.totalAmount;
+    const issueDate = new Date(billing.createdAt).toLocaleDateString();
+    const dueDate = new Date(billing.dueDate).toLocaleDateString();
+    const status = billing.invoice.status;
 
     const actions = {
+      // onSendReceipt,
+      // isSendingReceipt,
       actionData: {
-        billing: billing as Billing,
-        invoice,
-        tenant: tenant as TenantType,
+        billing: billing,
+        tenant: billing.room.tenant,
+        invoice: billing.invoice,
       },
     };
 

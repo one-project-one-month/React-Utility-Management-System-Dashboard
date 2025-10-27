@@ -1,22 +1,48 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getAllInvoices } from "@/services/invoiceServices.ts";
+import {
+  autoGenerateInvoice,
+  getAllInvoices,
+  type GetInvoicesParams,
+  sendReceipt,
+  type SendReceiptPayload,
+} from "@/services/invoiceServices.ts";
 
-export const useInvoices = () => {
+export const useInvoices = ({
+  currentPage,
+  limit,
+  search,
+  status,
+}: GetInvoicesParams) => {
   const queryClient = useQueryClient();
 
-  console.log("queryClient is ", queryClient);
   const getAllInvoicesQuery = useQuery({
-    queryKey: ["invoices"],
-    queryFn: getAllInvoices,
+    queryKey: ["invoices", currentPage, search, status],
+    queryFn: () => getAllInvoices({ currentPage, limit, search, status }),
   });
-  // const createRoomMutation = useMutation({
-  //   mutationKey: ["roomsCreate"],
-  //   mutationFn: createRoom,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["rooms"] });
-  //   },
-  // });
-  //
-  return { getAllInvoicesQuery };
+
+  const autoGenerateInvoiceMutation = useMutation({
+    mutationKey: ["autoGenerateInvoices"],
+    mutationFn: autoGenerateInvoice,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["billings"] });
+    },
+  });
+
+  const sendReceiptMutation = useMutation({
+    mutationKey: ["sendReceipt"],
+    mutationFn: ({ invoiceId, receiptId }: SendReceiptPayload) =>
+      sendReceipt({ invoiceId, receiptId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["billings"] });
+    },
+  });
+
+  return {
+    getAllInvoicesQuery,
+    autoGenerateInvoiceMutation,
+    sendReceiptMutation,
+  };
 };

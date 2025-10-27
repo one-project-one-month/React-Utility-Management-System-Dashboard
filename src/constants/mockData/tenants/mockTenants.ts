@@ -1,6 +1,6 @@
-import type { TenantType } from "@/types/tenants/tenantType.ts";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
 
-export const mockTenants: TenantType[] = [
+export const mockTenants: Tenant[] = [
   {
     id: "debaeb8f-d81a-490d-b409-fb1fc6675aca",
     name: "Paul Fahey",

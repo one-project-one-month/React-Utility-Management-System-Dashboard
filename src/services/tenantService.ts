@@ -3,30 +3,42 @@ import type {
   ApiContent,
   ApiResponse,
 } from "@/types/ApiResponse/ApiResponse.ts";
-import type { Tenant } from "@/types/tenants/tenantType.ts";
+import type { Occupancy, Tenant } from "@/types/tenants/tenantType.ts";
+import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
 
-export const getAllTenants = async (): Promise<ApiContent<Tenant[]>> => {
-  const response = await axiosInstance.get<ApiResponse<Tenant[]>>("tenants");
+export interface GetTenantsParams {
+  currentPage?: number;
+  limit?: number;
+  search?: string;
+  occupancy?: Occupancy;
+}
+
+export const getAllTenants = async ({
+  currentPage,
+  limit,
+  search,
+  occupancy,
+}: GetTenantsParams): Promise<ApiContent<Tenant[]>> => {
+  const response = await axiosInstance.get<ApiResponse<Tenant[]>>("tenants", {
+    params: {
+      page: currentPage,
+      limit: limit,
+      search: search && search?.length > 1 ? search : undefined,
+      occupancy: occupancy ?? undefined,
+    },
+  });
 
   return response.data.content;
 };
 
-export interface OccupantPayload {
-  id?: string;
-  name: string;
-  nrc: string;
-  relationshipToTenant: string;
-}
-
-export interface TenantPayload {
-  name: string;
-  nrc: string;
-  occupants?: OccupantPayload[];
-  email: string;
-  phoneNo: string;
-  emergencyNo: string;
-  roomId?: string;
-}
+export const getTenantById = async (
+  tenantId: string,
+): Promise<ApiContent<Tenant>> => {
+  const response = await axiosInstance.get<ApiResponse<Tenant>>(
+    `tenants/${tenantId}`,
+  );
+  return response.data.content;
+};
 
 export const createTenant = async (
   newTenant: TenantPayload,
@@ -34,6 +46,18 @@ export const createTenant = async (
   const response = await axiosInstance.post<ApiResponse<Tenant>>(
     "tenants",
     newTenant,
+  );
+
+  return response.data.content;
+};
+export const updateTenant = async (
+  id: string,
+
+  updatedTenant: TenantPayload,
+): Promise<ApiContent<Tenant>> => {
+  const response = await axiosInstance.put<ApiResponse<Tenant>>(
+    `tenants/${id}`,
+    updatedTenant,
   );
 
   return response.data.content;

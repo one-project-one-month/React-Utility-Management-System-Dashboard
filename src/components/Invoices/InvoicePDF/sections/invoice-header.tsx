@@ -1,6 +1,6 @@
 import { Text, View } from "@react-pdf/renderer";
 import { styles } from "@/components/Invoices/InvoicePDF/invoice-styles.ts";
-import type { Invoice } from "@/types/invoices/invoiceType.ts";
+import type { Invoice } from "@/types/billing/billingType.ts";
 
 interface Props {
   invoice: Invoice;

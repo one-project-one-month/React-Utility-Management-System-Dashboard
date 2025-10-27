@@ -3,18 +3,20 @@ import type { Tenant } from "@/types/tenants/tenantType.ts";
 import { useNavigate } from "react-router";
 
 interface Props {
-  // page: number;
-  // pageSize: number;
+  currentPage: number;
+  pageSize: number;
   tenants: Tenant[];
 }
 
 export const useTenantToTenantTableData: (p: Props) => TenantTableData[] = ({
+  currentPage,
+  pageSize,
   tenants,
 }: Props) => {
   const navigate = useNavigate();
 
   return tenants.map((tenant, index) => {
-    const no = index + 1;
+    const no = (currentPage - 1) * pageSize + index + 1;
     const name = tenant?.name;
     const nrc = tenant.nrc;
     const email = tenant.email;
@@ -24,7 +26,7 @@ export const useTenantToTenantTableData: (p: Props) => TenantTableData[] = ({
       : " --- ";
     const roomNo = tenant.room.roomNo;
 
-    const occupantsCount = tenant.occupants.length + 1;
+    const occupantsCount = (tenant.occupants?.length ?? 0) + 1;
 
     const onEditHandler = (tenantId: string) => {
       navigate(`/tenants/update/${tenantId}`);

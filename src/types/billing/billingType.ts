@@ -10,7 +10,7 @@ export interface Receipt {
 export interface Invoice {
   id: string;
   invoiceNo: string;
-  status: "Pending" | "Paid" | "Cancelled" | "Overdue";
+  status: "Pending" | "Paid" | "Overdue";
   receiptSent: boolean;
   billId: string;
   createdAt: string;
@@ -81,10 +81,10 @@ export interface Billing {
   rentalFee: string;
   electricityFee: string;
   waterFee: string;
-  fineFee: string;
+  fineFee?: string;
   serviceFee: string;
   groundFee: string;
-  carParkingFee: string;
+  carParkingFee?: string;
   wifiFee: string;
   totalAmount: string;
   dueDate: string;

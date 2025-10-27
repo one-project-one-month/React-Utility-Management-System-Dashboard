@@ -1,5 +1,5 @@
 import { type Control, Controller } from "react-hook-form";
-import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
+import type { TenantFormValues } from "@/schemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 import { Select } from "@heroui/select";
 import { SelectItem } from "@heroui/react";

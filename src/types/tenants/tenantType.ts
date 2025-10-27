@@ -26,6 +26,12 @@
 
 // tenantType.ts
 
+export type Occupancy =
+  | "SingleOccupancy"
+  | "DoubleOccupancy"
+  | "(3-4)Occupancy"
+  | "(5+)Occupancy";
+
 export interface ContractType {
   id: string;
   name: string;
@@ -57,13 +63,13 @@ export type RelationshipToTenant =
   | "OTHER";
 
 export interface Occupant {
-  id: string;
+  id?: string;
   name: string;
   nrc: string | null;
   relationshipToTenant: RelationshipToTenant;
   createdAt: string;
   updatedAt: string;
-  tenantId: string;
+  tenantId?: string;
 }
 
 export interface Room {
@@ -91,6 +97,6 @@ export interface Tenant {
   updatedAt: string;
   roomId: string;
   room: Room;
-  occupants: Occupant[];
+  occupants?: Occupant[];
   contract?: Contract;
 }

@@ -3,14 +3,15 @@ import { useForm, useFieldArray } from "react-hook-form";
 import {
   tenantFormSchema,
   type TenantFormValues,
-} from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
+} from "@/schemas/tenants/tenantsFormSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
 import { useTenants } from "@/hooks/tenants/useTenant.ts";
 import { useEffect } from "react";
+import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
 
 export default function CreateTenantsPage() {
-  const { createTenantMutation } = useTenants();
+  const { createTenantMutation } = useTenants({});
 
   const { isPending, isSuccess } = createTenantMutation;
   const {
@@ -38,7 +39,7 @@ export default function CreateTenantsPage() {
   });
 
   const onSubmit = (data: TenantFormValues) => {
-    createTenantMutation.mutate(data);
+    createTenantMutation.mutate(data as TenantPayload);
   };
 
   useEffect(() => {

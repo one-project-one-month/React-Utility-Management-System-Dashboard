@@ -9,6 +9,7 @@ import {
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { Eye, X } from "lucide-react";
+
 import DetailsModalHeader from "@/components/Billings/BillingDetails/details-modal-header.tsx";
 import DetailsModalBody from "@/components/Billings/BillingDetails/details-model-body.tsx";
 import type { Billing } from "@/types/billing/billingType.ts";
@@ -19,22 +20,6 @@ interface Props {
 
 export default function BillingDetailsModal({ billing }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  // const { getAllBillingsQuery } = useBillings();
-  // const { data: content } = getAllBillingsQuery;
-  // const billings = content?.data;
-  //
-  // const billing = billings?.find((billing) => billing.id === billingId);
-  // const tenant = mockTenants.find(
-  //   (tenant) => tenant.roomId === billing?.roomId,
-  // );
-  // const room = mockRooms.find((room) => room.id === billing?.roomId);
-  // const contract = mockContracts.find(
-  //   (contract) => contract.tenantId === tenant?.id,
-  // );
-
-  // if (!billing || !tenant || !room || !contract) return null;
-
   return (
     <>
       <Tooltip content={"See  Details"} placement="top">
@@ -62,11 +47,11 @@ export default function BillingDetailsModal({ billing }: Props) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-3 border-b border-divider mt-3 pb-3">
-                <DetailsModalHeader billing={billing} />
+              <ModalHeader>
+                <DetailsModalHeader room={billing.room} />
               </ModalHeader>
 
-              <ModalBody className="mt-2 space-y-3">
+              <ModalBody>
                 <DetailsModalBody billing={billing} />
               </ModalBody>
 

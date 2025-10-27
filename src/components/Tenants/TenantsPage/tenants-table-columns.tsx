@@ -21,7 +21,7 @@ export const tenantsTableColumns: ColumnDef<TenantTableData>[] = [
   {
     accessorKey: "no",
     header: "No.",
-    cell: (info) => info.getValue(),
+    cell: (info) => `${info.getValue()}.`,
   },
   {
     accessorKey: "name",

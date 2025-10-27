@@ -23,7 +23,7 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
   {
     accessorKey: "no",
     header: "No.",
-    cell: (info) => info.getValue(),
+    cell: (info) => `${info.getValue()}.`,
   },
   {
     accessorKey: "invoiceNo",
