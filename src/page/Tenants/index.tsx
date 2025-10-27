@@ -35,7 +35,6 @@ export default function TenantsPage() {
   const tenants = content?.data;
   const paginationMeta = content?.meta;
 
-  console.log("pagination meta is ", paginationMeta);
   const tenantsTableData = useTenantToTenantTableData({
     currentPage,
     pageSize: limit,

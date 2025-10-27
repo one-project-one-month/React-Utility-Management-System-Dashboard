@@ -7,12 +7,14 @@ import ContactInfoSection from "@/components/Tenants/TenentsForm/FormSections/co
 import FormActionButtons from "@/components/Form/form-action-buttons.tsx";
 
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
+import type { Room } from "@/types/room";
 
 interface Props {
   tenantId?: string;
   action: "create" | "update";
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   isLoading: boolean;
+  currentRoom?: Room;
   tenantsFormSectionProps: TenantFormSectionProps;
 }
 export default function TenantsFormContainer({
@@ -20,6 +22,7 @@ export default function TenantsFormContainer({
   action,
   onSubmit,
   isLoading,
+  currentRoom,
   tenantsFormSectionProps,
 }: Props) {
   return (
@@ -31,7 +34,10 @@ export default function TenantsFormContainer({
           <Card className="shadow-lg rounded-xl border-0">
             <CardBody className="p-6">
               <form onSubmit={onSubmit} className="space-y-6">
-                <TenantInfoSection {...tenantsFormSectionProps} />
+                <TenantInfoSection
+                  {...tenantsFormSectionProps}
+                  currentRoom={currentRoom}
+                />
                 <OccupantsInfoSection {...tenantsFormSectionProps} />
                 <ContactInfoSection {...tenantsFormSectionProps} />
                 {/*<RoomAndContractSection {...tenantsFormSectionProps} />*/}

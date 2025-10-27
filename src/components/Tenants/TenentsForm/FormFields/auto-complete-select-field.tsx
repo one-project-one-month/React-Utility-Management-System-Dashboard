@@ -1,8 +1,8 @@
 import { type Control, Controller } from "react-hook-form";
-import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
 import type { TenantFormValues } from "@/schemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormAutoCompleteSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
+import type { Room } from "@/types/room";
 
 interface Props {
   label: string;
@@ -11,7 +11,8 @@ interface Props {
   errorMessage: string;
   isInvalid: boolean;
   placeholder: string;
-  items: typeof mockRooms;
+  items: Room[];
+  isLoadingItems: boolean;
 }
 export default function AutoCompleteSelectField({
   label,
@@ -21,6 +22,7 @@ export default function AutoCompleteSelectField({
   isInvalid,
   placeholder,
   items,
+  isLoadingItems,
 }: Props) {
   return (
     <div>
@@ -40,11 +42,12 @@ export default function AutoCompleteSelectField({
             placeholder={placeholder}
             size="sm"
             variant="bordered"
+            isLoading={isLoadingItems}
           >
             {items.map((item) => {
-              const roomNo = "roomNo" in item ? item.roomNo : null;
-              const textValue = roomNo ? `Room ${roomNo}` : "---";
-
+              // const roomNo = "roomNo" in item ? item.roomNo : null;
+              // const textValue = roomNo ? `Room ${roomNo}` : "---";
+              const textValue = `Room ${item.roomNo}`;
               return (
                 <AutocompleteItem key={item.id} textValue={textValue}>
                   {textValue}

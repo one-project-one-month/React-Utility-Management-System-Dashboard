@@ -7,7 +7,7 @@ export interface ApiContent<T> {
     perPage: number;
   };
   links?: {
-    next?: string;
+    next?: string | null;
     prev?: string | null;
   };
 }
