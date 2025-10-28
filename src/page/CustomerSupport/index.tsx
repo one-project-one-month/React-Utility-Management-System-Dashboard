@@ -180,11 +180,7 @@ export default function CustomerSupportPage() {
                 <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
                     <h3 className="text-lg font-medium">Loading Services...</h3>
                     <div className="space-y-2">
-                        <SkeletonLoader height="6rem" />
-                        <SkeletonLoader height="6rem" />
-                        <SkeletonLoader height="6rem" />
-                        <SkeletonLoader height="6rem" />
-                        <SkeletonLoader height="6rem" />
+                        {[...Array(10)].map((_, i) => <SkeletonLoader key={i} height="6rem" />)}
                     </div>
                 </div>
             ) : (

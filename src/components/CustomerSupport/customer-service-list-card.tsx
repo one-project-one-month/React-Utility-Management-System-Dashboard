@@ -61,7 +61,7 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                             className="flex-1 flex flex-col gap-2"
                         >
                             <div className="flex items-center gap-3 mb-2">
-                                <h3 className="text-xl font-semibold">{service.roomNo}</h3>
+                                <h3 className="text-xl font-semibold">Room-{service.roomNo}</h3>
                                 <ServiceChip label={service.category} />
                                 <ServiceChip label={service.priorityLevel} />
                                 <ServiceChip label={service.status} />
