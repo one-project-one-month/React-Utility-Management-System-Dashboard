@@ -1,14 +1,14 @@
-import {Controller, type Resolver, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {type CreateRoomFormData, createRoomSchema} from "@/types/room.ts";
-import {useNavigate} from "react-router";
-import {breadcrumbs} from "@/constants/breadcrumbs.ts";
+import { Controller, type Resolver, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type CreateRoomFormData, createRoomSchema } from "@/types/room.ts";
+import { useNavigate } from "react-router";
+import { breadcrumbs } from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import {FormInput} from "@/components/Form/form-input.tsx";
-import {Bed, DollarSign, Hash, Layers, Maximize2, Users} from "lucide-react";
-import {FormSelect} from "@/components/Form/form-select.tsx";
-import {BEDROOM_OPTIONS, FLOOR_OPTIONS, STATUS_OPTIONS} from "@/constants/roomMockData.ts";
-import {Button, Textarea} from "@heroui/react";
+import { FormInput } from "@/components/Form/form-input.tsx";
+import { Bed, DollarSign, Hash, Layers, Maximize2, Users } from "lucide-react";
+import { FormSelect } from "@/components/Form/form-select.tsx";
+import { BEDROOM_OPTIONS, FLOOR_OPTIONS, STATUS_OPTIONS } from "@/constants/roomMockData.ts";
+import { Button, Textarea } from "@heroui/react";
 
 export default function RoomCreatePage() {
     const navigate = useNavigate();
@@ -151,6 +151,29 @@ export default function RoomCreatePage() {
 
                 <div>
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                        Rent Fee
+                    </h3>
+                    <div className={"grid grid-cols-1 gap-6"}>
+                        <Controller
+                            name={"sellingPrice"}
+                            control={control}
+                            render={({ field }) => (
+                                <FormInput
+                                    {...field}
+                                    label={"Monthly Rent Fee"}
+                                    placeholder={"Enter monthly rate"}
+                                    type={"number"}
+                                    startContent={<DollarSign size={18} className="text-default-500" />}
+                                    isInvalid={!!errors.sellingPrice}
+                                    errorMessage={errors.sellingPrice?.message}
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                         Room Description
                     </h3>
                     <div className={"space-y-6"}>
@@ -169,29 +192,6 @@ export default function RoomCreatePage() {
                                     maxRows={8}
                                     isInvalid={!!errors.description}
                                     errorMessage={errors.description?.message}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        Rent Fee
-                    </h3>
-                    <div className={"grid grid-cols-1 gap-6"}>
-                        <Controller
-                            name={"sellingPrice"}
-                            control={control}
-                            render={({ field }) => (
-                                <FormInput
-                                    {...field}
-                                    label={"Monthly Rent Fee"}
-                                    placeholder={"Enter monthly rate"}
-                                    type={"number"}
-                                    startContent={<DollarSign size={18} className="text-default-500" />}
-                                    isInvalid={!!errors.sellingPrice}
-                                    errorMessage={errors.sellingPrice?.message}
                                 />
                             )}
                         />
