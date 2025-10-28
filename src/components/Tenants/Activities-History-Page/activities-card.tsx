@@ -32,7 +32,7 @@ export default function ActivityCard({ activity }: Props) {
           <div className="flex items-center gap-2 text-sm text-foreground/60 mt-1">
             <span>{activity.data}</span>
             <span className="w-1 h-1 rounded-full bg-foreground-500"></span>
-            <span>{activity.date}</span>
+            <span>{new Date(activity.date).toLocaleDateString()}</span>
           </div>
         </div>
       </div>

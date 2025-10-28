@@ -19,7 +19,7 @@ export default function DetailsModalBody({ billing }: Props) {
   ];
 
   return (
-    <Card className="p-6 bg-content1 rounded-2xl shadow-sm overflow-y-auto custom-scrollbar">
+    <Card className="p-6 mt-2 bg-content1 rounded-2xl shadow-sm overflow-y-auto custom-scrollbar">
       <div className="grid grid-cols-2 gap-4 text-sm text-foreground/90">
         {billingDetails.map((detail) => (
           <div
@@ -30,7 +30,7 @@ export default function DetailsModalBody({ billing }: Props) {
               {detail.name}
             </span>
             <span className="font-semibold text-foreground">
-              {detail.value ? `${detail.value.toLocaleString()} MMK` : "—"}
+              {detail.value ? `${detail.value} MMK` : "—"}
             </span>
           </div>
         ))}
@@ -41,14 +41,14 @@ export default function DetailsModalBody({ billing }: Props) {
           <div className="col-span-2 flex items-center justify-between bg-primary/10 px-5 py-3 rounded-xl">
             <p className="text-base font-semibold text-primary">Total Amount</p>
             <p className="text-xl font-bold text-primary">
-              {billing.totalAmount.toLocaleString()} MMK
+              {billing.totalAmount} MMK
             </p>
           </div>
 
           <div className="flex items-center justify-between bg-warning/10 px-5 py-3 rounded-xl">
             <p className="text-base font-semibold text-warning">Due Date</p>
             <p className="text-base font-bold text-warning">
-              {billing.dueDate}
+              {new Date(billing.dueDate).toLocaleDateString()}
             </p>
           </div>
 
@@ -57,7 +57,7 @@ export default function DetailsModalBody({ billing }: Props) {
               Created Date
             </p>
             <p className="text-base font-bold text-foreground">
-              {billing.createdDate}
+              {new Date(billing.invoice.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
