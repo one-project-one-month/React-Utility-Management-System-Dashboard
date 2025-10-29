@@ -1,19 +1,19 @@
 import type {
   Category,
   Priority,
-  ServiceRequest,
+  CustomerService,
   Status,
 } from "@/types/customer-service";
 import { useMemo } from "react";
 
 export type Filters = {
   category: Category | "";
-  status: Status | "All" | "";
+  status: Status | "";
   priority: Priority | "";
 };
 
 export function useFilteredCustomerServices(
-  services: ServiceRequest[],
+  services: CustomerService[],
   searchTerm: string,
   filters: Filters
 ) {
@@ -41,7 +41,7 @@ export function useFilteredCustomerServices(
           matchesSearch,
 
           !filters.category || service.category === filters.category,
-          filters.status === "All" || service.status === filters.status,
+          !filters.status || service.status === filters.status,
           !filters.priority || service.priorityLevel === filters.priority,
         ];
 

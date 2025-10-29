@@ -1,32 +1,32 @@
 import {
-  fetchAllCustomers,
+  fetchCustomerServices,
   updateCustomerService,
   deleteCustomerService,
-} from "@/services/customerService";
-import type {
-  ServiceRequest,
-  CustomerServiceApiResponse,
-} from "@/types/customer-service";
+} from "@/services/customerServiceApi";
+import type { CustomerService } from "@/types/customer-service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Pagination } from "@/types/pagination";
+import type { ApiResponse } from "@/services/apiResponse";
+import { addToast } from "@heroui/react";
+
+interface UpdateServiceArgs {
+  id: string;
+  updates: Partial<CustomerService>;
+  onClose?: () => void;
+}
 
 export const useCustomerService = (
   page: number,
-  limit = 10,
-  params?: {
-    category?: string | undefined;
-    status?: string | undefined;
-    priorityLevel?: string | undefined;
-    search?: string | undefined;
-  }
+  limit: number,
+  filters: any
 ) => {
-  return useQuery<
-    CustomerServiceApiResponse,
-    Error,
-    CustomerServiceApiResponse
-  >({
-    queryKey: ["customer-services", page, limit, params],
-    queryFn: () => fetchAllCustomers(page, limit, params),
-    retry: 1,
+  const pagination: Pagination = { page, limit, filter: filters };
+  return useQuery({
+    queryKey: ["customer-services", pagination],
+    queryFn: async () => {
+      const res = await fetchCustomerServices(pagination, filters);
+      return res as ApiResponse<CustomerService>;
+    },
   });
 };
 
@@ -34,15 +34,25 @@ export const useUpdateCustomerService = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      updates,
-    }: {
-      id: string;
-      updates: Partial<ServiceRequest>;
-    }) => updateCustomerService(id, updates),
-    onSuccess: () => {
+    mutationFn: ({ id, updates }: UpdateServiceArgs) =>
+      updateCustomerService(id, updates),
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["customer-services"] });
+      addToast({
+        title: "Update Successful",
+        description: "Service status has been updated successfully.",
+        color: "success",
+        timeout: 3000,
+      });
+      variables?.onClose?.();
+    },
+    onError: (error: any) => {
+      addToast({
+        title: "Update failed",
+        description: error?.response?.data?.message ?? "Please try again.",
+        color: "danger",
+        timeout: 4000,
+      });
     },
   });
 };

@@ -1,4 +1,4 @@
-export interface ServiceRequest {
+export interface CustomerService {
   id: string;
   roomId: string;
   roomNo: string;
@@ -10,26 +10,6 @@ export interface ServiceRequest {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface CustomerServiceApiResponse {
-  success: boolean;
-  content: {
-    data: ServiceRequest[];
-    links: {
-      next: string | null;
-      prev: string | null;
-    };
-    meta: {
-      currentPage: number;
-      lastPage: number;
-      perPage: number;
-      total: number;
-    };
-  };
-}
-
 export type Category = "Complain" | "Maintenance" | "Other";
-
 export type Status = "Pending" | "Ongoing" | "Resolved";
-
 export type Priority = "Low" | "Medium" | "High";
