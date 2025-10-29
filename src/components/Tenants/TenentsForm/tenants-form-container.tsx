@@ -4,21 +4,25 @@ import HeaderForAllPages from "@/components/Tenants/shared/header-for-all-pages.
 import OccupantsInfoSection from "@/components/Tenants/TenentsForm/FormSections/occupants -info-section.tsx";
 import TenantInfoSection from "@/components/Tenants/TenentsForm/FormSections/tenant-info-section.tsx";
 import ContactInfoSection from "@/components/Tenants/TenentsForm/FormSections/contact-info-section.tsx";
-import RoomAndContractSection from "@/components/Tenants/TenentsForm/FormSections/room-and-contract-section.tsx";
 import FormActionButtons from "@/components/Form/form-action-buttons.tsx";
 
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
+import type { Room } from "@/types/room";
 
 interface Props {
   tenantId?: string;
   action: "create" | "update";
   onSubmit: React.FormEventHandler<HTMLFormElement>;
+  isLoading: boolean;
+  currentRoom?: Room;
   tenantsFormSectionProps: TenantFormSectionProps;
 }
 export default function TenantsFormContainer({
   tenantId,
   action,
   onSubmit,
+  isLoading,
+  currentRoom,
   tenantsFormSectionProps,
 }: Props) {
   return (
@@ -30,12 +34,15 @@ export default function TenantsFormContainer({
           <Card className="shadow-lg rounded-xl border-0">
             <CardBody className="p-6">
               <form onSubmit={onSubmit} className="space-y-6">
-                <TenantInfoSection {...tenantsFormSectionProps} />
+                <TenantInfoSection
+                  {...tenantsFormSectionProps}
+                  currentRoom={currentRoom}
+                />
                 <OccupantsInfoSection {...tenantsFormSectionProps} />
                 <ContactInfoSection {...tenantsFormSectionProps} />
-                <RoomAndContractSection {...tenantsFormSectionProps} />
+                {/*<RoomAndContractSection {...tenantsFormSectionProps} />*/}
 
-                <FormActionButtons action={action} />
+                <FormActionButtons action={action} isLoading={isLoading} />
               </form>
             </CardBody>
           </Card>

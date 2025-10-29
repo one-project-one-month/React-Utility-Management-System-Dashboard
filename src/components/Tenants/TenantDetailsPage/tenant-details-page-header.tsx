@@ -2,11 +2,11 @@ import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { FileSignature, History, Pencil } from "lucide-react";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
 import { useNavigate } from "react-router";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
 
 interface Props {
-  tenant: TenantType;
+  tenant: Tenant;
 }
 export default function TenantDetailsPageHeader({ tenant }: Props) {
   const navigate = useNavigate();
@@ -24,12 +24,6 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
       </div>
 
       <div className="flex gap-5">
-        {/*<Button variant="solid" color={"primary"}>*/}
-        {/*  See Contract*/}
-        {/*</Button>*/}
-        {/*<Button variant="ghost" color={"primary"}>*/}
-        {/*  New Contract*/}
-        {/*</Button>*/}
         <Tooltip content="Edit tenant info" placement="top">
           <Button
             isIconOnly

@@ -1,10 +1,9 @@
 import { Text, View } from "@react-pdf/renderer";
 import { styles } from "@/components/Invoices/InvoicePDF/invoice-styles.ts";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
 import type { Billing } from "@/types/billing/billingType.ts";
 
 interface Props {
-  tenant: TenantType;
+  tenantId: string;
   billing: Billing;
 }
 
@@ -12,14 +11,14 @@ interface BillingDetailsItem {
   label: string;
   value: string;
 }
-export default function DueDateAndBillingDetails({ tenant, billing }: Props) {
+export default function DueDateAndBillingDetails({ tenantId, billing }: Props) {
   const billingDetailsItems: BillingDetailsItem[] = [
     { label: "BILLING ID", value: billing.id },
     { label: "Room ID", value: billing.roomId },
-    { label: "Tenant ID", value: tenant.id },
+    { label: "Tenant ID", value: tenantId },
     {
       label: "Created Date",
-      value: new Date(billing.createdDate).toLocaleDateString(),
+      value: new Date(billing.invoice.createdAt).toLocaleDateString(),
     },
   ];
 

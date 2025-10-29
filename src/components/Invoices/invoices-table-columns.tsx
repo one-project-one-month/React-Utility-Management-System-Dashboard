@@ -1,36 +1,30 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
-import { Chip } from "@heroui/react";
 
 import type {
-  InvoicesTableActions,
+  InvoicesTableActionsData,
   InvoicesTableData,
 } from "@/types/invoices/invoicesTableData.ts";
-import { Tooltip } from "@heroui/tooltip";
-import { Button } from "@heroui/button";
-import { Download, Send } from "lucide-react";
-import BillingDetailsModal from "@/components/Billings/BillingDetails/billing-details-modal.tsx";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import InvoicePDF from "@/components/Invoices/InvoicePDF/invoice-pdf.tsx";
-import type { Invoice } from "@/types/invoices/invoiceType.ts";
+import ActionsCell from "@/components/Invoices/InovoiceTableCells/action-cell.tsx";
+import StatusCell from "@/components/Invoices/InovoiceTableCells/status-cell.tsx";
 
 export const invoicesTableColumnWidths: Record<string, string> = {
   no: "w-[5%]",
   invoiceNo: "w-[10%]",
-  tenantName: "w-[12%]",
+  tenantName: "w-[15%]",
   roomNo: "w-[8%]",
-  totalAmount: "w-[10%]",
+  totalAmount: "w-[9%]",
   issueDate: "w-[10%]",
   dueDate: "w-[10%]",
-  status: "w-[10%]",
-  actions: "w-[15%]",
+  status: "w-[8%]",
+  actions: "w-[15%] max-w-[150px]",
 };
 
 export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
   {
     accessorKey: "no",
     header: "No.",
-    cell: (info) => info.getValue(),
+    cell: (info) => `${info.getValue()}.`,
   },
   {
     accessorKey: "invoiceNo",
@@ -58,35 +52,7 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
     cell: (info) => {
       const status = info.getValue() as BillingStatus;
 
-      let color: "default" | "success" | "warning" | "danger" = "default";
-
-      switch (status) {
-        case "Pending":
-          color = "warning";
-          break;
-        case "Paid":
-          color = "success";
-          break;
-        case "Overdue":
-          color = "danger";
-          break;
-        default:
-          color = "default";
-      }
-
-      return (
-        <Chip
-          color={color}
-          variant="flat"
-          radius="lg"
-          classNames={{
-            base: `min-w-20 h-6 px-2 `,
-            content: `text-xs capitalize text-center font-semibold`,
-          }}
-        >
-          {status}
-        </Chip>
-      );
+      return <StatusCell status={status} />;
     },
   },
   {
@@ -103,47 +69,8 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: (info) => {
-      const actions = info.getValue() as InvoicesTableActions;
-      return (
-        <div className="flex justify-center gap-2">
-          <BillingDetailsModal billingId={actions.billing.id} />
-          <PDFDownloadLink
-            document={
-              <InvoicePDF
-                billing={actions.billing}
-                invoice={actions.invoice as Invoice}
-                tenant={actions.tenant}
-              />
-            }
-            fileName={`${actions.invoice?.invoiceNo}.pdf`}
-          >
-            <Tooltip content="Download Invoice" placement="top">
-              <Button
-                isIconOnly
-                variant="light"
-                color="primary"
-                radius="full"
-                onPress={() => {}}
-              >
-                <Download size={18} />
-              </Button>
-            </Tooltip>
-          </PDFDownloadLink>
-
-          <Tooltip content="Send Receipt" placement="top">
-            <Button
-              isIconOnly
-              isDisabled={actions.disableSendReceipt}
-              variant="light"
-              color="primary"
-              radius="full"
-              onPress={() => {}}
-            >
-              <Send size={18} />
-            </Button>
-          </Tooltip>
-        </div>
-      );
+      const actions = info.getValue() as InvoicesTableActionsData;
+      return <ActionsCell actions={actions} />;
     },
   },
 ];

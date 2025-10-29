@@ -1,6 +1,6 @@
 import { Input } from "@heroui/input";
 import type { UseFormRegister } from "react-hook-form";
-import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema.ts";
+import type { TenantFormValues } from "@/schemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 
 interface Props {
