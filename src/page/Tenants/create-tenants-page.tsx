@@ -23,7 +23,7 @@ export default function CreateTenantsPage() {
   } = useForm({
     resolver: zodResolver(tenantFormSchema),
     defaultValues: {
-      occupants: [{ name: "", nrc: "" }],
+      occupants: [{ name: "", nrc: "", relationshipToTenant: "OTHER" }],
       phoneNo: "",
       email: "",
       emergencyNo: "",
@@ -44,7 +44,6 @@ export default function CreateTenantsPage() {
 
   useEffect(() => {
     if (isSuccess) {
-      alert("Tenant created successfully!");
       reset();
     }
   }, [isSuccess]);

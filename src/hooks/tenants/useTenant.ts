@@ -6,6 +6,7 @@ import {
   updateTenant,
 } from "@/services/tenantService.ts";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
+import { addToast } from "@heroui/react";
 
 export const useTenants = ({
   currentPage,
@@ -25,6 +26,13 @@ export const useTenants = ({
     mutationFn: createTenant,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tenants"] });
+      addToast({
+        title: "Created Tenant Successfully",
+        color: "success",
+        timeout: 2000,
+        shouldShowTimeoutProgress: true,
+        radius: "sm",
+      });
     },
   });
 
@@ -39,6 +47,13 @@ export const useTenants = ({
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["tenants"] });
       queryClient.invalidateQueries({ queryKey: ["tenantById", variables.id] });
+      addToast({
+        title: "Updated Tenant Successfully",
+        color: "success",
+        timeout: 2000,
+        shouldShowTimeoutProgress: true,
+        radius: "sm",
+      });
     },
   });
 

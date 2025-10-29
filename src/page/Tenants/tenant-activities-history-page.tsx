@@ -52,7 +52,9 @@ export default function TenantActivitiesHistoryPage() {
   //   contractToActivity(contract),
   // );
 
-  const contractActivities = [contractToActivity(contracts as Contract)]; // တကယ်တမ်းအပေါ်ကအတိုင်းလုပ်ရမှာ။ backend က array နဲ့ ပြန်မထားလို့ ဒီတိုင်းခနလုပ်ထား.
+  const contractActivities = [contractToActivity(contracts as Contract)];
+  // တကယ်တမ်းအပေါ်ကအတိုင်းလုပ်ရမှာ။ backend က array နဲ့ ပြန်မထားလို့ ဒီတိုင်းခနလုပ်ထား.
+  // နောက်ကျ contractType ကိုယူ ၊ အဲ့ထဲက contarcts ကိုယူပြီး tenantId နဲ့ filter ပြန်လုပ်မယ်
 
   const allActivities = [
     ...billingActivities,
@@ -106,6 +108,17 @@ export default function TenantActivitiesHistoryPage() {
                     {item.content.map((activity, index) => (
                       <ActivityCard activity={activity} key={index} />
                     ))}
+                    {!item.content.length && (
+                      <Card className="flex flex-col items-center justify-center h-[250px] text-center bg-content2/40 border border-default-200 shadow-none">
+                        <p className="text-lg font-semibold text-foreground-500">
+                          No {item.label} Yet
+                        </p>
+                        <p className="text-sm text-foreground-400 mt-1">
+                          There are no {item.label.toLowerCase()} records
+                          available right now.
+                        </p>
+                      </Card>
+                    )}
                   </div>
                 </Tab>
               )}

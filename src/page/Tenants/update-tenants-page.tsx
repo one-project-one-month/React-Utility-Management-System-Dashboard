@@ -13,6 +13,7 @@ import { useOccupants } from "@/hooks/tenants/useOccupants.ts";
 import { useTenants } from "@/hooks/tenants/useTenant.ts";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
 import LoadingSpinner from "@/components/common/loading-spinner.tsx";
+import { addToast } from "@heroui/react";
 
 export default function UpdateTenantsPage() {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +34,13 @@ export default function UpdateTenantsPage() {
     createOccupantMutation.isPending ||
     updateOccupantMutation.isPending ||
     deleteOccupantMutation.isPending;
+
+  const hasErrorsInUpdatingTenant =
+    updateTenantMutation.isError ||
+    createOccupantMutation.isError ||
+    updateOccupantMutation.isError ||
+    deleteOccupantMutation.isError;
+
   const {
     reset,
     register,
@@ -140,7 +148,8 @@ export default function UpdateTenantsPage() {
       emergencyNo: formData.emergencyNo,
       roomId: formData.roomId,
     };
-    updateTenantMutation.mutate({ id: tenantToBeUpdated.id, updatedTenant });
+    if (!hasErrorsInUpdatingTenant)
+      updateTenantMutation.mutate({ id: tenantToBeUpdated.id, updatedTenant });
   };
 
   const tenantsFormSectionProps = {
