@@ -20,6 +20,7 @@ interface Props {
 
 export default function BillingDetailsModal({ billing }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  console.log("billing", billing);
   return (
     <>
       <Tooltip content={"See  Details"} placement="top">

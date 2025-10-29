@@ -8,11 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router";
 import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
 import { useTenantById } from "@/hooks/tenants/useTenantById.ts";
-import { Spinner } from "@heroui/react";
 import { useEffect } from "react";
 import { useOccupants } from "@/hooks/tenants/useOccupants.ts";
 import { useTenants } from "@/hooks/tenants/useTenant.ts";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
+import LoadingSpinner from "@/components/common/loading-spinner.tsx";
 
 export default function UpdateTenantsPage() {
   const { id } = useParams<{ id: string }>();
@@ -166,20 +166,7 @@ export default function UpdateTenantsPage() {
     });
   }, [isLoadingTenant, tenantToBeUpdated]);
 
-  if (isLoadingTenant)
-    return (
-      <div className="absolute top-0 left-0 w-full h-full bg-black/40">
-        <div className="flex items-center justify-center w-full h-full">
-          <Spinner
-            classNames={{ label: "text-white mt-4" }}
-            label="Loading tenant..."
-            variant="default"
-            color="white"
-            size="lg"
-          />
-        </div>
-      </div>
-    );
+  if (isLoadingTenant) return <LoadingSpinner label={"Loading tenant..."} />;
 
   return (
     <TenantsFormContainer
