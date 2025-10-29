@@ -13,9 +13,9 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-} from '@heroui/react'
-import ThemeToggle from '@/components/theme-toggle'
-import Logo from '@/assets/logo.png'
+} from "@heroui/react";
+import ThemeToggle from "@/components/theme-toggle";
+import Logo from "@/assets/logo.png";
 
 import {
   Search,
@@ -25,7 +25,7 @@ import {
   LucideTriangleAlert,
 } from "lucide-react";
 import useLogout from "@/hooks/useLogout";
-import LoadingSpinner from "../Auth/loading-spinner";
+import LoadingSpinner from "../loading-spinner";
 
 export default function Header() {
   const { mutate, isPending } = useLogout();
@@ -41,16 +41,10 @@ export default function Header() {
     onClose();
   };
 
-
   return (
     <header className="flex h-14 items-center gap-4 bg-card p-6">
       <div>
-        <img
-          src={Logo}
-          width={40}
-          height={40}
-          loading="lazy"
-        />
+        <img src={Logo} width={40} height={40} loading="lazy" />
       </div>
 
       <div className="flex items-center flex-1 gap-4">
@@ -140,7 +134,7 @@ export default function Header() {
             )}
           </ModalContent>
         </Modal>
-        {isPending && <LoadingSpinner />}
+        {isPending && <LoadingSpinner label="Logging out..." />}
       </div>
     </header>
   );
