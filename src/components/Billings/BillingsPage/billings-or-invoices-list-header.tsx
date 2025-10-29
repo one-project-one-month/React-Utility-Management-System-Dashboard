@@ -37,7 +37,7 @@ interface Props {
 
 export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<BillingStatus>();
+  const [selectedStatus, setSelectedStatus] = useState<BillingStatus>("Pending");
 
   const dispatch = useDispatch();
 
@@ -73,7 +73,7 @@ export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
 
   useEffect(() => {
     if (itemName === "Bill") {
-      dispatch(setBillingFilters({ status: selectedStatus }));
+      dispatch(setBillingFilters(selectedStatus));
     } else if (itemName === "Invoice") {
       dispatch(setInvoiceFilters({ status: selectedStatus }));
     }
