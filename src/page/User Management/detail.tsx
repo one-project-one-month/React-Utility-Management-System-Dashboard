@@ -20,7 +20,6 @@ export default function UserDetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    // const user = userDetailMockData.find(u => u.id == id);
     const { data: user, isLoading } = useFetchUser(id!) as { data: User | undefined, isLoading: boolean };
 
     if (isLoading) {

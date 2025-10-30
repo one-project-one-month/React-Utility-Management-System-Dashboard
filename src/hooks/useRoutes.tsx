@@ -68,6 +68,7 @@ export const useRoutes = () => {
         // Rooms
         { title: "Rooms", path: "/rooms", element: <RoomPage /> },
         { title: "Room Details", path: "/rooms/:id", element: <RoomDetailPage /> },
+        { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
         { title: "Edit Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
 
         // User Management

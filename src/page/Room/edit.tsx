@@ -16,8 +16,8 @@ import {type EditRoomFormData, editRoomSchema} from "@/types/room.ts";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
-import {useEditRoom, useFetchRoom} from "@/hooks/useRooms.ts";
 import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
+import {useEditRoom, useFetchRoom} from "@/hooks/useRooms.ts";
 
 export default function RoomEditPage() {
     const { id } = useParams();
@@ -40,8 +40,8 @@ export default function RoomEditPage() {
             floor: room?.floor ?? 1,
             dimension: room?.dimension ?? "",
             status: room?.status ?? "Available",
-            sellingPrice: room?.sellingPrice ?? "",
-            maxNoOfPeople: room?.maxNoOfPeople ?? "",
+            sellingPrice: room?.sellingPrice ?? 0,
+            maxNoOfPeople: room?.maxNoOfPeople ?? 0,
             description: room?.description ?? "",
         }
     });

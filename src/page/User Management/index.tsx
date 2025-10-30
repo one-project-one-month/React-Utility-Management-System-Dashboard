@@ -5,28 +5,37 @@ import {UserDataTable} from "@/components/UserDataTable";
 import FormDrawer from "@/components/form-drawer.tsx";
 import UserCreatePage from "@/page/User Management/create.tsx";
 import {Select, SelectItem} from "@heroui/react";
-import {useFilteredUsers} from "@/hooks/useFilteredUsers.ts";
 import {SearchInput} from "@/components/common/search-input.tsx";
 import {useDeleteUser, useFetchUsers} from "@/hooks/useUsers.ts";
 import {useConfirmDialog} from "@/hooks/useConfirmDialog.tsx";
+import type {Pagination as PaginationType} from "@/types/pagination.ts";
 
-const FILTER_OPTIONS = {
+const filterOptions = {
     role: ["all", "Tenant", "Staff", "Admin"]
 };
 
-const INIT_FILTERS = {
+const initialFilters = {
     role: "all",
 }
 
 export default function UserPage() {
-    const { data: users, isLoading } = useFetchUsers();
+    const [pagination, setPagination] = useState<PaginationType>({
+        page: 1,
+        limit: 10,
+    });
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filters, setFilters] = useState(initialFilters);
+
+    const { data: usersData, isLoading } = useFetchUsers(pagination);
+    const users = usersData?.data || [];
+    const meta = usersData?.meta;
+    const totalPages = meta?.lastPage || 1;
+
     const { mutate, isPending } = useDeleteUser();
     const { showConfirm, ConfirmDialog, closeDialog } = useConfirmDialog();
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filters, setFilters] = useState(INIT_FILTERS);
-
-    const filteredUsers = useFilteredUsers(users, searchTerm, filters)
+    // const filteredUsers = useFilteredUsers(users, searchTerm, filters)
 
     const handleRoleChange = (value: string) => {
         setFilters({ ...filters, role: value });
@@ -41,6 +50,11 @@ export default function UserPage() {
                 closeDialog();
             }
         });
+    }
+
+    const handlePageChange = (page: number) => {
+        setPagination(prev => ({ ...prev, page }));
+        scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     return (
@@ -63,7 +77,7 @@ export default function UserPage() {
                         trigger: "bg-white border-[0.5px] shadow-none dark:text-default-600 dark:bg-transparent",
                     }}
                 >
-                    {FILTER_OPTIONS.role.map((role) => (
+                    {filterOptions.role.map((role) => (
                         <SelectItem key={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</SelectItem>
                     ))}
                 </Select>
@@ -74,11 +88,15 @@ export default function UserPage() {
             </div>
 
             <UserDataTable
-                data={filteredUsers}
+                data={users}
                 isLoading={isLoading}
                 onDeleteUser={handleDelete}
                 isDeletingUser={isPending}
                 showConfirm={showConfirm}
+                currentPage={pagination.page}
+                pageSize={pagination.limit}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
             />
             <ConfirmDialog />
         </div>
