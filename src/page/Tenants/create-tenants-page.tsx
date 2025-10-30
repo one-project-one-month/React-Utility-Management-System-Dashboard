@@ -6,12 +6,12 @@ import {
 } from "@/schemas/tenants/tenantsFormSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-container.tsx";
-import { useTenants } from "@/hooks/tenants/useTenant.ts";
+import { useTenantMutations } from "@/hooks/tenants/useTenant.ts";
 import { useEffect } from "react";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
 
 export default function CreateTenantsPage() {
-  const { createTenantMutation } = useTenants({});
+  const { createTenantMutation } = useTenantMutations();
 
   const { isPending, isSuccess } = createTenantMutation;
   const {

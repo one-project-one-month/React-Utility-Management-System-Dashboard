@@ -16,11 +16,14 @@ export const billingTableColumnWidths: Record<string, string> = {
   billingIdForAction: "w-[8%]",
 };
 
-export const billingsTableColumns: ColumnDef<Billing>[] = [
+export const getBillingTableColumns = (
+  currentPage: number,
+  limit: number,
+): ColumnDef<Billing>[] => [
   {
     id: "no",
     header: "No.",
-    cell: (info) => `${info.row.index + 1}.`,
+    cell: (info) => `${(currentPage - 1) * limit + info.row.index + 1}.`,
   },
   {
     id: "tenantId",

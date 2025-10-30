@@ -14,11 +14,14 @@ export const tenantTableColumnWidths: Record<string, string> = {
   actions: "w-[11%]",
 };
 
-export const tenantsTableColumns: ColumnDef<Tenant>[] = [
+export const getTenantTableColumns = (
+  currentPage: number,
+  limit: number,
+): ColumnDef<Tenant>[] => [
   {
     id: "no",
     header: "No.",
-    cell: (info) => `${info.row.index + 1}.`,
+    cell: (info) => `${(currentPage - 1) * limit + info.row.index + 1}.`,
   },
   {
     accessorKey: "name",

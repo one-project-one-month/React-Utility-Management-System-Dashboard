@@ -7,7 +7,7 @@ import { Tooltip } from "@heroui/tooltip";
 import { Button } from "@heroui/button";
 import { CircleCheck, Download, Send } from "lucide-react";
 import type { Billing } from "@/types/billing/billingType.ts";
-import { useInvoices } from "@/hooks/invoices/useInvoices.ts";
+import { useSendReceipt } from "@/hooks/invoices/useInvoices.ts";
 import { useReceiptByInvoiceId } from "@/hooks/receipts/useReceiptByInvoiceId.ts";
 
 interface ActionsCellProps {
@@ -24,7 +24,7 @@ export default function ActionsCell({ actionData }: ActionsCellProps) {
   const { data: content } = getReceiptByInvoiceIdQuery;
   const receipt = content?.data;
 
-  const { sendReceiptMutation } = useInvoices({});
+  const sendReceiptMutation = useSendReceipt();
 
   const onSendReceipt = () => {
     sendReceiptMutation.mutate({

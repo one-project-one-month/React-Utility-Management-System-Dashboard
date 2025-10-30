@@ -15,29 +15,21 @@ export interface GetBillingsParams {
   limit?: number;
 }
 
-export const fetchAllBillings = async (pagination: Pagination, search?: string) => {
+export const fetchAllBillings = async (
+  pagination: Pagination,
+  search?: string,
+) => {
   const query = buildQueryParams(pagination);
   const response = await axiosInstance.get<ApiResponse<Billing[]>>(
-    `bills?${query}${search ? `&search=${encodeURIComponent(search)}` : ""}`
+    `bills?${query}${search ? `&search=${encodeURIComponent(search)}` : ""}`,
   );
   return response.data.content;
 };
 
-export const getAllBillings = async ({
-  search,
-  status,
-  currentPage,
-  limit,
-}: GetBillingsParams): Promise<ApiContent<Billing[]>> => {
-  const response = await axiosInstance.get<ApiResponse<Billing[]>>("bills", {
-    params: {
-      search: search && search?.length > 1 ? search : undefined,
-      status: status ?? undefined,
-      page: currentPage,
-      limit: limit,
-    },
-  });
-
+export const autoGenerateBill = async (): Promise<ApiContent<Billing>> => {
+  const response = await axiosInstance.get<ApiResponse<Billing>>(
+    "bills/auto-generate",
+  );
   return response.data.content;
 };
 
@@ -51,9 +43,20 @@ export const getBillingsById = async (
   return response.data.content;
 };
 
-export const autoGenerateBill = async (): Promise<ApiContent<Billing>> => {
-  const response = await axiosInstance.get<ApiResponse<Billing>>(
-    "bills/auto-generate",
-  );
-  return response.data.content;
-};
+// export const getAllBillings = async ({
+//   search,
+//   status,
+//   currentPage,
+//   limit,
+// }: GetBillingsParams): Promise<ApiContent<Billing[]>> => {
+//   const response = await axiosInstance.get<ApiResponse<Billing[]>>("bills", {
+//     params: {
+//       search: search && search?.length > 1 ? search : undefined,
+//       status: status ?? undefined,
+//       page: currentPage,
+//       limit: limit,
+//     },
+//   });
+//
+//   return response.data.content;
+// };

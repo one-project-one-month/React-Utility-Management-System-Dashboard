@@ -6,8 +6,7 @@ import { Plus, Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { useBillings } from "@/hooks/billings/useBillings.ts";
-import { useInvoices } from "@/hooks/invoices/useInvoices.ts";
+import { useAutoGenerateBill } from "@/hooks/billings/useBillings.ts";
 
 import {
   setFilters as setBillingFilters,
@@ -37,26 +36,17 @@ interface Props {
 
 export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<BillingStatus>("Pending");
+  const [selectedStatus, setSelectedStatus] =
+    useState<BillingStatus>("Pending");
 
   const dispatch = useDispatch();
 
-  const { autoGenerateBillingMutation } = useBillings({});
-  const { autoGenerateInvoiceMutation } = useInvoices({});
+  const autoGenerateBillingMutation = useAutoGenerateBill();
 
-  const isLoading =
-    itemName === "Bill"
-      ? autoGenerateBillingMutation.isPending
-      : autoGenerateInvoiceMutation.isPending;
+  const isLoading = autoGenerateBillingMutation.isPending;
 
   const handleClickCreateNew = () => {
-    if (itemName === "Bill") {
-      autoGenerateBillingMutation.mutate();
-    } else if (itemName === "Invoice") {
-      autoGenerateInvoiceMutation.mutate();
-    } else {
-      alert("Invalid Item Name");
-    }
+    autoGenerateBillingMutation.mutate();
   };
 
   const handleEnterSearch = (
@@ -75,7 +65,7 @@ export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
     if (itemName === "Bill") {
       dispatch(setBillingFilters(selectedStatus));
     } else if (itemName === "Invoice") {
-      dispatch(setInvoiceFilters({ status: selectedStatus }));
+      dispatch(setInvoiceFilters(selectedStatus));
     }
   }, [selectedStatus]);
 
@@ -122,22 +112,24 @@ export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
           ))}
         </Select>
       </div>
-      <Button
-        color={"primary"}
-        isLoading={isLoading}
-        onPress={handleClickCreateNew}
-        className={
-          "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
-        }
-      >
-        {isLoading ? (
-          `Creating New ${itemName}`
-        ) : (
-          <>
-            <Plus /> Create New {itemName}
-          </>
-        )}
-      </Button>
+      {itemName === "Bill" && (
+        <Button
+          color={"primary"}
+          isLoading={isLoading}
+          onPress={handleClickCreateNew}
+          className={
+            "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
+          }
+        >
+          {isLoading ? (
+            `Creating New Billings`
+          ) : (
+            <>
+              <Plus /> Create New Billings
+            </>
+          )}
+        </Button>
+      )}
     </div>
   );
 }

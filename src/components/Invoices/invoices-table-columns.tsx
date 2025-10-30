@@ -18,11 +18,14 @@ export const invoicesTableColumnWidths: Record<string, string> = {
   actions: "w-[15%] max-w-[150px]",
 };
 
-export const invoicesTableColumns: ColumnDef<Billing>[] = [
+export const getInvoiceTableColumns = (
+  currentPage: number,
+  limit: number,
+): ColumnDef<Billing>[] => [
   {
     id: "no",
     header: "No.",
-    cell: (info) => `${info.row.index + 1}.`,
+    cell: (info) => `${(currentPage - 1) * limit + info.row.index + 1}.`,
   },
   {
     id: "invoiceNo",

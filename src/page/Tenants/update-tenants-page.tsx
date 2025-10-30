@@ -10,10 +10,9 @@ import TenantsFormContainer from "@/components/Tenants/TenentsForm/tenants-form-
 import { useTenantById } from "@/hooks/tenants/useTenantById.ts";
 import { useEffect } from "react";
 import { useOccupants } from "@/hooks/tenants/useOccupants.ts";
-import { useTenants } from "@/hooks/tenants/useTenant.ts";
+import { useTenantMutations } from "@/hooks/tenants/useTenant.ts";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
 import LoadingSpinner from "@/components/common/loading-spinner.tsx";
-import { addToast } from "@heroui/react";
 
 export default function UpdateTenantsPage() {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +21,7 @@ export default function UpdateTenantsPage() {
   const { data: content, isLoading: isLoadingTenant } = getTenantByIdQuery;
   const tenantToBeUpdated = content?.data;
 
-  const { updateTenantMutation } = useTenants({});
+  const { updateTenantMutation } = useTenantMutations();
   const {
     createOccupantMutation,
     updateOccupantMutation,

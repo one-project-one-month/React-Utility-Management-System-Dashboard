@@ -1,25 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createTenant,
-  getAllTenants,
-  type GetTenantsParams,
+  fetchAllTenants,
   updateTenant,
 } from "@/services/tenantService.ts";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
 import { addToast } from "@heroui/react";
+import type { Pagination } from "@/types/pagination.ts";
 
-export const useTenants = ({
-  currentPage,
-  limit,
-  search,
-  occupancy,
-}: GetTenantsParams) => {
-  const queryClient = useQueryClient();
-
-  const getAllTenantsQuery = useQuery({
-    queryKey: ["tenants", currentPage, search, occupancy],
-    queryFn: () => getAllTenants({ currentPage, limit, search, occupancy }),
+export const useFetchAllTenants = (pagination: Pagination, search?: string) => {
+  return useQuery({
+    queryKey: ["tenants", pagination, search],
+    queryFn: () => fetchAllTenants(pagination, search),
   });
+};
+
+export const useTenantMutations = () => {
+  const queryClient = useQueryClient();
 
   const createTenantMutation = useMutation({
     mutationKey: ["createTenant"],
@@ -57,5 +54,5 @@ export const useTenants = ({
     },
   });
 
-  return { getAllTenantsQuery, createTenantMutation, updateTenantMutation };
+  return { createTenantMutation, updateTenantMutation };
 };
