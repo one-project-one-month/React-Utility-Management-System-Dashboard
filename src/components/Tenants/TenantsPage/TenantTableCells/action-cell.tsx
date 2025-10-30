@@ -1,12 +1,19 @@
 import { Tooltip } from "@heroui/tooltip";
 import { Button } from "@heroui/button";
 import { Eye, Pencil } from "lucide-react";
-import type { TenantTableActions } from "@/types/tenants/TenantTableData.ts";
+import { useNavigate } from "react-router";
 
 interface Props {
-  actions: TenantTableActions;
+  tenantId: string;
 }
-export default function ActionsCell({ actions }: Props) {
+export default function ActionsCell({ tenantId }: Props) {
+  const navigate = useNavigate();
+  const onEditHandler = () => {
+    navigate(`/tenants/update/${tenantId}`);
+  };
+  const onDetailsHandler = () => {
+    navigate(`/tenants/${tenantId}/details`);
+  };
   return (
     <div className="flex justify-center gap-3">
       <Tooltip content="Edit" placement="top">
@@ -15,7 +22,7 @@ export default function ActionsCell({ actions }: Props) {
           variant="light"
           color="primary"
           radius="full"
-          onPress={actions.onEdit}
+          onPress={onEditHandler}
         >
           <Pencil size={18} />
         </Button>
@@ -27,7 +34,7 @@ export default function ActionsCell({ actions }: Props) {
           variant="light"
           color="default"
           radius="full"
-          onPress={actions.onDetails}
+          onPress={onDetailsHandler}
         >
           <Eye size={18} />
         </Button>

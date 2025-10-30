@@ -11,11 +11,11 @@ import { useInvoices } from "@/hooks/invoices/useInvoices.ts";
 import { useReceiptByInvoiceId } from "@/hooks/receipts/useReceiptByInvoiceId.ts";
 
 interface ActionsCellProps {
-  actions: InvoicesTableActionsData;
+  actionData: InvoicesTableActionsData;
 }
 
-export default function ActionsCell({ actions }: ActionsCellProps) {
-  const { billing, invoice, tenant } = actions.actionData;
+export default function ActionsCell({ actionData }: ActionsCellProps) {
+  const { billing, invoice, tenant } = actionData;
 
   const { getReceiptByInvoiceIdQuery } = useReceiptByInvoiceId({
     invoiceId: invoice.id,

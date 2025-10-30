@@ -3,7 +3,6 @@ import {
   invoicesTableColumns,
   invoicesTableColumnWidths,
 } from "@/components/Invoices/invoices-table-columns.tsx";
-import { useInvoiceToInvoiceTableData } from "@/hooks/TableData/useInvoiceToInvoiceTableData.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentPage,
@@ -31,14 +30,14 @@ export default function InvoicesPage() {
     status,
   });
   const { data: content, isLoading } = getAllBillingsQuery;
-  const billings = content?.data;
+  const billings = content?.data ?? [];
   const paginationMeta = content?.meta;
 
-  const invoiceTableData = useInvoiceToInvoiceTableData({
-    page: currentPage,
-    pageSize: limit,
-    billings: billings ?? [],
-  });
+  // const invoiceTableData = useInvoiceToInvoiceTableData({
+  //   page: currentPage,
+  //   pageSize: limit,
+  //   billings: billings ?? [],
+  // });
 
   const handleCurrentPageChange = (newPage: number) => {
     dispatch(setCurrentPage(newPage));
@@ -58,7 +57,7 @@ export default function InvoicesPage() {
         <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl   custom-scrollbar">
           <DataTable
             isLoading={isLoading}
-            data={invoiceTableData}
+            data={billings}
             columns={invoicesTableColumns}
             columnWidths={invoicesTableColumnWidths}
             isManualPagination

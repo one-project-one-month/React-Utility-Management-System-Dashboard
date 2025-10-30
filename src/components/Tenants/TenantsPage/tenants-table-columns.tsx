@@ -1,9 +1,6 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import type {
-  TenantTableActions,
-  TenantTableData,
-} from "@/types/tenants/TenantTableData.ts";
 import ActionsCell from "@/components/Tenants/TenantsPage/TenantTableCells/action-cell.tsx";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
 
 export const tenantTableColumnWidths: Record<string, string> = {
   no: "w-[6%]",
@@ -17,53 +14,54 @@ export const tenantTableColumnWidths: Record<string, string> = {
   actions: "w-[11%]",
 };
 
-export const tenantsTableColumns: ColumnDef<TenantTableData>[] = [
+export const tenantsTableColumns: ColumnDef<Tenant>[] = [
   {
-    accessorKey: "no",
+    id: "no",
     header: "No.",
-    cell: (info) => `${info.getValue()}.`,
+    cell: (info) => `${info.row.index + 1}.`,
   },
   {
     accessorKey: "name",
     header: "Name",
-    cell: (info) => info.getValue(),
   },
   {
     accessorKey: "nrc",
     header: "NRC",
-    cell: (info) => info.getValue(),
   },
   {
     accessorKey: "email",
     header: "Email",
-    cell: (info) => info.getValue(),
   },
   {
     accessorKey: "phoneNo",
     header: "Phone No",
-    cell: (info) => info.getValue(),
   },
   {
-    accessorKey: "contractType",
+    id: "contractType",
     header: "ContractType",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => {
+      return row.contract ? row.contract.contractType.name : " --- ";
+    },
   },
   {
-    accessorKey: "roomNo",
+    id: "roomNo",
     header: "Room No",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => {
+      return row.room.roomNo;
+    },
   },
   {
-    accessorKey: "occupantsCount",
+    id: "occupantsCount",
     header: "# Occupants",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => (row.occupants?.length ?? 0) + 1,
   },
   {
-    accessorKey: "actions",
+    id: "actions",
+    accessorKey: "id",
     header: "Actions",
     cell: (info) => {
-      const actions = info.getValue() as TenantTableActions;
-      return <ActionsCell actions={actions} />;
+      const tenantId = info.getValue() as string;
+      return <ActionsCell tenantId={tenantId} />;
     },
   },
 ];

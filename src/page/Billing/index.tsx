@@ -5,7 +5,6 @@ import {
   billingTableColumnWidths,
 } from "@/components/Billings/BillingsPage/billings-table-columns.tsx";
 import { useBillings } from "@/hooks/billings/useBillings.ts";
-import { useBillingToBillingTableData } from "@/hooks/TableData/useBillingToBillingTableData.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentPage,
@@ -31,14 +30,8 @@ export default function BillingPage() {
     status,
   });
   const { data: content, isLoading } = getAllBillingsQuery;
-  const billings = content?.data;
+  const billings = content?.data ?? [];
   const paginationMeta = content?.meta;
-
-  const billingTableData = useBillingToBillingTableData({
-    page: currentPage,
-    pageSize: limit,
-    billings: billings ?? [],
-  });
 
   const handleCurrentPageChange = (newPage: number) => {
     dispatch(setCurrentPage(newPage));
@@ -59,7 +52,7 @@ export default function BillingPage() {
         <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl  custom-scrollbar">
           <DataTable
             isLoading={isLoading}
-            data={billingTableData}
+            data={billings}
             columns={billingsTableColumns}
             columnWidths={billingTableColumnWidths}
             isManualPagination

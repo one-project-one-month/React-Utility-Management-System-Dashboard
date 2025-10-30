@@ -5,7 +5,6 @@ import {
 } from "@/components/Tenants/TenantsPage/tenants-table-columns.tsx";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import { useTenants } from "@/hooks/tenants/useTenant.ts";
-import { useTenantToTenantTableData } from "@/hooks/TableData/useTenantToTenantTableData.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentPage,
@@ -32,14 +31,14 @@ export default function TenantsPage() {
   });
 
   const { data: content, isLoading } = getAllTenantsQuery;
-  const tenants = content?.data;
+  const tenants = content?.data ?? [];
   const paginationMeta = content?.meta;
 
-  const tenantsTableData = useTenantToTenantTableData({
-    currentPage,
-    pageSize: limit,
-    tenants: tenants ?? [],
-  });
+  // const tenantsTableData = useTenantToTenantTableData({
+  //   currentPage,
+  //   pageSize: limit,
+  //   tenants: tenants ?? [],
+  // });
 
   const handleCurrentPageChange = (newPage: number) => {
     dispatch(setCurrentPage(newPage));
@@ -58,7 +57,7 @@ export default function TenantsPage() {
         <div className="h-[68vh] overflow-y-auto rounded-xl   custom-scrollbar">
           <DataTable
             isLoading={isLoading}
-            data={tenantsTableData}
+            data={tenants}
             columns={tenantsTableColumns}
             columnWidths={tenantTableColumnWidths}
             isManualPagination
