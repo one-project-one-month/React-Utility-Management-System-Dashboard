@@ -5,6 +5,8 @@ import type {
   ApiResponse,
 } from "@/types/ApiResponse/ApiResponse.ts";
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
+import type { Pagination } from "@/types/pagination";
+import { buildQueryParams } from "./utils";
 
 export interface GetBillingsParams {
   search?: string;
@@ -12,6 +14,14 @@ export interface GetBillingsParams {
   currentPage?: number;
   limit?: number;
 }
+
+export const fetchAllBillings = async (pagination: Pagination, search?: string) => {
+  const query = buildQueryParams(pagination);
+  const response = await axiosInstance.get<ApiResponse<Billing[]>>(
+    `bills?${query}${search ? `&search=${encodeURIComponent(search)}` : ""}`
+  );
+  return response.data.content;
+};
 
 export const getAllBillings = async ({
   search,

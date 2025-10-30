@@ -1,9 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   autoGenerateBill,
+  fetchAllBillings,
   getAllBillings,
   type GetBillingsParams,
 } from "@/services/billingServices.ts";
+import type { Pagination } from "@/types/pagination";
+
+export const useFetchBillings = (pagination: Pagination, search?: string) => {
+  return useQuery({
+    queryKey: ["billings", pagination, search],
+    queryFn: () => fetchAllBillings(pagination, search),
+  });
+};
+
+export const useAutoGenerateBill = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["autoGenerateBillings"],
+    mutationFn: autoGenerateBill,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["billings"] });
+    },
+  });
+};
 
 export const useBillings = ({
   currentPage,
