@@ -1,10 +1,10 @@
 import type { UtilityUnit } from "@/types/utilityUnit";
-import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import DataTable from "../data-table";
 import { Link } from "react-router";
 import { EyeIcon } from "lucide-react";
-import useFetchUtilityUnit from "@/hooks/useFetchUtilityUnit";
+import useFetchUtilityUnit from "@/hooks/utility-units/useFetchUtilityUnit";
 import type { Pagination } from "@/types/pagination";
 import { Chip } from "@heroui/react";
 
@@ -22,85 +22,64 @@ export default function UnitList() {
     InMaintenance: "bg-yellow-600 text-xs text-white px-2 py-1",
   };
 
+
   const columns: ColumnDef<UtilityUnit>[] = [
     {
       id: "roomInfo",
-      header: "Room ",
+      header: "Room",
       cell: ({ row }) => {
-        const { roomNo, floor, roomStatus } = row.original;
+        const {
+          bill: { room },
+        } = row.original;
         return (
-          <div className="flex flex-col gap-3">
-            <p className="space-x-2">
-              <span>No - {roomNo}</span>{" "}
-              <span className="text-xs text-gray-500">Floor - {floor}</span>
-            </p>
-            <div className="flex items-center gap-x-3">
-              <p className="text-xs">
-                <Chip
-                  size={"sm"}
-                  variant="flat"
-                  className={statusColors[roomStatus]}
-                  radius={"full"}
-                >
-                  {roomStatus}
-                </Chip>{" "}
-              </p>
+          <div className="flex flex-col gap-2">
+            <div className="space-x-2">
+              <span>No - {room.roomNo}</span>
+              <span className="text-xs text-gray-500">
+                Floor - {room.floor}
+              </span>
+            </div>
+            <div className="flex items-center gap-x-2">
+              <Chip
+                size="sm"
+                variant="flat"
+                className={statusColors[room.status]}
+                radius="full"
+              >
+                {room.status}
+              </Chip>
             </div>
           </div>
         );
       },
     },
     {
-      accessorKey: "tenantName",
       header: "Tenant Name",
+      cell: ({ row }) => row.original.bill.room.tenant.name,
     },
     {
       accessorKey: "electricityUnits",
       header: "Electricity Unit",
-      cell: ({ row }) => {
-        return (
-          <div className="space-x-1">
-            <span>{row.original.electricityUnits}</span>
-            <span className="text-xs text-gray-400"> kwh </span>
-          </div>
-        );
-      },
-    
+      cell: ({ row }) => (
+        <div className="space-x-1">
+          <span>{row.original.electricityUnits}</span>
+          <span className="text-xs text-gray-400">kwh</span>
+        </div>
+      ),
     },
     {
       accessorKey: "waterUnits",
       header: "Water Unit",
-      cell: ({ row }) => {
-        return (
-          <div className="space-x-1">
-            <span>{row.original.waterUnits}</span>
-            <span className="text-xs text-gray-400">m³</span>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <div className="space-x-1">
+          <span>{row.original.waterUnits}</span>
+          <span className="text-xs text-gray-400">m³</span>
+        </div>
+      ),
     },
     {
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ getValue }) => {
-        const dateValue = getValue() as Date;
-
-        const date = new Date(dateValue).toLocaleDateString("en-US", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        });
-        const time = new Date(dateValue).toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        });
-        return `${date}, ${time}`;
-      },
-    },
-    {
-      accessorKey: "updatedAt",
-      header: "Updated At",
       cell: ({ getValue }) => {
         const dateValue = getValue() as Date;
         const date = new Date(dateValue).toLocaleDateString("en-US", {
@@ -119,18 +98,16 @@ export default function UnitList() {
     {
       id: "action",
       header: () => <div className="text-center">Action</div>,
-      cell: (info) => {
-        return (
-          <div className="flex justify-center gap-x-1">
-            <Link
-              to={`/utility-units/${info.row.original.id}`}
-              className="px-3 py-2 border rounded border-neutral-200"
-            >
-              <EyeIcon size={12} />
-            </Link>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <div className="flex justify-center">
+          <Link
+            to={`/utility-units/${row.original.id}`}
+            className="px-3 py-2 border rounded border-neutral-200"
+          >
+            <EyeIcon size={12} />
+          </Link>
+        </div>
+      ),
     },
   ];
 

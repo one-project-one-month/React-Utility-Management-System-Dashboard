@@ -1,4 +1,4 @@
-import utilityUnitServices from "@/services/utilityUnitServices"
+import {utilityUnitServices} from "@/services/utilityUnitServices"
 import type { Pagination } from "@/types/pagination"
 import { useQuery } from "@tanstack/react-query"
 
