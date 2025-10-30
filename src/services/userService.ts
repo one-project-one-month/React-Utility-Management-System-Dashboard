@@ -1,41 +1,47 @@
-import type {CreateUserFormData, EditUserFormData} from "@/types/user.ts";
+import type {CreateUserFormData, EditUserFormData, User} from "@/types/user.ts";
 import axiosInstance from "@/services/axiosInstance.ts";
+import type {Pagination} from "@/types/pagination.ts";
+import {buildQueryParams} from "@/services/utils";
+import type {ApiResponse} from "@/services/apiResponse.ts";
 
-async function fetchUsers() {
-    const res = await axiosInstance.get("/users");
+export const fetchUsers = async (pagination: Pagination) => {
+    const query = buildQueryParams(pagination);
+    const res = await axiosInstance.get<ApiResponse<User[]>>(`/users?${query}`);
+
+    return {
+        data: res.data.content.data,
+        meta: res.data.content.meta,
+        links: res.data.content.links
+    }
+}
+
+export const  fetchUser = async (id: string) => {
+    const res = await axiosInstance.get<ApiResponse<User>>(`/users/${id}`);
+
     return res.data.content.data;
 }
 
-async function fetchUser(id: string) {
-    const res = await axiosInstance.get(`/users/${id}`);
-    return res.data.content.data;
-}
-
-async function fetchTenants() {
+// Replace this temporary logic with fetchTenants() when it's ready
+export const fetchTenants = async () => {
     const res = await axiosInstance.get("/tenants");
+
     return res.data.content.data;
 }
 
-async function createUser(formData: CreateUserFormData) {
-    const res = await axiosInstance.post("/users", formData);
+export const createUser = async (formData: CreateUserFormData) => {
+    const res = await axiosInstance.post<ApiResponse<CreateUserFormData>>("/users", formData);
+    
     return res.data;
 }
 
-async function editUser(id: string, formData: EditUserFormData) {
-    const res = await axiosInstance.put(`/users/${id}`, formData);
+export const editUser = async (id: string, formData: EditUserFormData) => {
+    const res = await axiosInstance.put<ApiResponse<EditUserFormData>>(`/users/${id}`, formData);
+
     return res.data;
 }
 
-async function deleteUser(id: string) {
+export const deleteUser = async (id: string) => {
     const res = await axiosInstance.delete(`/users/${id}`);
-    return res.data;
-}
 
-export const userService = {
-    fetchUsers,
-    fetchUser,
-    fetchTenants,
-    createUser,
-    editUser,
-    deleteUser
+    return res.data;
 }

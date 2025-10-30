@@ -48,30 +48,3 @@ export type EditUserFormData = z.infer<typeof editUserSchema>;
 
 export type Tenant = z.infer<typeof tenantSchema>;
 export type User = z.infer<typeof userSchema>;
-
-interface PaginationMeta {
-    total: number;
-    currentPage: number;
-    lastPage: number;
-    perPage: number;
-}
-
-interface PaginationLink {
-    next: string | null;
-    prev: string | null;
-}
-
-export type ApiResponse<T> = {
-    success: boolean;
-    message: string;
-    content: T;
-    status: number;
-}
-
-export type UserResponse<T> = ApiResponse<{ user: T }>;
-
-export type CreateUserResponse = UserResponse<CreateUserFormData>;
-export type EditUserResponse = UserResponse<EditUserFormData>;
-export type DeleteUserResponse = UserResponse<{
-    data: User
-}>
