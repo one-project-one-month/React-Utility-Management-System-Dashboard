@@ -6,7 +6,7 @@ import type {
   UseFieldArrayRemove,
   FieldArrayWithId,
 } from "react-hook-form";
-import type { TenantFormValues } from "@/constants/formSchemas/tenants/tenantsFormSchema";
+import type { TenantFormValues } from "@/schemas/tenants/tenantsFormSchema";
 
 export interface TenantFormSectionProps {
   register: UseFormRegister<TenantFormValues>;
@@ -31,7 +31,7 @@ export type TenantFormFieldNames =
   | `occupants.${number}.nrc`
   | `occupants.${number}.relationshipToTenant`;
 
-export type TenantFormAutoCompleteSelectFieldNames = "roomId" | "contractId";
+export type TenantFormAutoCompleteSelectFieldNames = "roomId";
 export type TenantFormSelectFieldNames =
   `occupants.${number}.relationshipToTenant`;
 

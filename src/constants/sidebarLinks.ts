@@ -1,16 +1,18 @@
-import {Grid, type LucideIcon, ShieldUser} from "lucide-react";
 import {
-	Home,
-	CreditCard,
-	FileStack,
-	SquareUser,
-	FileText,
-	Users,
-	Zap,
-	FileSpreadsheet,
-	Headphones,
-	Command,
+  Home,
+  CreditCard,
+  FileStack,
+  SquareUser,
+  FileText,
+  Users,
+  Zap,
+  FileSpreadsheet,
+  Headphones,
+  Command,
+  Grid,
+  type LucideIcon,
 } from "lucide-react";
+
 
 export type SidebarLink = {
 	href: string;

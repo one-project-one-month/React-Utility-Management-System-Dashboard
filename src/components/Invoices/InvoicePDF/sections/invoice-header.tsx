@@ -1,22 +1,21 @@
 import { Text, View } from "@react-pdf/renderer";
 import { styles } from "@/components/Invoices/InvoicePDF/invoice-styles.ts";
-import type { Invoice, InvoiceStatus } from "@/types/invoices/invoiceType.ts";
+import type { Invoice } from "@/types/billing/billingType.ts";
 
 interface Props {
   invoice: Invoice;
 }
-
 export default function InvoiceHeader({ invoice }: Props) {
-  const getStatusColor = (status: InvoiceStatus) => {
-    switch (status) {
-      case "Paid":
-        return "#10B981"; // Green
-      case "Pending":
-        return "#F59E0B"; // Yellow
-      case "Overdue":
-        return "#EF4444"; // Red
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "paid":
+        return "#10B981";
+      case "pending":
+        return "#F59E0B";
+      case "overdue":
+        return "#EF4444";
       default:
-        return "#6B7280"; // Gray
+        return "#6B7280";
     }
   };
 

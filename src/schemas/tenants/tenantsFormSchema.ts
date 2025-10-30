@@ -3,21 +3,26 @@ import { z } from "zod";
 const phoneSchema = z
   .string()
   .trim()
-  .min(7, "Phone number must be at least 7 characters")
-  .regex(/^[+0-9\s-]+$/, "Phone number contains invalid characters");
+  .regex(
+    /^09\d{7,9}$/,
+    "Phone number must start with 09 and contain 9–11 digits total",
+  );
 
-const nrcPattern = /^([1-9]|1[0-4])\/[A-Z]{1,3}\(N\)\d{1,10}$/;
+const nrcPattern = /^([1-9]|1[0-4])\/[A-Z]{1,4}\(N\)\d{1,10}$/;
 
 export const relationshipToTenantSchema = z.enum([
-  "Spouse",
-  "Child",
-  "Parent",
-  "Relative",
-  "Friend",
-  "Other",
+  "SPOUSE",
+  "PARENT",
+  "CHILD",
+  "SIBLING",
+  "RELATIVE",
+  "FRIEND",
+  "OTHER",
 ]);
 
 export const occupantSchema = z.object({
+  id: z.string().optional(),
+  tenantId: z.string().optional(),
   name: z
     .string()
     .trim()
@@ -26,9 +31,10 @@ export const occupantSchema = z.object({
   nrc: z
     .string()
     .trim()
-    .min(1, "NRC is required")
+    .max(100, "NRC is too long")
     .regex(nrcPattern, "NRC contains invalid characters")
-    .max(100, "NRC is too long"),
+    .or(z.literal("").transform(() => null))
+    .nullable(),
   relationshipToTenant: relationshipToTenantSchema,
 });
 
@@ -44,9 +50,7 @@ export const tenantFormSchema = z.object({
     .min(1, "NRC is required")
     .regex(nrcPattern, "NRC contains invalid characters")
     .max(100, "NRC is too long"),
-  occupants: z
-    .array(occupantSchema)
-    .min(1, "At least one occupant is required"),
+  occupants: z.array(occupantSchema),
   phoneNo: phoneSchema,
   email: z
     .string()
@@ -55,7 +59,7 @@ export const tenantFormSchema = z.object({
     .email("Invalid email address"),
   emergencyNo: phoneSchema,
   roomId: z.string().trim().min(1, "Room must be selected"),
-  contractId: z.string().trim().min(1, "Contract must be selected"),
+  // contractId: z.string().trim().min(1, "Contract must be selected"),
 });
 
 export type TenantFormValues = z.infer<typeof tenantFormSchema>;

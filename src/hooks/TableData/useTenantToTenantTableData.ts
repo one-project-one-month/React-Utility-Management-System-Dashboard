@@ -1,37 +1,32 @@
-import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
-import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
 import type { TenantTableData } from "@/types/tenants/TenantTableData.ts";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
 import { useNavigate } from "react-router";
 
 interface Props {
-  page: number;
+  currentPage: number;
   pageSize: number;
-  tenants: TenantType[];
+  tenants: Tenant[];
 }
 
 export const useTenantToTenantTableData: (p: Props) => TenantTableData[] = ({
-  page,
+  currentPage,
   pageSize,
   tenants,
 }: Props) => {
   const navigate = useNavigate();
+
   return tenants.map((tenant, index) => {
-    const no = (page - 1) * pageSize + index + 1;
+    const no = (currentPage - 1) * pageSize + index + 1;
     const name = tenant?.name;
     const nrc = tenant.nrc;
     const email = tenant.email;
     const phoneNo = tenant.phoneNo;
+    const contractType = tenant.contract
+      ? tenant.contract.contractType.name
+      : " --- ";
+    const roomNo = tenant.room.roomNo;
 
-    const contract = mockContracts.find(
-      (contract) => contract.tenantId === tenant?.id,
-    );
-    const contractType = contract?.contractName ?? "Not found";
-
-    const room = mockRooms.find((room) => room.id === tenant.roomId);
-    const roomNo = room?.roomNo ?? 0;
-
-    const occupantsCount = tenant.occupants.length + 1;
+    const occupantsCount = (tenant.occupants?.length ?? 0) + 1;
 
     const onEditHandler = (tenantId: string) => {
       navigate(`/tenants/update/${tenantId}`);

@@ -70,6 +70,7 @@ export const useRoutes = () => {
         { title: "Room Details", path: "/rooms/:id", element: <RoomDetailPage /> },
         { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
         { title: "Edit Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
+        { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
 
         // User Management
         { title: "User Management", path: "/user-management/users", element: <UserPage /> },
@@ -89,5 +90,8 @@ export const useRoutes = () => {
         { title: "Contract Type", path: "/contract/contract-type", element: <ContractTypePage /> },
         { title: "Tenant Contract", path: "/contract/contract-tenants", element: <TenantContractPage /> },
         { title: "Contract History", path: "/contract/contract-history", element: <TenantContractHistoryPage /> },
+
+        // Invoice
+        { title: "Invoices", path: "/invoices", element: <InvoicesPage /> },
     ];
 };
