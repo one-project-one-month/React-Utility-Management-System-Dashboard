@@ -1,40 +1,40 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {roomService} from "@/services/roomService.ts";
-import type {CreateRoomFormData, CreateRoomResponse, EditRoomFormData, EditRoomResponse, Room} from "@/types/room.ts";
+import {createRoom, editRoom, fetchRooms, fetchRoom} from "@/services/roomService"
+import type { Pagination } from "@/types/pagination"
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
+import {useNavigate} from "react-router";
+import type {ApiResponse} from "@/services/apiResponse.ts";
+import type {CreateRoomFormData, EditRoomFormData} from "@/types/room.ts";
 import type {AxiosError} from "axios";
 import {addToast} from "@heroui/react";
-import {useNavigate} from "react-router";
 
-export function useFetchRooms() {
+export const useFetchRooms = (pagination: Pagination) => {
     return useQuery({
-        queryKey: ["rooms"],
-        queryFn: () => roomService.fetchRooms(),
-        staleTime: 30000,
+        queryKey: ['rooms', pagination],
+        queryFn: () => fetchRooms(pagination),
     });
 }
 
-export function useFetchRoom(id: string) {
+export const useFetchRoom = (id: string) => {
     return useQuery({
-        queryKey: ["rooms", id],
-        queryFn: () => roomService.fetchRoom(id),
-        staleTime: 30000,
-        enabled: !!id
+        queryKey: ['rooms', id],
+        queryFn: () => fetchRoom(id),
+        enabled: !!id,
     });
 }
 
-export function useCreateRoom() {
+export const useCreateRoom = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     return useMutation<
-        CreateRoomResponse,
+        ApiResponse<CreateRoomFormData>,
         AxiosError<{ message: string }>,
         CreateRoomFormData
     >({
-        mutationFn: (formData) => roomService.createRoom(formData),
+        mutationFn: (formData) => createRoom(formData),
         onSuccess: async (data) => {
-            await queryClient.invalidateQueries({ queryKey: ["rooms"] })
-            await queryClient.refetchQueries({ queryKey: ["rooms"] });
+            await queryClient.invalidateQueries({ queryKey: ['rooms'] });
+            await queryClient.refetchQueries({ queryKey: ['rooms'] });
 
             addToast({
                 title: data.message,
@@ -46,7 +46,6 @@ export function useCreateRoom() {
 
             navigate("/rooms");
         },
-
         onError: (error) => {
             addToast({
                 title: error.response?.data.message || "Failed to create room",
@@ -56,41 +55,27 @@ export function useCreateRoom() {
                 radius: "sm",
                 variant: "flat",
             });
-        },
-    });
+        }
+    })
 }
 
-export function useEditRoom() {
+export const useEditRoom = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     return useMutation<
-        EditRoomResponse,
+        ApiResponse<EditRoomFormData>,
         AxiosError<{ message: string }>,
-        { id: string, formData: EditRoomFormData },
-        { previousRooms: Room[] | undefined; previousRoom: Room | undefined }
+        { id: string, formData: EditRoomFormData }
     >({
-        mutationFn: ({ id, formData }) => roomService.editRoom(id, formData),
-        onMutate: async ({ id, formData }) => {
-            await queryClient.cancelQueries({ queryKey: ["rooms"] });
-            await queryClient.cancelQueries({ queryKey: ["rooms", id] });
+        mutationFn: ({ id, formData }) => editRoom(id, formData),
+        onSuccess: async (data, variables) => {
+            await queryClient.invalidateQueries({ queryKey: ["rooms"] });
+            await queryClient.refetchQueries({ queryKey: ["rooms"] });
 
-            const previousRooms = queryClient.getQueryData<Room[]>(["rooms"]);
-            const previousRoom = queryClient.getQueryData<Room>(["rooms", id]);
+            await queryClient.invalidateQueries({ queryKey: ["rooms", variables.id] })
+            await queryClient.refetchQueries({ queryKey: ["rooms", variables.id] });
 
-            queryClient.setQueryData(["rooms",], (old: Room[] | undefined) =>
-                old?.map((room) =>
-                    (room.id === id ? { ...room, ...formData } : room)
-                )
-            );
-
-            queryClient.setQueryData(["rooms", id], (old: Room | undefined) =>
-                old ? { ...old, ...formData } : old
-            );
-
-            return { previousRooms, previousRoom };
-        },
-        onSuccess: (data, variables) => {
             addToast({
                 title: data.message,
                 color: "success",
@@ -99,19 +84,9 @@ export function useEditRoom() {
                 radius: "sm",
             });
 
-            queryClient.invalidateQueries({ queryKey: ["rooms"] });
-            queryClient.invalidateQueries({ queryKey: ["rooms", variables.id] })
-
             navigate("/rooms");
         },
-        onError: (error, _variables, context) => {
-            if (context?.previousRooms) {
-                queryClient.setQueryData(["rooms"], context.previousRooms);
-            }
-            if (context?.previousRoom) {
-                queryClient.setQueryData(["rooms", _variables.id], context.previousRoom);
-            }
-
+        onError: (error) => {
             addToast({
                 title: error.response?.data.message || "Failed to edit room",
                 color: "danger",
@@ -121,5 +96,5 @@ export function useEditRoom() {
                 variant: "flat",
             })
         }
-    })
+    });
 }

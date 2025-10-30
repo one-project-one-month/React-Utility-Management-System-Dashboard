@@ -1,51 +1,50 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import type {
     CreateUserFormData,
-    CreateUserResponse,
-    DeleteUserResponse,
-    EditUserFormData,
-    EditUserResponse
+    EditUserFormData, User,
 } from "@/types/user.ts";
-import {userService} from "@/services/userService.ts";
+import {createUser, deleteUser, editUser, fetchTenants, fetchUser, fetchUsers} from "@/services/userService.ts";
 import {addToast} from "@heroui/react";
 import type {AxiosError} from "axios";
 import {useNavigate} from "react-router";
+import type {Pagination} from "@/types/pagination.ts";
+import type {ApiResponse} from "@/services/apiResponse.ts";
 
-export function useFetchUsers() {
+export const useFetchUsers = (pagination: Pagination) => {
     return useQuery({
-        queryKey: ["users"],
-        queryFn: () => userService.fetchUsers(),
-        staleTime: 30000
+        queryKey: ['users', pagination],
+        queryFn: () => fetchUsers(pagination),
     });
 }
 
-export function useFetchUser(id: string) {
+export const useFetchUser = (id: string) => {
     return useQuery({
         queryKey: ["users", id],
-        queryFn: () => userService.fetchUser(id),
-        staleTime: 30000,
+        queryFn: () => fetchUser(id),
         enabled: !!id
     });
 }
 
-export function useFetchTenants() {
+export const useFetchTenants = () => {
     return useQuery({
         queryKey: ["tenants"],
-        queryFn: () => userService.fetchTenants()
+        queryFn: () => fetchTenants()
     });
 }
 
-export function useCreateUser() {
+export const useCreateUser = () => {
     const queryClient = useQueryClient();
 
     return useMutation<
-        CreateUserResponse,
+        ApiResponse<CreateUserFormData>,
         AxiosError<{ message: string }>,
         CreateUserFormData
     >({
-        mutationFn: (formData: CreateUserFormData) => userService.createUser(formData),
+        mutationFn: (formData: CreateUserFormData) => createUser(formData),
         onSuccess: async (data) => {
+            await queryClient.invalidateQueries({ queryKey: ['users'] });
             await queryClient.refetchQueries({ queryKey: ["users"] });
+
             addToast({
                 title: data.message,
                 color: "success",
@@ -67,16 +66,16 @@ export function useCreateUser() {
     });
 }
 
-export function useEditUser() {
+export const useEditUser = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     return useMutation<
-        EditUserResponse,
+        ApiResponse<EditUserFormData>,
         AxiosError<{ message: string }>,
         { id: string, formData: EditUserFormData }
     >({
-        mutationFn: ({ id, formData }) => userService.editUser(id, formData),
+        mutationFn: ({ id, formData }) => editUser(id, formData),
         onSuccess: async (data, variables) => {
             await queryClient.refetchQueries({ queryKey: ["users"] });
             await queryClient.invalidateQueries({ queryKey: ["users", variables.id] })
@@ -103,15 +102,15 @@ export function useEditUser() {
     });
 }
 
-export function useDeleteUser() {
+export const useDeleteUser = () => {
     const queryClient = useQueryClient();
 
     return useMutation<
-        DeleteUserResponse,
+        ApiResponse<User>,
         AxiosError<{ message: string }>,
         string
     >({
-        mutationFn: (id) => userService.deleteUser(id),
+        mutationFn: (id) => deleteUser(id),
         onSuccess: async (data) => {
             await queryClient.refetchQueries({ queryKey: ["users"] });
 
