@@ -1,4 +1,4 @@
-import type { Links, Meta } from "./pagination"
+import type { Links, Meta } from "./metadata"
 
 export interface ApiResponse<T> {
     success: boolean

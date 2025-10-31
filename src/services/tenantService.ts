@@ -3,31 +3,19 @@ import type {
   ApiContent,
   ApiResponse,
 } from "@/types/ApiResponse/ApiResponse.ts";
-import type { Occupancy, Tenant } from "@/types/tenants/tenantType.ts";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
 import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
+import type { Pagination } from "@/types/pagination.ts";
+import { buildQueryParams } from "@/services/utils";
 
-export interface GetTenantsParams {
-  currentPage?: number;
-  limit?: number;
-  search?: string;
-  occupancy?: Occupancy;
-}
-
-export const getAllTenants = async ({
-  currentPage,
-  limit,
-  search,
-  occupancy,
-}: GetTenantsParams): Promise<ApiContent<Tenant[]>> => {
-  const response = await axiosInstance.get<ApiResponse<Tenant[]>>("tenants", {
-    params: {
-      page: currentPage,
-      limit: limit,
-      search: search && search?.length > 1 ? search : undefined,
-      occupancy: occupancy ?? undefined,
-    },
-  });
-
+export const fetchAllTenants = async (
+  pagination: Pagination,
+  search?: string,
+) => {
+  const query = buildQueryParams(pagination);
+  const response = await axiosInstance.get<ApiResponse<Tenant[]>>(
+    `tenants?${query}${search ? `&search=${encodeURIComponent(search)}` : ""}`,
+  );
   return response.data.content;
 };
 
@@ -62,3 +50,28 @@ export const updateTenant = async (
 
   return response.data.content;
 };
+
+// export interface GetTenantsParams {
+//   currentPage?: number;
+//   limit?: number;
+//   search?: string;
+//   occupancy?: Occupancy;
+// }
+//
+// export const getAllTenants = async ({
+//                                       currentPage,
+//                                       limit,
+//                                       search,
+//                                       occupancy,
+//                                     }: GetTenantsParams): Promise<ApiContent<Tenant[]>> => {
+//   const response = await axiosInstance.get<ApiResponse<Tenant[]>>("tenants", {
+//     params: {
+//       page: currentPage,
+//       limit: limit,
+//       search: search && search?.length > 1 ? search : undefined,
+//       occupancy: occupancy ?? undefined,
+//     },
+//   });
+//
+//   return response.data.content;
+// };

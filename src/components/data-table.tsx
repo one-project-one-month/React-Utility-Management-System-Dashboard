@@ -149,7 +149,8 @@ const TablePresentation = <TData, TValue>({
                       (columnWidths && columnWidths[cell.column.id]) ||
                         "w-auto",
                       (cell.column.id === "actions" ||
-                        cell.column.id === "billingIdForAction") &&
+                        cell.column.id === "billingIdForAction" ||
+                        cell.column.id === "status") &&
                         "text-center",
                     )}
                   >

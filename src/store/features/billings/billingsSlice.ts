@@ -1,22 +1,21 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { BillingStatus } from "@/types/billing/billingTableData.ts";
-
-interface Filters {
-  status?: BillingStatus;
-}
+import type { Pagination } from "@/types/pagination";
+import type { BillingStatus } from "@/types/billing/billingTableData";
 
 interface InitialState {
-  currentPage: number;
-  limit: number;
   search: string;
-  filters: Filters;
+  pagination: Pagination
 }
 
 const initialState: InitialState = {
-  currentPage: 1,
-  limit: 10,
   search: "",
-  filters: {},
+  pagination: {
+    page: 1,
+    limit: 10,
+    filter: {
+      status: undefined,
+    }
+  }
 };
 
 const billingsSlice = createSlice({
@@ -24,26 +23,27 @@ const billingsSlice = createSlice({
   initialState,
   reducers: {
     setCurrentPage: (state, action: PayloadAction<number>) => {
-      state.currentPage = action.payload;
+      state.pagination.page = action.payload;
     },
 
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
     },
 
-    setFilters: (state, action: PayloadAction<Filters>) => {
-      state.filters = action.payload;
+    setFilters: (state, action: PayloadAction<BillingStatus>) => {
+      if (!state.pagination.filter) {
+        state.pagination.filter = { status: action.payload };
+      } else {
+        state.pagination.filter.status = action.payload;
+      }
     },
   },
   selectors: {
-    selectCurrentPage: (billing) => billing.currentPage,
-    selectLimit: (billing) => billing.limit,
+    selectPagination: (billing) => billing.pagination,
     selectSearch: (billing) => billing.search,
-    selectFilters: (billing) => billing.filters,
   },
 });
 
 export const { setCurrentPage, setSearch, setFilters } = billingsSlice.actions;
-export const { selectCurrentPage, selectLimit, selectSearch, selectFilters } =
-  billingsSlice.selectors;
+export const { selectSearch, selectPagination } =billingsSlice.selectors;
 export default billingsSlice.reducer;
