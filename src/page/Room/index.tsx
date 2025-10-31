@@ -12,7 +12,8 @@ import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
 import NavigationBreadCrumbs from "@/components/breadcrumb";
 import { breadcrumbs } from "@/constants/breadcrumbs";
 import { useState } from "react";
-import type { Pagination as PaginationType } from "@/types/pagination";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentPage, setCurrentPage } from "@/store/features/room/roomSlice";
 
 const filterOptions = {
     noOfBedRoom: ["1", "2", "3", "4", "5"],
@@ -30,25 +31,18 @@ const initialFilters = {
 
 export default function RoomPage() {
     const navigate = useNavigate();
-
-    const [pagination, setPagination] = useState<PaginationType>({
-        page: 1,
-        limit: 10,
-        // filter: {
-        //     status: RoomAvailability.AVAILABLE
-        // }
-    });
-
+    const dispatch = useDispatch()
+    const currentPage = useSelector(selectCurrentPage);
     const [searchTerm, setSearchTerm] = useState("");
     const [filters, setFilters] = useState(initialFilters);
 
-    const { data: roomsData, isLoading } = useFetchRooms(pagination);
+    const { data: roomsData, isLoading } = useFetchRooms({
+        page: currentPage,
+        limit: 10
+    });
     const rooms = roomsData?.data || [];
     const meta = roomsData?.meta;
     const totalPages = meta?.lastPage || 1;
-
-    console.log("rooms:", rooms);
-    console.log("meta:", meta);
 
     const handleViewRoom = (roomId: string) => {
         navigate(`/rooms/${roomId}`);
@@ -65,11 +59,12 @@ export default function RoomPage() {
     const handleResetFilters = () => {
         setSearchTerm("");
         setFilters(initialFilters);
-        setPagination(prev => ({ ...prev, page: 1 }));
+        // setPagination(prev => ({ ...prev, page: 1 }));
     }
 
     const handlePageChange = (page: number) => {
-        setPagination(prev => ({ ...prev, page }));
+        // setPagination(prev => ({ ...prev, page }));
+        dispatch(setCurrentPage(page))
         scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -156,7 +151,7 @@ export default function RoomPage() {
                     showShadow
                     className="flex w-full justify-center"
                     color="primary"
-                    page={pagination.page}
+                    page={currentPage}
                     total={totalPages}
                     onChange={handlePageChange}
                 />
