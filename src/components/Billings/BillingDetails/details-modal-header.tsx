@@ -9,6 +9,9 @@ interface Props {
 export default function DetailsModalHeader({ room }: Props) {
   const tenant = room.tenant;
   const contract = room.contract[0];
+  console.log("room", room);
+  console.log("tenant", tenant);
+  console.log("contract", contract);
   return (
     <div className="w-full flex  gap-3 border-b border-divider mt-5 pb-3 flex-wrap justify-between items-center  ">
       <ModalHeaderItem

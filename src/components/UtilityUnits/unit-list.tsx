@@ -1,74 +1,93 @@
 import type { UtilityUnit } from "@/types/utilityUnit";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import DataTable from "../data-table";
-import {
-  billMockData,
-  utilityUnitMockData,
-} from "@/constants/utilityUnitMockData";
 import { Link } from "react-router";
 import { EyeIcon } from "lucide-react";
+import useFetchUtilityUnit from "@/hooks/utility-units/useFetchUtilityUnit";
+import type { Pagination } from "@/types/pagination";
+import { Chip } from "@heroui/react";
 
 export default function UnitList() {
-  const [data, _setData] = useState<UtilityUnit[]>(utilityUnitMockData);
+  const [pagination, setPagination] = useState<Pagination>({
+    page: 1,
+    limit: 10,
+  });
+
+  const { data: utilityUnit, isPending } = useFetchUtilityUnit(pagination);
+  const statusColors = {
+    Available: "bg-emerald-600 text-xs text-white px-2 py-1",
+    Rented: "bg-blue-600 text-xs text-white px-2 py-1",
+    Purchased: "bg-violet-600 text-xs text-white px-2 py-1",
+    InMaintenance: "bg-yellow-600 text-xs text-white px-2 py-1",
+  };
+
 
   const columns: ColumnDef<UtilityUnit>[] = [
     {
-      id: "room_id",
-      header: "Room No",
+      id: "roomInfo",
+      header: "Room",
       cell: ({ row }) => {
-        const billId = row.original.id;
-
-        const bill = billMockData.find((b) => b.id === billId);
-        return bill ? bill.room_number : "—";
+        const {
+          bill: { room },
+        } = row.original;
+        return (
+          <div className="flex flex-col gap-2">
+            <div className="space-x-2">
+              <span>No - {room.roomNo}</span>
+              <span className="text-xs text-gray-500">
+                Floor - {room.floor}
+              </span>
+            </div>
+            <div className="flex items-center gap-x-2">
+              <Chip
+                size="sm"
+                variant="flat"
+                className={statusColors[room.status]}
+                radius="full"
+              >
+                {room.status}
+              </Chip>
+            </div>
+          </div>
+        );
       },
     },
     {
-      id: "tenant_id",
       header: "Tenant Name",
-      cell: ({ row }) => {
-        const billId = row.original.id;
-        const bill = billMockData.find((b) => b.id === billId);
-        return bill ? bill.tenant_name : "—";
-      },
+      cell: ({ row }) => row.original.bill.room.tenant.name,
     },
     {
-      accessorKey: "electricity_unit",
+      accessorKey: "electricityUnits",
       header: "Electricity Unit",
+      cell: ({ row }) => (
+        <div className="space-x-1">
+          <span>{row.original.electricityUnits}</span>
+          <span className="text-xs text-gray-400">kwh</span>
+        </div>
+      ),
     },
     {
-      accessorKey: "water_unit",
+      accessorKey: "waterUnits",
       header: "Water Unit",
+      cell: ({ row }) => (
+        <div className="space-x-1">
+          <span>{row.original.waterUnits}</span>
+          <span className="text-xs text-gray-400">m³</span>
+        </div>
+      ),
     },
     {
-      accessorKey: "created_at",
+      accessorKey: "createdAt",
       header: "Created At",
       cell: ({ getValue }) => {
         const dateValue = getValue() as Date;
-        const date = dateValue.toLocaleDateString("en-US", {
+        const date = new Date(dateValue).toLocaleDateString("en-US", {
           day: "numeric",
           month: "short",
           year: "numeric",
         });
-        const time = dateValue.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        });
-        return `${date}, ${time}`;
-      },
-    },
-    {
-      accessorKey: "updated_at",
-      header: "Updated At",
-      cell: ({ getValue }) => {
-        const dateValue = getValue() as Date;
-        const date = dateValue.toLocaleDateString("en-US", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        });
-        const time = dateValue.toLocaleTimeString("en-US", {
+        const time = new Date(dateValue).toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
           hour12: true,
@@ -79,24 +98,35 @@ export default function UnitList() {
     {
       id: "action",
       header: () => <div className="text-center">Action</div>,
-      cell: (info) => {
-        return (
-          <div className="flex justify-center gap-x-1">
-            <Link
-              to={`/utility-units/${info.row.original.id}`}
-              className="px-3 py-2 border rounded border-neutral-200"
-            >
-              <EyeIcon size={12} />
-            </Link>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <div className="flex justify-center">
+          <Link
+            to={`/utility-units/${row.original.id}`}
+            className="px-3 py-2 border rounded border-neutral-200"
+          >
+            <EyeIcon size={12} />
+          </Link>
+        </div>
+      ),
     },
   ];
 
+  const handlePageChange = (page: number) => {
+    setPagination((prev) => ({ ...prev, page: page }));
+  };
+
   return (
     <div className="mt-10">
-      <DataTable columns={columns} data={data} isManualPagination={false} />
+      <DataTable
+        columns={columns}
+        data={utilityUnit?.content.data ?? []}
+        isManualPagination={true}
+        isLoading={isPending}
+        page={pagination.page}
+        pageSize={pagination.limit}
+        totalElements={utilityUnit?.content.meta?.total}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

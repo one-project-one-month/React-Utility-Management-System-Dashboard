@@ -1,44 +1,45 @@
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {
-  invoicesTableColumns,
+  getInvoiceTableColumns,
   invoicesTableColumnWidths,
 } from "@/components/Invoices/invoices-table-columns.tsx";
-import { useInvoiceToInvoiceTableData } from "@/hooks/TableData/useInvoiceToInvoiceTableData.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCurrentPage,
-  selectFilters,
-  selectLimit,
+  selectPagination,
   selectSearch,
 } from "@/store/features/invoices/invoicesSlice.ts";
 import { setCurrentPage } from "@/store/features/invoices/invoicesSlice.ts";
-import { useBillings } from "@/hooks/billings/useBillings.ts";
+import { useFetchBillings } from "@/hooks/billings/useBillings.ts";
 import DataTable from "@/components/data-table.tsx";
 import BillingsOrInvoicesListHeader from "@/components/Billings/BillingsPage/billings-or-invoices-list-header.tsx";
 
 export default function InvoicesPage() {
   const dispatch = useDispatch();
-  const currentPage = useSelector(selectCurrentPage);
-  const limit = useSelector(selectLimit);
-  const search = useSelector(selectSearch);
-  const filters = useSelector(selectFilters);
-  const { status } = filters;
 
-  const { getAllBillingsQuery } = useBillings({
-    currentPage,
-    limit,
-    search,
-    status,
-  });
-  const { data: content, isLoading } = getAllBillingsQuery;
-  const billings = content?.data;
+  // const currentPage = useSelector(selectCurrentPage);
+  // const limit = useSelector(selectLimit);
+  // const filters = useSelector(selectFilters);
+  const pagination = useSelector(selectPagination);
+  const { page: currentPage, limit } = pagination;
+
+  const search = useSelector(selectSearch);
+
+  // const { getAllBillingsQuery } = useBillings({
+  //   currentPage,
+  //   limit,
+  //   search,
+  //   status,
+  // });
+  const { data: content, isLoading } = useFetchBillings(pagination, search);
+  const billings = content?.data ?? [];
+  const invoicesTableColumns = getInvoiceTableColumns(currentPage, limit);
   const paginationMeta = content?.meta;
 
-  const invoiceTableData = useInvoiceToInvoiceTableData({
-    page: currentPage,
-    pageSize: limit,
-    billings: billings ?? [],
-  });
+  // const invoiceTableData = useInvoiceToInvoiceTableData({
+  //   page: currentPage,
+  //   pageSize: limit,
+  //   billings: billings ?? [],
+  // });
 
   const handleCurrentPageChange = (newPage: number) => {
     dispatch(setCurrentPage(newPage));
@@ -58,7 +59,7 @@ export default function InvoicesPage() {
         <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl   custom-scrollbar">
           <DataTable
             isLoading={isLoading}
-            data={invoiceTableData}
+            data={billings}
             columns={invoicesTableColumns}
             columnWidths={invoicesTableColumnWidths}
             isManualPagination

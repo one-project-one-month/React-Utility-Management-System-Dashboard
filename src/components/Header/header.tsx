@@ -25,7 +25,7 @@ import {
   LucideTriangleAlert,
 } from "lucide-react";
 import useLogout from "@/hooks/useLogout";
-import LoadingSpinner from "../loading-spinner";
+import LoadingSpinner from "@/components/common/loading-spinner.tsx";
 
 export default function Header() {
   const { mutate, isPending } = useLogout();

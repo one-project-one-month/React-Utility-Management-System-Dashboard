@@ -1,12 +1,14 @@
-import type {UserList} from "@/types/user.ts";
+import type {User} from "@/types/user.ts";
 import {useMemo} from "react";
 
 export type Filters = {
     role: string;
 }
 
-export function useFilteredUsers(users: UserList[], searchTerm: string, filters: Filters) {
+export function useFilteredUsers(users: User[] | undefined, searchTerm: string, filters: Filters) {
     return useMemo(() => {
+        if (!users) return [];
+
         return users.filter((user) => {
             const search = !searchTerm ||
                 user.userName.toString().includes(searchTerm.toLowerCase()) ||
@@ -18,7 +20,7 @@ export function useFilteredUsers(users: UserList[], searchTerm: string, filters:
 
             return search && role;
         }).sort((a, b) => {
-            return a.userName.localeCompare(b.userName);
+            return (a.userName || '').localeCompare(b.userName || '');
         });
     }, [users, searchTerm, filters]);
 }

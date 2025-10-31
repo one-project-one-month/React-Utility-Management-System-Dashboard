@@ -1,22 +1,21 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Occupancy } from "@/types/tenants/tenantType.ts";
+import type { Pagination } from "@/types/pagination.ts";
 
-interface Filters {
-  occupancy?: Occupancy;
-}
+// interface Filters {
+//   occupancy?: Occupancy;
+// }
 
 interface InitialState {
-  currentPage: number;
-  limit: number;
   search: string;
-  filters: Filters;
+  pagination: Pagination;
 }
 
 const initialState: InitialState = {
-  currentPage: 1,
-  limit: 10,
   search: "",
-  filters: {},
+  pagination: {
+    page: 1,
+    limit: 10,
+  },
 };
 
 const tenantsSlice = createSlice({
@@ -24,26 +23,24 @@ const tenantsSlice = createSlice({
   initialState,
   reducers: {
     setCurrentPage: (state, action: PayloadAction<number>) => {
-      state.currentPage = action.payload;
+      state.pagination.page = action.payload;
     },
 
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
     },
 
-    setFilters: (state, action: PayloadAction<Filters>) => {
-      state.filters = action.payload;
-    },
+    // setFilters: (state, action: PayloadAction<>) => {
+    //   state.pagination.filter = action.payload;
+    // },
   },
   selectors: {
-    selectCurrentPage: (tenant) => tenant.currentPage,
-    selectLimit: (tenant) => tenant.limit,
+    selectPagination: (tenant) => tenant.pagination,
     selectSearch: (tenant) => tenant.search,
-    selectFilters: (tenant) => tenant.filters,
+    // selectFilters: (tenant) => tenant.filters,
   },
 });
 
-export const { setCurrentPage, setSearch, setFilters } = tenantsSlice.actions;
-export const { selectCurrentPage, selectLimit, selectSearch, selectFilters } =
-  tenantsSlice.selectors;
+export const { setCurrentPage, setSearch } = tenantsSlice.actions;
+export const { selectPagination, selectSearch } = tenantsSlice.selectors;
 export default tenantsSlice.reducer;

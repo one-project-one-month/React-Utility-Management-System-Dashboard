@@ -9,13 +9,14 @@ interface ConfirmDialogOptions {
     cancelText?: string;
     confirmColor?: "danger" | "primary" | "success" | "warning";
     icon?: ReactNode;
-    onConfirm: () => void;
+    onConfirm: () => void | Promise<void>;
     onCancel?: () => void;
 }
 
 export function useConfirmDialog() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [options, setOptions] = useState<ConfirmDialogOptions | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const showConfirm = (option: ConfirmDialogOptions) => {
         const defaultOptions = {
@@ -28,25 +29,47 @@ export function useConfirmDialog() {
         }
 
         setOptions({ ...defaultOptions, ...option });
+        setIsLoading(false);
         onOpen();
     }
 
-    const handleConfirm = () => {
-        onClose();
-        if (options?.onConfirm()) {
-            options?.onConfirm();
+    const handleConfirm = async () => {
+        if (options?.onConfirm) {
+            setIsLoading(true);
+            try {
+                await options.onConfirm();
+            } catch (error) {
+                console.error("Error in onConfirm:", error);
+                closeDialog();
+            }
         }
     }
 
     const handleCancel = () => {
-        onClose();
-        if (options?.onCancel) {
-            options.onCancel();
+        if (!isLoading) {
+            setOptions(null);
+            setIsLoading(false);
+            onClose();
+            if (options?.onCancel) {
+                options.onCancel();
+            }
         }
     }
 
+    const closeDialog = () => {
+        setOptions(null);
+        setIsLoading(false);
+        onClose();
+    }
+
     const ConfirmDialog = () => (
-        <Modal isOpen={isOpen} size={"sm"} onClose={handleCancel}>
+        <Modal
+            isOpen={isOpen}
+            size={"sm"}
+            onClose={handleCancel}
+            isDismissable={!isLoading}
+            hideCloseButton={isLoading}
+        >
             <ModalContent>
                 {() => (
                     <>
@@ -63,6 +86,7 @@ export function useConfirmDialog() {
                                     className={"w-full"}
                                     variant={"light"}
                                     onPress={handleCancel}
+                                    isDisabled={isLoading}
                                 >
                                     {options?.cancelText}
                                 </Button>
@@ -70,6 +94,8 @@ export function useConfirmDialog() {
                                     color={options?.confirmColor}
                                     className={"w-full"}
                                     onPress={handleConfirm}
+                                    isLoading={isLoading}
+                                    isDisabled={isLoading}
                                 >
                                     {options?.confirmText}
                                 </Button>
@@ -81,5 +107,5 @@ export function useConfirmDialog() {
         </Modal>
     );
 
-    return { showConfirm, ConfirmDialog }
+    return { showConfirm, ConfirmDialog, closeDialog }
 }

@@ -1,28 +1,33 @@
 import {
     Pencil,
 } from "lucide-react";
-import {Button} from "@heroui/react";
+import {Button, Tooltip} from "@heroui/react";
 import {useNavigate, useParams} from "react-router";
 import {RoomChip} from "@/components/Room/room-chip.tsx";
-import {roomMockData} from "@/constants/roomMockData.ts";
 import { InfoRow } from "@/components/common/info-row.tsx";
 import {RoomCard} from "@/components/Room/room-card.tsx";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-
-function formatCurrency(amount: number, currency = "MMK") {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency,
-        minimumFractionDigits: 2,
-    }).format(amount);
-}
+import {formatContractDuration, formatCurrency} from "@/utils/roomFormat.ts";
+import {Tab, Tabs} from "@heroui/tabs";
+import type {Bill, CustomerService} from "@/types/room.ts";
+import {RoomHistoryCard} from "@/components/Room/room-history-card.tsx";
+import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
+import {EmptyState} from "@/components/common/empty-state.tsx";
+import {useFetchRoom} from "@/hooks/useRooms.ts";
 
 export default function RoomDetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const room = roomMockData.find(r => r.id === id);
+    const { data: room, isLoading } = useFetchRoom(id!);
+    console.log(room);
+
+    if (isLoading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
 
     if (!room) {
         return (
@@ -42,7 +47,7 @@ export default function RoomDetailPage() {
     }
 
     return (
-        <div className={"p-2 space-y-4"}>
+        <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"}>
             <NavigationBreadCrumbs items={breadcrumbs.roomDetail} />
             <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
                 <div className={"flex items-center gap-2"}>
@@ -51,32 +56,111 @@ export default function RoomDetailPage() {
                 </div>
 
                 <div>
-                    <Button
-                        onPress={handleEditRoom}
-                        variant={"bordered"}
-                        className={"border-[0.5px] bg-white text-primary dark:bg-transparent"}
-                        startContent={<Pencil size={16} />}
-                    >
-                        Edit
-                    </Button>
+                    <Tooltip content="Edit user">
+                        <Button
+                            isIconOnly
+                            onPress={handleEditRoom}
+                            variant={"light"}
+                            color={"primary"}
+                        >
+                            <Pencil size={24} className={"text-primary"} />
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
 
-            <div className={"space-y-2 pb-12"}>
+            <div className={"space-y-6"}>
                 <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
-                    <RoomCard title={"Description"}>
+                    <RoomCard title={"Room Description"}>
                         <p className="text-default-600 leading-relaxed">{room.description}</p>
                     </RoomCard>
                     
                     <RoomCard title={"Room Information"}>
                         <InfoRow label={"Row Number"} value={room.roomNo} />
                         <InfoRow label={"BedRooms"} value={room.noOfBedRoom} />
-                        <InfoRow label={"Floor"} value={room.floor} />
-                        <InfoRow label={"Dimension"} value={`${room.dimension} sq m Area`} />
-                        <InfoRow label={"Max Occupancy"} value={`${room.maxNoPeople} People`} />
-                        <InfoRow label={"Monthly Rent Fee"} value={formatCurrency(room.sellingPrice)} valueClassName={"text-lg text-primary"} />
+                        <InfoRow label={"Floor No"} value={room.floor} />
+                        <InfoRow label={"Dimension"} value={`${room.dimension}`} />
+                        <InfoRow label={"Max Occupancy"} value={`${room.maxNoOfPeople} People`} />
+                        <InfoRow label={"Rent Fee"} value={`${formatCurrency(room.sellingPrice)} MMK`} valueClassName={"text-lg text-primary"} />
                     </RoomCard>
                 </div>
+
+                {["Rented", "Purchased"].includes(room.status) && room.tenant ? (
+                    <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
+                        <RoomCard title={"Tenant Information"}>
+                            <InfoRow label={"Full Name"} value={room.tenant.name} />
+                            <InfoRow label={"Email"} value={room.tenant.email} />
+                            <InfoRow label={"NRC"} value={room.tenant.nrc} />
+                            <InfoRow label={"Ph Number"} value={room.tenant.phoneNo} />
+                            {room.status == "Rented" && <InfoRow label={"Contract"} value={formatContractDuration(room.contract[0].createdDate, room.contract[0].expiryDate)} />}
+                            <InfoRow label={"Emergency Contact"} value={room.tenant.emergencyNo} />
+                        </RoomCard>
+
+                        <RoomCard title={"Room History"}>
+                            <Tabs color={"primary"} aria-label="Options" fullWidth>
+                                <Tab key={"Services History"} title={"Services History"} className={"space-y-4"}>
+                                    <div className={"max-h-48 overflow-y-auto space-y-4 pr-2"}>
+                                        {room.customerService.length > 0 ? (
+                                            room.customerService.map((service: CustomerService) => (
+                                                    <RoomHistoryCard
+                                                        key={service.id}
+                                                        title={service.description}
+                                                        subTitle={service.category}
+                                                        date={service.issuedDate}
+                                                    />
+                                                ))
+                                        ) : (
+                                            <EmptyState />
+                                        )}
+                                    </div>
+
+                                </Tab>
+                                <Tab key={"Utility Unit History"} title={"Utility Unit History"}>
+                                    <div className={"max-h-48 overflow-y-auto space-y-4 pr-2"}>
+                                        {room.bill.length > 0 ? (
+                                            room.bill.map((bill: Bill) => (
+                                                <RoomHistoryCard
+                                                    key={bill.id}
+                                                    title={"Total Utility Unit"}
+                                                    subTitle={`${formatCurrency(bill.totalAmount)} MMK`}
+                                                    date={bill.dueDate}
+                                                />
+                                            ))
+                                        ) : (
+                                            <EmptyState />
+                                        )}
+                                    </div>
+                                </Tab>
+                                <Tab key={"Contract History"} title={"Contract History"}>
+                                    <div className={"max-h-48 overflow-y-auto space-y-4 pr-2"}>
+                                        {room.contract.length > 0 ? (
+                                            room.contract.map((contract) => (
+                                                <RoomHistoryCard
+                                                    key={contract.id}
+                                                    title={"Contract Renewed"}
+                                                    subTitle={formatContractDuration(contract.createdDate, contract.expiryDate)}
+                                                    date={contract.createdDate}
+                                                />
+                                            ))
+                                        ) : (
+                                            <EmptyState />
+                                        )}
+                                    </div>
+                                </Tab>
+                            </Tabs>
+                        </RoomCard>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <RoomCard title="Tenant Information">
+                            <EmptyState />
+                        </RoomCard>
+
+                        <RoomCard title="Room History">
+                            <EmptyState />
+                        </RoomCard>
+                    </div>
+                )}
             </div>
         </div>
     )
