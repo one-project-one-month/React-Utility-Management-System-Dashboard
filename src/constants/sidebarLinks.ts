@@ -11,6 +11,7 @@ import {
   Command,
   Grid,
   type LucideIcon,
+  ShieldUser,
 } from "lucide-react";
 
 
