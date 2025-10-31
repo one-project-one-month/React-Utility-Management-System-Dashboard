@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
 import { Users, CircleCheck, CircleX, CircleAlert } from "lucide-react";
+import TwoPeople from "../../assets/dashboard-icons/icons-from-dashboard-screen/Tenants.svg";
 
 // Total Tenants
 function StatCardTenants({
@@ -14,20 +15,26 @@ function StatCardTenants({
      const isPositive: boolean =
           activeTenants > 0 && activeTenants <= totalRoom ? true : false;
      return (
-          <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
+          //  transition delay-100 duration-250 ease-in-out hover:scale-110
+          <Card className="p-1 w-full">
                {/* HEADER */}
                <CardHeader>
                     <div className="flex w-full justify-between items-center">
                          {/* Chip Icon */}
                          <Chip
-                              color={isPositive ? "primary" : "danger"}
+                              color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="sm"
                               variant="flat"
                               className="h-12"
                          >
                               {isPositive ? (
-                                   <Users size={24} />
+                                   // <Users size={24} />
+                                   <img
+                                        src={TwoPeople}
+                                        alt="Revenue Icon"
+                                        className="scale-140 bg-red text-red-300"
+                                   />
                               ) : (
                                    <CircleAlert size={24} />
                               )}
@@ -38,7 +45,7 @@ function StatCardTenants({
                               color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="full"
-                              variant="flat"
+                              variant="light"
                               className="h-12"
                          >
                               {isPositive ? (

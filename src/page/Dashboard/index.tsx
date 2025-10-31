@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Chip, Button } from "@heroui/react";
+import { Card, CardHeader, CardBody, Chip } from "@heroui/react";
 import { SmartphoneCharging, Flag, Wallet, ScrollText } from "lucide-react";
 import ComplaintsTable from "@/page/Dashboard/tenants-complaints-table";
 import BillingTable from "@/page/Dashboard/billing-histroy-table";
@@ -8,6 +8,7 @@ import StatCardTenants from "./statcard-tenants";
 import StatCardOccupancy from "./statcard-occupancy";
 import StatCardPending from "./statcard-pending";
 import Rechart from "./rechart";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
      return (
@@ -43,7 +44,8 @@ export default function Dashboard() {
 
                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Chart */}
-                    <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-105">
+                    {/* transition delay-100 duration-250 ease-in-out hover:scale-105 */}
+                    <Card className="p-1 w-full">
                          {/* HEADER */}
                          <CardHeader className="pb-1">
                               <div className="flex items-center gap-3">
@@ -72,7 +74,8 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Tenants Complaints */}
-                    <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-105">
+                    {/* transition delay-100 duration-250 ease-in-out hover:scale-105 */}
+                    <Card className="p-1 w-full">
                          {/* HEADER */}
                          <CardHeader className="pb-1">
                               <div className="flex w-full justify-between items-center">
@@ -95,15 +98,20 @@ export default function Dashboard() {
                                    </div>
 
                                    {/* Link */}
-                                   <Button
-                                        color="primary"
-                                        size="md"
-                                        radius="full"
-                                        variant="light"
-                                        className="h-12 transition delay-100 duration-250 ease-in-out hover:scale-120 underline"
+                                   {/* <a
+                                        href="#"
+                                        className="text-primary text-small pr-2 underline transition 
+                                        delay-100 duration-250 ease-in-out hover:scale-110"
                                    >
-                                        {"View All"}
-                                   </Button>
+                                        View All
+                                   </a> */}
+                                   <Link
+                                        to="/tenants"
+                                        className="text-primary text-small pr-2 underline transition 
+                                        delay-100 duration-250 ease-in-out hover:scale-110"
+                                   >
+                                        View All
+                                   </Link>
                               </div>
                          </CardHeader>
 
@@ -116,7 +124,8 @@ export default function Dashboard() {
 
                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Billing History */}
-                    <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-105">
+                    {/* transition delay-100 duration-250 ease-in-out hover:scale-105 */}
+                    <Card className="p-1 w-full">
                          {/* HEADER */}
                          <CardHeader className="pb-1">
                               <div className="flex w-full justify-between items-center">
@@ -139,15 +148,20 @@ export default function Dashboard() {
                                    </div>
 
                                    {/* Link */}
-                                   <Button
-                                        color="primary"
-                                        size="md"
-                                        radius="full"
-                                        variant="light"
-                                        className="h-12 transition delay-100 duration-250 ease-in-out hover:scale-120 underline"
+                                   {/* <a
+                                        href="#"
+                                        className="text-primary text-small pr-2 underline transition 
+                                        delay-100 duration-250 ease-in-out hover:scale-110"
                                    >
-                                        {"View All"}
-                                   </Button>
+                                        View All
+                                   </a> */}
+                                   <Link
+                                        to="/billing"
+                                        className="text-primary text-small pr-2 underline transition 
+                                        delay-100 duration-250 ease-in-out hover:scale-110"
+                                   >
+                                        View All
+                                   </Link>
                               </div>
                          </CardHeader>
 
@@ -158,7 +172,8 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Contracts */}
-                    <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-105">
+                    {/* transition delay-100 duration-250 ease-in-out hover:scale-105 */}
+                    <Card className="p-1 w-full">
                          {/* HEADER */}
                          <CardHeader className="pb-1">
                               <div className="flex w-full justify-between items-center">
@@ -181,15 +196,20 @@ export default function Dashboard() {
                                    </div>
 
                                    {/* Link */}
-                                   <Button
-                                        color="primary"
-                                        size="md"
-                                        radius="full"
-                                        variant="light"
-                                        className="h-12 transition delay-100 duration-250 ease-in-out hover:scale-120 underline"
+                                   {/* <a
+                                        href="#"
+                                        className="text-primary text-small pr-2 underline transition 
+                                        delay-100 duration-250 ease-in-out hover:scale-110"
                                    >
-                                        {"View All"}
-                                   </Button>
+                                        View All
+                                   </a> */}
+                                   <Link
+                                        to="/contract"
+                                        className="text-primary text-small pr-2 underline transition 
+                                        delay-100 duration-250 ease-in-out hover:scale-110"
+                                   >
+                                        View All
+                                   </Link>
                               </div>
                          </CardHeader>
 

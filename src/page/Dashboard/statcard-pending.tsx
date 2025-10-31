@@ -18,7 +18,8 @@ function StatCardPending({
 }) {
      const isPositive: boolean = pendingIssues === 0 ? true : false;
      return (
-          <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
+          //  transition delay-100 duration-250 ease-in-out hover:scale-110
+          <Card className="p-1 w-full">
                {/* HEADER */}
                <CardHeader>
                     <div className="flex w-full justify-between items-center">
@@ -42,7 +43,7 @@ function StatCardPending({
                               color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="full"
-                              variant="flat"
+                              variant="light"
                               className="h-12"
                          >
                               {isPositive ? (

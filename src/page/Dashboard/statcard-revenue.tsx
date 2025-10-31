@@ -1,10 +1,13 @@
 import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
 import {
-     ArrowUpRight,
+     // ArrowUpRight,
      ArrowDownRight,
-     CircleDollarSign,
+     // CircleDollarSign,
      CircleAlert,
 } from "lucide-react";
+import RevenueIcon from "../../assets/dashboard-icons/icons-from-dashboard-screen/Total Revenue.svg";
+// import WarningIcon from "../../assets/dashboard-icons/icons-from-invoice-screen/warning.svg";
+import ArrowUp from "../../assets/dashboard-icons/nav-icons/grow.svg";
 
 // Total Revenue
 function StatCardRevenue({
@@ -24,7 +27,8 @@ function StatCardRevenue({
           maximumFractionDigits: 0,
      }).format(currentValue);
      return (
-          <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
+          // transition delay-100 duration-250 ease-in-out hover:scale-110
+          <Card className="p-1 w-full">
                {/* HEADER */}
                <CardHeader>
                     <div className="flex w-full justify-between items-center">
@@ -37,9 +41,19 @@ function StatCardRevenue({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   <CircleDollarSign size={24} />
+                                   // <CircleDollarSign size={24} />
+                                   <img
+                                        src={RevenueIcon}
+                                        alt="Revenue Icon"
+                                        className="scale-140"
+                                   />
                               ) : (
                                    <CircleAlert size={24} />
+                                   // <img
+                                   //      src={WarningIcon}
+                                   //      alt="Revenue Icon"
+                                   //      className="scale-150"
+                                   // />
                               )}
                          </Chip>
 
@@ -48,11 +62,16 @@ function StatCardRevenue({
                               color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="full"
-                              variant="flat"
+                              variant="light"
                               className="h-12"
                          >
                               {isPositive ? (
-                                   <ArrowUpRight size={24} />
+                                   // <ArrowUpRight size={24} />
+                                   <img
+                                        src={ArrowUp}
+                                        alt="Revenue Icon"
+                                        // className="scale-100"
+                                   />
                               ) : (
                                    <ArrowDownRight size={24} />
                               )}
