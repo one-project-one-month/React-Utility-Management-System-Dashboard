@@ -5,7 +5,7 @@ import { Fragment, type ReactNode } from "react";
 type UnitDetailCardProps = {
   title: string;
   icon: ReactNode;
-  body: { label: string; value: string }[];
+  body: { label: string; value: string | number }[];
   cardClassName?: string; // full card style
   iconWrapperClass?: string; // icon circle style
   titleClass?: string; // title text
