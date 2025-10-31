@@ -134,7 +134,7 @@ export default function Header() {
             )}
           </ModalContent>
         </Modal>
-        {isPending && <LoadingSpinner label={"Logging out..."} />}
+        {isPending && <LoadingSpinner label="Logging out..." />}
       </div>
     </header>
   );
