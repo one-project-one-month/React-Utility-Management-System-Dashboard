@@ -1,18 +1,16 @@
 import type {Room} from "@/types/room.ts";
 import { Button, Card, CardBody, type PressEvent } from "@heroui/react";
 import {RoomChip} from "@/components/Room/room-chip.tsx";
-import {Bed, Layers, Maximize2, Pencil, Trash2} from "lucide-react";
-import {useConfirmDialog} from "@/hooks/useConfirmDialog.tsx";
+import {Bed, Layers, Maximize2, Pencil, User, UserX} from "lucide-react";
+import {formatCurrency} from "@/utils/roomFormat.ts";
 
 interface RoomCardProps {
     room: Room;
     onCardClick: (roomId: string) => void;
     onEdit: (roomId: string) => void;
-    onDelete: (roomId: string) => void;
 }
 
-export function RoomListCard({ room, onCardClick, onEdit, onDelete }: RoomCardProps) {
-    const { showConfirm, ConfirmDialog } = useConfirmDialog();
+export function RoomListCard({ room, onCardClick, onEdit }: RoomCardProps) {
 
     const handleCardClick = () => {
         if (room.id) {
@@ -25,23 +23,6 @@ export function RoomListCard({ room, onCardClick, onEdit, onDelete }: RoomCardPr
         if (room.id) {
             onEdit(room.id);
         }
-    }
-
-    const handleDelete = (e: PressEvent) => {
-        e.continuePropagation();
-
-        showConfirm({
-            title: "Delete Room",
-            message:`Are you sure you want to delete Room ${room.roomNo}? This action cannot be undone.`,
-            confirmText: "Delete",
-            cancelText: "Cancel",
-            confirmColor: "danger",
-            onConfirm: () => {
-                if (room.id) {
-                    onDelete(room.id);
-                }
-            }
-        })
     }
 
     return (
@@ -77,42 +58,36 @@ export function RoomListCard({ room, onCardClick, onEdit, onDelete }: RoomCardPr
                                     mode={"property"}
                                     room={room}
                                     icon={Maximize2}
-                                    label={`${room.dimension} sq m Area`}
+                                    label={`${room.dimension}`}
                                 />
+                                {["Rented", "Purchased"].includes(room.status) && (
+                                    <RoomChip
+                                        mode={"property"}
+                                        room={room}
+                                        icon={room.tenant == undefined ? UserX : User}
+                                        label={`${room.tenant?.name ?? "No Tenant"}`}
+                                    />
+                                )}
                             </div>
                         </div>
 
                         <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:min-w-fit">
                             <div className="text-lg font-semibold">
-                                MMK {room.sellingPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                {formatCurrency(room.sellingPrice)} MMK
                             </div>
 
-                            <div className="flex gap-2">
-                                <Button
-                                    onPress={handleEdit}
-                                    isIconOnly
-                                    variant="light"
-                                    color="default"
-                                    aria-label="Edit property"
-                                >
-                                    <Pencil size={20} className="text-default-500" />
-                                </Button>
-                                <Button
-                                    onPress={handleDelete}
-                                    isIconOnly
-                                    variant="light"
-                                    color="danger"
-                                    aria-label="Delete property"
-                                >
-                                    <Trash2 size={20} />
-                                </Button>
-                            </div>
+                            <Button
+                                onPress={handleEdit}
+                                isIconOnly
+                                variant="light"
+                                color="primary"
+                            >
+                                <Pencil size={20} className="text-primary" />
+                            </Button>
                         </div>
                     </div>
                 </CardBody>
             </Card>
-
-            <ConfirmDialog />
         </div>
     )
 }

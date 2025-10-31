@@ -4,7 +4,7 @@ export interface ApiResponse<T> {
     success: boolean
     message: string
     content: {
-        data: T[]
+        data: T
         meta?: Meta
         links?: Links
     }
