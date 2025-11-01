@@ -32,7 +32,7 @@ export function useFilteredRooms(rooms: Room[], searchTerm: string, filters: Fil
                 room.status === filters.status;
 
             const price = !filters.sellingPrice ||
-                room.sellingPrice <= Number(filters.sellingPrice);
+                (room.sellingPrice !== null && room.sellingPrice <= Number(filters.sellingPrice));
 
             return search && bedroom && floor && status && price;
         }).sort((a, b) => a.roomNo - b.roomNo);

@@ -1,26 +1,27 @@
-import { useState } from "react";
-import {Button} from "@heroui/react";
+import {Button, Pagination} from "@heroui/react";
 import {
     Filter, Plus,
 } from "lucide-react";
 import {useNavigate} from "react-router";
-import {RoomAvailability, type Room} from "@/types/room.ts";
-import {roomMockData} from "@/constants/roomMockData";
-import {useFilteredRooms} from "@/hooks/useFilteredRooms.ts";
+import {type Room} from "@/types/room.ts";
 import {RoomListCard} from "@/components/Room/room-list-card.tsx";
 import {FilterAutocomplete} from "@/components/common/filter-autocomplete.tsx";
 import {SearchInput} from "@/components/common/search-input.tsx";
-import { useFetchRooms } from "@/hooks/useFetchRoom";
-import type { Pagination } from "@/types/pagination";
+import { useFetchRooms } from "@/hooks/useRooms.ts";
+import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
+import NavigationBreadCrumbs from "@/components/breadcrumb";
+import { breadcrumbs } from "@/constants/breadcrumbs";
+import { useState } from "react";
+import type { Pagination as PaginationType } from "@/types/pagination";
 
-const FILTER_OPTIONS = {
+const filterOptions = {
     noOfBedRoom: ["1", "2", "3", "4", "5"],
     floor: ["1", "2", "3", "4", "5"],
     status: ["all", "available", "rented", "purchased", "maintenance"],
     sellingPrice: ["150000", "200000", "250000", "300000"],
 };
 
-const INIT_FILTERS = {
+const initialFilters = {
     noOfBedRoom: "",
     floor: "",
     status: "all",
@@ -28,20 +29,26 @@ const INIT_FILTERS = {
 }
 
 export default function RoomPage() {
-    const [pagination, setPagination] = useState<Pagination>({
+    const navigate = useNavigate();
+
+    const [pagination, setPagination] = useState<PaginationType>({
         page: 1,
         limit: 10,
         // filter: {
         //     status: RoomAvailability.AVAILABLE
         // }
-    })
-    const navigate = useNavigate();
-    const [rooms] = useState<Room[]>(roomMockData);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filters, setFilters] = useState(INIT_FILTERS);
-    const { data } = useFetchRooms(pagination)
+    });
 
-    console.log('rooms', data?.content.data)
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filters, setFilters] = useState(initialFilters);
+
+    const { data: roomsData, isLoading } = useFetchRooms(pagination);
+    const rooms = roomsData?.data || [];
+    const meta = roomsData?.meta;
+    const totalPages = meta?.lastPage || 1;
+
+    console.log("rooms:", rooms);
+    console.log("meta:", meta);
 
     const handleViewRoom = (roomId: string) => {
         navigate(`/rooms/${roomId}`);
@@ -49,25 +56,31 @@ export default function RoomPage() {
 
     const handleCreateRoom = () => {
         navigate(`/rooms/create`);
-    };
+    }
 
     const handleEditRoom = (roomId: string) => {
         navigate(`/rooms/${roomId}/edit`);
-    };
-
-    const handleDeleteRoom = (roomId: string) => {
-        console.log('Delete room:', roomId);
-    };
-
-    const filteredAndSortedRooms = useFilteredRooms(rooms, searchTerm, filters);
+    }
 
     const handleResetFilters = () => {
         setSearchTerm("");
-        setFilters(INIT_FILTERS);
+        setFilters(initialFilters);
+        setPagination(prev => ({ ...prev, page: 1 }));
+    }
+
+    const handlePageChange = (page: number) => {
+        setPagination(prev => ({ ...prev, page }));
+        scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    if (isLoading) {
+        return <LoadingSpinner />;
     }
 
     return (
-        <div className="h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar">
+        <div className="h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6">
+            <NavigationBreadCrumbs items={breadcrumbs.roomList} />
+
             <div className="flex flex-col sm:flex-row gap-2">
                 <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 <div className="grid grid-cols-2 sm:flex gap-2">
@@ -95,25 +108,25 @@ export default function RoomPage() {
                 <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 flex-1">
                     <FilterAutocomplete
                         label={"Select bedroom"}
-                        options={FILTER_OPTIONS.noOfBedRoom}
+                        options={filterOptions.noOfBedRoom}
                         value={filters.noOfBedRoom}
                         onChange={(value) => setFilters((prev) => ({ ...prev, noOfBedRoom: value }))}
                     />
                     <FilterAutocomplete
                         label={"Select floor"}
-                        options={FILTER_OPTIONS.floor}
+                        options={filterOptions.floor}
                         value={filters.floor}
                         onChange={(value) => setFilters((prev) => ({ ...prev, floor: value }))}
                     />
                     <FilterAutocomplete
                         label={"Select status"}
-                        options={FILTER_OPTIONS.status}
+                        options={filterOptions.status}
                         value={filters.status}
                         onChange={(value) => setFilters((prev) => ({ ...prev, status: value }))}
                     />
                     <FilterAutocomplete
                         label={"Select price"}
-                        options={FILTER_OPTIONS.sellingPrice}
+                        options={filterOptions.sellingPrice}
                         value={filters.sellingPrice}
                         onChange={(value) => setFilters((prev) => ({ ...prev, sellingPrice: value }))}
                     />
@@ -121,21 +134,33 @@ export default function RoomPage() {
             </div>
 
             <div className="space-y-4">
-                {filteredAndSortedRooms.map((room) => (
+                {rooms.map((room: Room) => (
                     <RoomListCard
                         key={room.id}
                         room={room}
                         onCardClick={handleViewRoom}
                         onEdit={handleEditRoom}
-                        onDelete={handleDeleteRoom}
                     />
                 ))}
-                {filteredAndSortedRooms.length === 0 && (
+                {rooms.length === 0 && (
                     <div className="text-center p-6 text-gray-500">
                         No rooms found matching the current filters.
                     </div>
                 )}
             </div>
+
+            {totalPages > 1 && (
+                <Pagination
+                    isCompact
+                    showControls
+                    showShadow
+                    className="flex w-full justify-center"
+                    color="primary"
+                    page={pagination.page}
+                    total={totalPages}
+                    onChange={handlePageChange}
+                />
+            )}
         </div>
     )
 }

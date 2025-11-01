@@ -1,18 +1,21 @@
-export type Bill = {
-    id:number,
-    bill_id: string,
-    room_number: string,
-    tenant_name: string,
-    created_date: Date,
-    electricity_fee: number,
-    water_fee: number
-}
+type Tenant = {
+  name: string;
+};
+type Room = {
+  roomNo: number;
+  status: "Available" | "Rented" | "Purchased" | "InMaintenance";
+  floor: number;
+  tenant: Tenant;
+};
 export type UtilityUnit = {
-    id:number,
-    bill_id:string,
-    electricity_unit: number,
-    water_unit: number,
-    created_at: Date,
-    updated_at: Date
-}
-
+  id: string;
+  billId: string;
+  electricityUnits: number;
+  waterUnits: number;
+  bill: {
+    room: Room;
+  };
+  tenantName: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

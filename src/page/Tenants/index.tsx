@@ -1,45 +1,29 @@
 import TenantsListHeader from "@/components/Tenants/TenantsPage/tenants-list-header.tsx";
 import {
-  tenantsTableColumns,
+  getTenantTableColumns,
   tenantTableColumnWidths,
 } from "@/components/Tenants/TenantsPage/tenants-table-columns.tsx";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import { useTenants } from "@/hooks/tenants/useTenant.ts";
-import { useTenantToTenantTableData } from "@/hooks/TableData/useTenantToTenantTableData.ts";
+import { useFetchAllTenants } from "@/hooks/tenants/useTenant.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCurrentPage,
-  selectFilters,
-  selectLimit,
+  selectPagination,
   selectSearch,
   setCurrentPage,
 } from "@/store/features/tenants/tenantsSlice.ts";
 import DataTable from "@/components/data-table.tsx";
-
 export default function TenantsPage() {
   const dispatch = useDispatch();
-  const currentPage = useSelector(selectCurrentPage);
-  const limit = useSelector(selectLimit);
+
+  const pagination = useSelector(selectPagination);
+  const { page: currentPage, limit } = pagination;
   const search = useSelector(selectSearch);
-  const filters = useSelector(selectFilters);
-  const { occupancy } = filters;
 
-  const { getAllTenantsQuery } = useTenants({
-    currentPage,
-    limit,
-    search,
-    occupancy,
-  });
-
-  const { data: content, isLoading } = getAllTenantsQuery;
-  const tenants = content?.data;
+  const { data: content, isLoading } = useFetchAllTenants(pagination, search);
+  const tenants = content?.data ?? [];
   const paginationMeta = content?.meta;
 
-  const tenantsTableData = useTenantToTenantTableData({
-    currentPage,
-    pageSize: limit,
-    tenants: tenants ?? [],
-  });
+  const tenantsTableColumns = getTenantTableColumns(currentPage, limit);
 
   const handleCurrentPageChange = (newPage: number) => {
     dispatch(setCurrentPage(newPage));
@@ -58,7 +42,7 @@ export default function TenantsPage() {
         <div className="h-[68vh] overflow-y-auto rounded-xl   custom-scrollbar">
           <DataTable
             isLoading={isLoading}
-            data={tenantsTableData}
+            data={tenants}
             columns={tenantsTableColumns}
             columnWidths={tenantTableColumnWidths}
             isManualPagination

@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router";
-import {ROLE_OPTIONS, TENANT_OPTIONS, userMockData} from "@/constants/userMockData.ts";
+import {ROLE_OPTIONS} from "@/constants/userMockData.ts";
 import {Controller, type Resolver, useForm} from "react-hook-form";
 import {type EditUserFormData, editUserSchema} from "@/types/user.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -8,30 +8,67 @@ import {FormSelect} from "@/components/Form/form-select.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
+import {useEditUser, useFetchTenants, useFetchUser} from "@/hooks/useUsers.ts";
+import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
+import {useEffect, useMemo} from "react";
+import type {TenantType} from "@/types/tenants/tenantType.ts";
 
 export default function UserEditPage() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const user = userMockData.find(u => u.id === id);
+    const { data: tenants, isLoading: isTenantLoading  } = useFetchTenants();
+    const { data: user, isLoading } = useFetchUser(id!);
+    console.log(user);
+
+    const { mutate, isPending } = useEditUser();
+
+    const tenantOptions = useMemo(() => {
+        if (!tenants) return [];
+        return tenants.map((tenant: TenantType) => ({
+            key: tenant.id,
+            label: tenant.name || tenant.id
+        }));
+    }, [tenants]);
 
     const {
         control,
         handleSubmit,
         formState: { errors },
         watch,
+        reset,
         setValue
     } = useForm<EditUserFormData>({
         resolver: zodResolver(editUserSchema) as Resolver<EditUserFormData>,
         defaultValues: {
-            userName: user?.userName || "",
-            email: user?.email || "",
-            password: user?.password || "",
-            role: user?.role || "staff",
-            tenantId: user?.tenantId || null,
-            isActive: user?.isActive || true
+            userName: "",
+            email: "",
+            role: "Tenant",
+            tenantId: null,
+            isActive: true
         }
     });
+
+    const selectedRole = watch("role");
+
+    useEffect(() => {
+        if (user) {
+            reset({
+                userName: user.userName,
+                email: user.email,
+                password: user.password,
+                role: user.role || "Tenant",
+                tenantId: user.tenantId,
+                isActive: user.isActive
+            });
+        }
+    }, [user, reset]);
+
+    if (isLoading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
 
     if (!user) {
         return (
@@ -46,60 +83,26 @@ export default function UserEditPage() {
         )
     }
 
-    const selectedRole = watch("role");
-
     const onSubmit = (data: EditUserFormData) => {
         const transformedData = {
             ...data,
             tenantId: data.tenantId == "" ? null : data.tenantId
         }
-        console.log("Form submitted", transformedData);
+        console.log(transformedData);
+        mutate({
+            id: id!,
+            formData: data
+        });
     }
 
     return (
         <div className={"p-2 space-y-4"}>
             <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
-            <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
-                <div>
-                    <h1 className={"text-2xl font-medium"}>Edit {user.userName}</h1>
-                </div>
-            </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className={"space-y-6"}>
-                <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
-                    <Controller
-                        name={"email"}
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                {...field}
-                                label={"Email"}
-                                placeholder={"Enter email"}
-                                value={field.value?.toString() || ""}
-                                isInvalid={!!errors.email}
-                                errorMessage={errors.email?.message}
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        name={"password"}
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                {...field}
-                                label={"Password"}
-                                placeholder={"Enter password"}
-                                value={field.value?.toString() || ""}
-                                type={"password"}
-                                isInvalid={!!errors.password}
-                                errorMessage={errors.password?.message}
-                            />
-                        )}
-                    />
-                </div>
-
-
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    User Information
+                </h3>
                 <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
                     <Controller
                         name={"userName"}
@@ -116,6 +119,24 @@ export default function UserEditPage() {
                         )}
                     />
 
+                    <Controller
+                        name={"email"}
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                {...field}
+                                label={"Email"}
+                                placeholder={"Enter email"}
+                                value={field.value?.toString() || ""}
+                                isInvalid={!!errors.email}
+                                errorMessage={errors.email?.message}
+                            />
+                        )}
+                    />
+                </div>
+
+
+                <div className={"grid grid-cols-1 md:grid-cols-3 gap-4"}>
                     <Controller
                         name={"role"}
                         control={control}
@@ -137,23 +158,21 @@ export default function UserEditPage() {
                             />
                         )}
                     />
-                </div>
 
-                <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
                     <Controller
                         name={"tenantId"}
                         control={control}
                         render={({ field }) => (
                             <FormSelect
                                 {...field}
-                                label={"Tenant ID"}
-                                placeholder={"Select tenant ID"}
+                                label={"Tenant"}
+                                placeholder={"Select tenant"}
                                 value={field.value || ""}
-                                options={TENANT_OPTIONS}
+                                options={tenantOptions}
                                 onChange={field.onChange}
                                 isInvalid={!!errors.tenantId}
                                 errorMessage={errors.tenantId?.message}
-                                isDisabled={selectedRole !== "tenant"}
+                                isDisabled={selectedRole !== "Tenant" || isTenantLoading}
                             />
                         )}
                     />
@@ -180,7 +199,6 @@ export default function UserEditPage() {
                     />
                 </div>
 
-
                 <div className={"flex justify-end gap-2"}>
                     <Button
                         type={"button"}
@@ -193,8 +211,9 @@ export default function UserEditPage() {
                     <Button
                         type={"submit"}
                         className={"text-white bg-primary"}
+                        isLoading={isPending}
                     >
-                        Update
+                        {isPending ? "Editing" : "Edit"}
                     </Button>
                 </div>
             </form>

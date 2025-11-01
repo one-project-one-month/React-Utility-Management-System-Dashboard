@@ -53,20 +53,39 @@ export const useRoutes = () => {
         { title: "Home", path: "/", element: <HomePage /> },
         { title: "Components", path: "/components", element: <Components /> },
 
-        // Billing
-        { title: "Billing", path: "/billing", element: <BillingPage /> },
-        //{ title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
+    // Billing
+    { title: "Billing", path: "/billing", element: <BillingPage /> },
+    //{ title: "Create Billing", path: "/billing/create", element: <BillingPage /> },
 
-        // Tenants
-        { title: "Tenants", path: "/tenants", element: <TenantsPage /> },
-        { title: "Create Tenants", path: "/tenants/create", element: <CreateTenantsPage /> },
-        { title: "Update Tenants", path: "/tenants/update/:id", element: <UpdateTenantsPage /> },
-        { title: "Tenant Details", path: "/tenants/:id/details", element: <TenantDetailsPage /> },
-        { title: "Tenant Activities", path: "/tenants/:id/activities", element: <TenantActivitiesHistoryPage /> },
+    // Invoices
+    { title: "Invoices", path: "/invoices", element: <InvoicesPage /> },
+    // Tenants
+    { title: "Tenants", path: "/tenants", element: <TenantsPage /> },
+    {
+      title: "Create Tenants",
+      path: "/tenants/create",
+      element: <CreateTenantsPage />,
+    },
+    {
+      title: "Update Tenants",
+      path: "/tenants/update/:id",
+      element: <UpdateTenantsPage />,
+    },
+    {
+      title: "Tenant Details",
+      path: "/tenants/:id/details",
+      element: <TenantDetailsPage />,
+    },
+    {
+      title: "Tenant Activities",
+      path: "/tenants/:id/activities",
+      element: <TenantActivitiesHistoryPage />,
+    },
 
         // Rooms
         { title: "Rooms", path: "/rooms", element: <RoomPage /> },
         { title: "Room Details", path: "/rooms/:id", element: <RoomDetailPage /> },
+        { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
         { title: "Edit Room", path: "/rooms/:id/edit", element: <EditRoomPage /> },
         { title: "Create Room", path: "/rooms/create", element: <CreateRoomPage /> },
 
@@ -87,8 +106,5 @@ export const useRoutes = () => {
         { title: "Contract Type", path: "/contract/contract-type", element: <ContractTypePage /> },
         { title: "Tenant Contract", path: "/contract/contract-tenants", element: <TenantContractPage /> },
         { title: "Contract History", path: "/contract/contract-history", element: <TenantContractHistoryPage /> },
-
-        // Invoice
-        { title: "Invoices", path: "/invoices", element: <InvoicesPage /> },
     ];
 };

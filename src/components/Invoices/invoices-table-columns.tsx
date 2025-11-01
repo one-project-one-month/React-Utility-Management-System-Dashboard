@@ -1,45 +1,46 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
 
-import type {
-  InvoicesTableActionsData,
-  InvoicesTableData,
-} from "@/types/invoices/invoicesTableData.ts";
+import type { InvoicesTableActionsData } from "@/types/invoices/invoicesTableData.ts";
 import ActionsCell from "@/components/Invoices/InovoiceTableCells/action-cell.tsx";
 import StatusCell from "@/components/Invoices/InovoiceTableCells/status-cell.tsx";
+import type { Billing } from "@/types/billing/billingType.ts";
 
 export const invoicesTableColumnWidths: Record<string, string> = {
   no: "w-[5%]",
   invoiceNo: "w-[10%]",
-  tenantName: "w-[15%]",
+  tenantName: "w-[13%]",
   roomNo: "w-[8%]",
-  totalAmount: "w-[9%]",
+  totalAmount: "w-[10%]",
   issueDate: "w-[10%]",
   dueDate: "w-[10%]",
-  status: "w-[8%]",
+  status: "w-[10%]",
   actions: "w-[15%] max-w-[150px]",
 };
 
-export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
+export const getInvoiceTableColumns = (
+  currentPage: number,
+  limit: number,
+): ColumnDef<Billing>[] => [
   {
-    accessorKey: "no",
+    id: "no",
     header: "No.",
-    cell: (info) => `${info.getValue()}.`,
+    cell: (info) => `${(currentPage - 1) * limit + info.row.index + 1}.`,
   },
   {
-    accessorKey: "invoiceNo",
+    id: "invoiceNo",
     header: "Invoice No",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => row.invoice.invoiceNo,
   },
   {
-    accessorKey: "tenantName",
+    id: "tenantName",
     header: "Tenant Name",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => row.room.tenant.name,
   },
   {
-    accessorKey: "roomNo",
+    id: "roomNo",
     header: "Room No",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => row.room.roomNo,
   },
   {
     accessorKey: "totalAmount",
@@ -47,8 +48,9 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
     cell: (info) => info.getValue(),
   },
   {
-    accessorKey: "status",
+    id: "status",
     header: "Status",
+    accessorFn: (row) => row.invoice?.status,
     cell: (info) => {
       const status = info.getValue() as BillingStatus;
 
@@ -56,21 +58,37 @@ export const invoicesTableColumns: ColumnDef<InvoicesTableData>[] = [
     },
   },
   {
-    accessorKey: "issueDate",
+    accessorKey: "createdAt",
+    id: "issueDate",
     header: "IssueDate",
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      const issueDate = info.getValue() as Date;
+      return new Date(issueDate).toLocaleDateString();
+    },
   },
   {
     accessorKey: "dueDate",
+    id: "dueDate",
     header: "DueDate",
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      const dueDate = info.getValue() as Date;
+      return new Date(dueDate).toLocaleDateString();
+    },
   },
   {
-    accessorKey: "actions",
+    id: "actions",
     header: "Actions",
+    accessorFn: (row) => {
+      const billing = row;
+      return {
+        billing,
+        tenant: billing.room.tenant,
+        invoice: billing.invoice,
+      };
+    },
     cell: (info) => {
-      const actions = info.getValue() as InvoicesTableActionsData;
-      return <ActionsCell actions={actions} />;
+      const actionData = info.getValue() as InvoicesTableActionsData;
+      return <ActionsCell actionData={actionData} />;
     },
   },
 ];

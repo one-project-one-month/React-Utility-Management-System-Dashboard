@@ -1,30 +1,49 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   autoGenerateBill,
-  getAllBillings,
-  type GetBillingsParams,
+  fetchAllBillings,
 } from "@/services/billingServices.ts";
+import type { Pagination } from "@/types/pagination";
 
-export const useBillings = ({
-  currentPage,
-  limit,
-  search,
-  status,
-}: GetBillingsParams) => {
-  const queryClient = useQueryClient();
-
-  const getAllBillingsQuery = useQuery({
-    queryKey: ["billings", currentPage, search, status],
-    queryFn: () => getAllBillings({ currentPage, limit, search, status }),
+export const useFetchBillings = (pagination: Pagination, search?: string) => {
+  return useQuery({
+    queryKey: ["billings", pagination, search],
+    queryFn: () => fetchAllBillings(pagination, search),
   });
+};
 
-  const autoGenerateBillingMutation = useMutation({
+export const useAutoGenerateBill = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationKey: ["autoGenerateBillings"],
     mutationFn: autoGenerateBill,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
       queryClient.invalidateQueries({ queryKey: ["billings"] });
     },
   });
-
-  return { getAllBillingsQuery, autoGenerateBillingMutation };
 };
+
+// export const useBillings = ({
+//   currentPage,
+//   limit,
+//   search,
+//   status,
+// }: GetBillingsParams) => {
+//   const queryClient = useQueryClient();
+//
+//   const getAllBillingsQuery = useQuery({
+//     queryKey: ["billings", currentPage, search, status],
+//     queryFn: () => getAllBillings({ currentPage, limit, search, status }),
+//   });
+//
+//   const autoGenerateBillingMutation = useMutation({
+//     mutationKey: ["autoGenerateBillings"],
+//     mutationFn: autoGenerateBill,
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["billings"] });
+//     },
+//   });
+//
+//   return { getAllBillingsQuery, autoGenerateBillingMutation };
+// };
