@@ -155,44 +155,48 @@ export default function CustomerSupportPage() {
             </div>
 
             {/* Service Requests */}
-            {isLoading ? (
-                <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
-                    <h3 className="text-lg font-medium">Loading Services...</h3>
-                    <div className="space-y-2">
-                        {[...Array(limit)].map((_, i) => (
-                            <SkeletonLoader key={i} height="6rem" />
-                        ))}
-                    </div>
-                </div>
-            ) : (
-                <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
-                    <h3 className="text-lg font-medium">
-                        Customer Services: <span className="text-gray-400">{services.length}</span>
-                    </h3>
+            <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
+                {isLoading ? (
+                    <>
+                        <h3 className="text-lg font-medium">Loading Services...</h3>
+                        <div className="space-y-2">
+                            {[...Array(limit)].map((_, i) => (
+                                <SkeletonLoader key={i} height="6rem" />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <h3 className="text-lg font-medium">
+                            Customer Services:{" "}
+                            <span className="text-gray-400">{services.length}</span>
+                        </h3>
 
-                    <div className="space-y-2">
-                        {services.map((service) => (
-                            <CustomerServiceListCard
-                                key={service.id}
-                                service={service}
-                                onEdit={() => handleEditBtn(service.id, service.status)}
-                                onDelete={() => handleDeleteBtn(service.id)}
-                            />
-                        ))}
-                        {services.length === 0 && (
-                            <div className="text-center p-6 text-gray-200">
-                                No services found matching the current filters.
-                            </div>
-                        )}
-                    </div>
-                    <Pagination
-                        className="mt-4"
-                        total={totalPages}
-                        page={page}
-                        onChange={setPage}
-                    />
-                </div>
-            )}
+                        <div className="space-y-2">
+                            {services.map((service) => (
+                                <CustomerServiceListCard
+                                    key={service.id}
+                                    service={service}
+                                    onEdit={() => handleEditBtn(service.id, service.status)}
+                                    onDelete={() => handleDeleteBtn(service.id)}
+                                />
+                            ))}
+                            {services.length === 0 && (
+                                <div className="text-center p-6 text-gray-200">
+                                    No services found matching the current filters.
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
+                {/* Pagination always visible */}
+                <Pagination
+                    className="mt-4"
+                    total={totalPages}
+                    page={page}
+                    onChange={setPage}
+                />
+            </div>
 
             {/* Edit Modal */}
             <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl" hideCloseButton={false} shouldBlockScroll={true}>

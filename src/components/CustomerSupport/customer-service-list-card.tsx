@@ -25,7 +25,6 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
 
     const handleDelete = (e: PressEvent) => {
         e.continuePropagation();
-        console.log("delete", service.id);
         showConfirm({
             title: "Delete Service",
             message: `Are you sure you want to delete Service ${service.id}? This action cannot be undone.`,
@@ -47,7 +46,6 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
     useEffect(() => {
         const el = descRef.current;
         if (el) {
-            // Compare the rendered height to the scrollable height
             setIsOverflowing(el.scrollHeight > el.clientHeight);
         }
     }, [service.description]);
