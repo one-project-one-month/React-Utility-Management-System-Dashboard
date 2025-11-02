@@ -57,17 +57,17 @@ function StatCardPending({
 
                {/* BODY */}
                <CardBody className="pt-2">
-                    <h3 className="text-gray-600 text-xl mb-2.5 dark:text-gray-400">
+                    <h3 className="text-gray-600 text-lg mb-3.5 dark:text-gray-400">
                          {title}
                     </h3>
-                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                    <p className="text-2xl font-normal text-gray-800 dark:text-gray-200">
                          {pendingIssues}
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
-                    <p className="text-gray-600 text-xl dark:text-gray-400">
+                    <p className="text-gray-600 text-md dark:text-gray-400">
                          {isPositive
                               ? "No high priority"
                               : `${highPriority} high priority`}

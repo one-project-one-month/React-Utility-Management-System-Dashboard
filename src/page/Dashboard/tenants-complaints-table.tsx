@@ -2,8 +2,7 @@ import TableData from "@/components/data-table";
 import { type ColumnDef } from "@tanstack/react-table";
 import { Tooltip } from "@heroui/tooltip";
 import { Button } from "@heroui/button";
-import { FileText } from "lucide-react";
-
+import { Eye } from "lucide-react";
 type Complaint = {
      name: string;
      room: string;
@@ -41,7 +40,7 @@ const columns: ColumnDef<Complaint>[] = [
                          onPress={() => handleOpen(row.original)}
                          className="transition hover:scale-120"
                     >
-                         <FileText size={18} />
+                         <Eye size={18} />
                     </Button>
                </Tooltip>
           ),

@@ -1,13 +1,10 @@
 import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
 import {
-     // ArrowUpRight,
+     ArrowUpRight,
      ArrowDownRight,
-     // CircleDollarSign,
+     CircleDollarSign,
      CircleAlert,
 } from "lucide-react";
-import RevenueIcon from "../../assets/dashboard-icons/icons-from-dashboard-screen/Total Revenue.svg";
-// import WarningIcon from "../../assets/dashboard-icons/icons-from-invoice-screen/warning.svg";
-import ArrowUp from "../../assets/dashboard-icons/nav-icons/grow.svg";
 
 // Total Revenue
 function StatCardRevenue({
@@ -41,19 +38,9 @@ function StatCardRevenue({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   // <CircleDollarSign size={24} />
-                                   <img
-                                        src={RevenueIcon}
-                                        alt="Revenue Icon"
-                                        className="scale-140"
-                                   />
+                                   <CircleDollarSign size={24} />
                               ) : (
                                    <CircleAlert size={24} />
-                                   // <img
-                                   //      src={WarningIcon}
-                                   //      alt="Revenue Icon"
-                                   //      className="scale-150"
-                                   // />
                               )}
                          </Chip>
 
@@ -66,12 +53,7 @@ function StatCardRevenue({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   // <ArrowUpRight size={24} />
-                                   <img
-                                        src={ArrowUp}
-                                        alt="Revenue Icon"
-                                        // className="scale-100"
-                                   />
+                                   <ArrowUpRight size={24} />
                               ) : (
                                    <ArrowDownRight size={24} />
                               )}
@@ -81,17 +63,17 @@ function StatCardRevenue({
 
                {/* BODY */}
                <CardBody className="pt-2">
-                    <h3 className="text-gray-600 text-xl mb-2.5 dark:text-gray-400">
+                    <h3 className="text-gray-600 text-lg mb-3.5 dark:text-gray-400">
                          {title}
                     </h3>
-                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                    <p className="text-2xl font-normal text-gray-800 dark:text-gray-200">
                          {formattedValue} MMK
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
-                    <p className="text-gray-600 text-xl dark:text-gray-400">
+                    <p className="text-gray-600 text-md dark:text-gray-400">
                          {formattedChange} from last month
                     </p>
                </CardFooter>

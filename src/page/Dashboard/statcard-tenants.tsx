@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardBody, CardFooter, Chip } from "@heroui/react";
 import { Users, CircleCheck, CircleX, CircleAlert } from "lucide-react";
-import TwoPeople from "../../assets/dashboard-icons/icons-from-dashboard-screen/Tenants.svg";
 
 // Total Tenants
 function StatCardTenants({
@@ -29,12 +28,7 @@ function StatCardTenants({
                               className="h-12"
                          >
                               {isPositive ? (
-                                   // <Users size={24} />
-                                   <img
-                                        src={TwoPeople}
-                                        alt="Revenue Icon"
-                                        className="scale-140 bg-red text-red-300"
-                                   />
+                                   <Users size={24} />
                               ) : (
                                    <CircleAlert size={24} />
                               )}
@@ -59,17 +53,17 @@ function StatCardTenants({
 
                {/* BODY */}
                <CardBody className="pt-2">
-                    <h3 className="text-gray-600 text-xl mb-2.5 dark:text-gray-400">
+                    <h3 className="text-gray-600 text-lg mb-3.5 dark:text-gray-400">
                          {title}
                     </h3>
-                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                    <p className="text-2xl font-normal text-gray-800 dark:text-gray-200">
                          {activeTenants}
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
-                    <p className="text-gray-600 text-xl dark:text-gray-400">
+                    <p className="text-gray-600 text-md dark:text-gray-400">
                          Out of {totalRoom} total rooms
                     </p>
                </CardFooter>

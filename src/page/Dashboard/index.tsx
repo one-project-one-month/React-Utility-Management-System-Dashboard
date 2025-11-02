@@ -7,14 +7,16 @@ import StatCardRevenue from "./statcard-revenue";
 import StatCardTenants from "./statcard-tenants";
 import StatCardOccupancy from "./statcard-occupancy";
 import StatCardPending from "./statcard-pending";
-import Rechart from "./rechart";
 import { Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
+const Rechart = lazy(() => import("./rechart"));
 
 export default function Dashboard() {
      return (
           <div className="h-screen min-h-screen overflow-y-scroll [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-6 pb-50 space-y-6">
                {/* Header */}
-               <h1 className="text-5xl font-semibold text-gray-800 dark:text-gray-200">
+               <h1 className="text-5xl font-semibold text-gray-900 dark:text-gray-100">
                     Dashboard
                </h1>
 
@@ -61,7 +63,7 @@ export default function Dashboard() {
                                    </Chip>
 
                                    {/* Heading */}
-                                   <h3 className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                                   <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                                         {"Total Utility Units"}
                                    </h3>
                               </div>
@@ -69,7 +71,9 @@ export default function Dashboard() {
 
                          {/* BODY */}
                          <CardBody>
-                              <Rechart />
+                              <Suspense fallback={<p>Loading chart...</p>}>
+                                   <Rechart />
+                              </Suspense>
                          </CardBody>
                     </Card>
 
@@ -92,7 +96,7 @@ export default function Dashboard() {
                                         </Chip>
 
                                         {/* Heading */}
-                                        <h3 className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                                        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                                              {"Tenants Complaints"}
                                         </h3>
                                    </div>
@@ -142,7 +146,7 @@ export default function Dashboard() {
                                         </Chip>
 
                                         {/* Heading */}
-                                        <h3 className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                                        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                                              {"Billing History"}
                                         </h3>
                                    </div>
@@ -190,7 +194,7 @@ export default function Dashboard() {
                                         </Chip>
 
                                         {/* Heading */}
-                                        <h3 className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                                        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                                              {"Contract"}
                                         </h3>
                                    </div>
