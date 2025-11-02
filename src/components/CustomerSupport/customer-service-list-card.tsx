@@ -4,9 +4,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { CustomerService } from "@/types/customer-service";
 import { ServiceChip } from "./service-chip";
 import { useState, useRef, useEffect } from "react";
-import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import { formatDate } from "@/helpers/date";
-
 
 interface CustomerServiceCardProps {
     service: CustomerService;
@@ -16,28 +14,14 @@ interface CustomerServiceCardProps {
 
 export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerServiceCardProps) {
 
-    const { showConfirm, ConfirmDialog } = useConfirmDialog();
-
     const handleEdit = (e: PressEvent) => {
         e.continuePropagation();
         onEdit(service.id);
     };
 
-    const handleDelete = (e: PressEvent) => {
-        e.continuePropagation();
-        showConfirm({
-            title: "Delete Service",
-            message: `Are you sure you want to delete Service ${service.id}? This action cannot be undone.`,
-            confirmText: "Delete",
-            cancelText: "Cancel",
-            confirmColor: "danger",
-            onConfirm: () => {
-                if (service.id) {
-                    onDelete(service.id);
-                }
-            }
-        });
-    }
+    const handleDelete = () => {
+        onDelete(service.id);
+    };
 
     const [isLineClamp, setIsLineClamp] = useState(true);
     const [isOverflowing, setIsOverflowing] = useState(false);
@@ -110,7 +94,6 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                     </div>
                 </CardBody>
             </Card>
-            <ConfirmDialog />
         </div>
     )
 }

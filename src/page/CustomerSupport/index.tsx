@@ -1,6 +1,6 @@
 import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-service-list-card";
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
-import type { Category, Priority, Status } from "@/types/customer-service";
+import type { Category, CustomerService, Priority, Status } from "@/types/customer-service";
 import { Filter, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
@@ -22,6 +22,7 @@ import {
 } from "@heroui/react";
 import { useCustomerService, useDeleteCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
 import { SkeletonLoader } from "@/components/skeleton-loader";
+import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import { formatDate } from "@/helpers/date";
 
 const FILTER_OPTIONS = {
@@ -56,9 +57,13 @@ export default function CustomerSupportPage() {
     const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
     const { mutate: deleteService } = useDeleteCustomerService();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+    const { showConfirm, ConfirmDialog, closeDialog } = useConfirmDialog();
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [editStatus, setEditStatus] = useState<Status | undefined>();
-    const services = data?.content?.data ?? [];
+    const services: CustomerService[] = Array.isArray(data?.content?.data)
+        ? data!.content!.data
+        : [];
+
     
     useEffect(() => {
         if (isError) {
@@ -87,22 +92,11 @@ export default function CustomerSupportPage() {
     };
 
     const handleDeleteBtn = (id: string) => {
-        deleteService(id, {
-            onSuccess: () => {
-                addToast({
-                    title: "Service Deleted",
-                    description: "Deleted successfully!",
-                    color: "success",
-                    timeout: 3000,
-                });
-            },
-            onError: () =>
-                addToast({
-                    title: "Delete Failed",
-                    description: "Something went wrong while deleting the service.",
-                    color: "danger",
-                    timeout: 3000,
-                }),
+        showConfirm({
+            title: "Delete Service",
+            confirmText: "Delete",
+            confirmColor: "danger",
+            onConfirm: () => deleteService({id, onDeleteClose: closeDialog}),
         });
     };
 
@@ -178,7 +172,7 @@ export default function CustomerSupportPage() {
                                     key={service.id}
                                     service={service}
                                     onEdit={() => handleEditBtn(service.id, service.status)}
-                                    onDelete={() => handleDeleteBtn(service.id)}
+                                    onDelete={handleDeleteBtn}
                                 />
                             ))}
                             {services.length === 0 && (
@@ -190,12 +184,15 @@ export default function CustomerSupportPage() {
                     </>
                 )}
                 {/* Pagination always visible */}
-                <Pagination
-                    className="mt-4"
-                    total={totalPages}
-                    page={page}
-                    onChange={setPage}
-                />
+                {totalPages > 1 && (
+                    <Pagination
+                        className="mt-4"
+                        total={totalPages}
+                        page={page}
+                        onChange={setPage}
+                    />
+                )}
+                <ConfirmDialog />
             </div>
 
             {/* Edit Modal */}
@@ -253,7 +250,7 @@ export default function CustomerSupportPage() {
                                                     status: editStatus ?? service.status,
                                                     priorityLevel: service.priorityLevel,
                                                 },
-                                                onClose: onEditClose,
+                                                onEditClose: onEditClose,
                                             });
                                         }}
                                         >
