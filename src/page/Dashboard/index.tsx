@@ -14,40 +14,14 @@ const Rechart = lazy(() => import("./rechart"));
 import {
   useGetActiveTenantsCount,
   useGetAllRoomsCount,
-  useGetPendingIssuesCount,
-  useGetRevenueByMonthAndYear,
 } from "@/hooks/dashboardData/useDashboardData.ts";
 
 export default function Dashboard() {
-  const now = new Date();
-  const currentMonthName = now.toLocaleString("en-US", { month: "short" });
-  const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const prevMonthName = prevMonthDate.toLocaleString("en-US", {
-    month: "short",
-  });
-
-  const year = String(now.getFullYear());
-
-  const { data: thisMonthContent } = useGetRevenueByMonthAndYear({
-    month: currentMonthName,
-    year,
-  });
-  const { data: prevMonthContent } = useGetRevenueByMonthAndYear({
-    month: prevMonthName,
-    year,
-  });
-
-  const thisMonthRevenue = thisMonthContent?.data;
-  const prevMonthRevenue = prevMonthContent?.data;
-
   const { data: activeTenantContent } = useGetActiveTenantsCount();
   const activeTenantsCount = activeTenantContent?.data;
 
   const { data: allRoomsCountContent } = useGetAllRoomsCount();
   const allRoomsCount = allRoomsCountContent?.data;
-
-  const { data: pendingIssuesCountContent } = useGetPendingIssuesCount();
-  const pendingIssuesCount = pendingIssuesCountContent?.data;
 
   return (
     <div className="h-screen min-h-screen overflow-y-scroll [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-6 pb-50 space-y-6">
@@ -58,11 +32,7 @@ export default function Dashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCardRevenue
-          title="Total Revenue"
-          currentValue={thisMonthRevenue ?? 1550000}
-          lastTotal={prevMonthRevenue ?? 1220000}
-        />
+        <StatCardRevenue />
         <StatCardTenants
           title="Active Tenants"
           activeTenants={activeTenantsCount ?? 13}
@@ -73,11 +43,7 @@ export default function Dashboard() {
           activeTenants={activeTenantsCount ?? 13}
           totalRoom={allRoomsCount ?? 20}
         />
-        <StatCardPending
-          title="Pending Issues"
-          pendingIssues={pendingIssuesCount ?? 0}
-          highPriority={3}
-        />
+        <StatCardPending />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
@@ -244,7 +210,7 @@ export default function Dashboard() {
                                         View All
                                    </a> */}
               <Link
-                to="/contract"
+                to="/contract/contract-history"
                 className="text-primary text-small pr-2 underline transition
                                         delay-100 duration-250 ease-in-out hover:scale-110"
               >

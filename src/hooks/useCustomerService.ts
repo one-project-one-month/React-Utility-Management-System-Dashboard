@@ -18,14 +18,14 @@ interface UpdateServiceArgs {
 export const useCustomerService = (
   page: number,
   limit: number,
-  filters: any
+  filters?: any,
 ) => {
   const pagination: Pagination = { page, limit, filter: filters };
   return useQuery({
     queryKey: ["customer-services", pagination],
     queryFn: async () => {
       const res = await fetchCustomerServices(pagination, filters);
-      return res as ApiResponse<CustomerService>;
+      return res as ApiResponse<CustomerService[]>;
     },
   });
 };
