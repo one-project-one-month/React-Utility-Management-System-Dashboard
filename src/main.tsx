@@ -7,6 +7,7 @@ import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { store } from "@/store/store.ts";
 import "./index.css";
 import App from "./App.tsx";
+import CustomErrorBoundary from "@/components/ErrorBounary/errorBoundary.tsx";
 
 const queryClient = new QueryClient({
      defaultOptions: {
@@ -25,10 +26,13 @@ createRoot(document.getElementById("root")!).render(
                               placement="top-right"
                               toastOffset={"top-right".includes("top") ? 10 : 0}
                          />
+
                          <BrowserRouter>
-                              <main className="text-foreground bg-background">
-                                   <App />
-                              </main>
+                              <CustomErrorBoundary>
+                                   <main className="text-foreground bg-background">
+                                        <App />
+                                   </main>
+                              </CustomErrorBoundary>
                          </BrowserRouter>
                     </HeroUIProvider>
                </QueryClientProvider>

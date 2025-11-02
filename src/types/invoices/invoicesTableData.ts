@@ -1,15 +1,14 @@
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
-import type { Billing } from "@/types/billing/billingType.ts";
-import type { Invoice } from "@/types/invoices/invoiceType.ts";
-import type { TenantType } from "@/types/tenants/tenantType.ts";
 
-export interface InvoicesTableActions {
-  onDownloadInvoice: () => void;
-  onSendReceipt: () => void;
-  disableSendReceipt: boolean;
+import type { Billing, Invoice, Tenant } from "@/types/billing/billingType.ts";
+
+export interface InvoicesTableActionsData {
+  // onSendReceipt: () => void;
+  // isSendingReceipt: boolean;
+
   billing: Billing;
   invoice: Invoice;
-  tenant: TenantType;
+  tenant: Tenant;
 }
 
 export interface InvoicesTableData {
@@ -17,9 +16,9 @@ export interface InvoicesTableData {
   invoiceNo: string;
   tenantName: string;
   roomNo: number;
-  totalAmount: number;
+  totalAmount: string;
   issueDate: string;
   dueDate: string;
   status: BillingStatus;
-  actions: InvoicesTableActions;
+  actions: InvoicesTableActionsData;
 }

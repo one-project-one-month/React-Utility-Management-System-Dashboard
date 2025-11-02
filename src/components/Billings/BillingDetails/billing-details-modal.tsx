@@ -9,31 +9,18 @@ import {
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { Eye, X } from "lucide-react";
-import { mockBillings } from "@/constants/mockData/billing/mockBillings.ts";
 
-import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
-import { mockRooms } from "@/constants/mockData/tenants/mockRooms.ts";
-import { mockContracts } from "@/constants/mockData/tenants/mockContracts.ts";
 import DetailsModalHeader from "@/components/Billings/BillingDetails/details-modal-header.tsx";
 import DetailsModalBody from "@/components/Billings/BillingDetails/details-model-body.tsx";
+import type { Billing } from "@/types/billing/billingType.ts";
 
 interface Props {
-  billingId: string;
+  billing: Billing;
 }
 
-export default function BillingDetailsModal({ billingId }: Props) {
+export default function BillingDetailsModal({ billing }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const billing = mockBillings.find((billing) => billing.id === billingId);
-  const tenant = mockTenants.find(
-    (tenant) => tenant.roomId === billing?.roomId,
-  );
-  const room = mockRooms.find((room) => room.id === billing?.roomId);
-  const contract = mockContracts.find(
-    (contract) => contract.tenantId === tenant?.id,
-  );
-
-  if (!billing || !tenant || !room || !contract) return null;
-
+  console.log("billing", billing);
   return (
     <>
       <Tooltip content={"See  Details"} placement="top">
@@ -61,15 +48,11 @@ export default function BillingDetailsModal({ billingId }: Props) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-3 border-b border-divider mt-3 pb-3">
-                <DetailsModalHeader
-                  tenant={tenant}
-                  room={room}
-                  contract={contract}
-                />
+              <ModalHeader>
+                <DetailsModalHeader room={billing.room} />
               </ModalHeader>
 
-              <ModalBody className="mt-2 space-y-3">
+              <ModalBody>
                 <DetailsModalBody billing={billing} />
               </ModalBody>
 

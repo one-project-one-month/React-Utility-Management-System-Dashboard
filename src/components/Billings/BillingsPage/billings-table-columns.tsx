@@ -1,101 +1,77 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import type {
-  BillingStatus,
-  BillingTableData,
-} from "@/types/billing/billingTableData.ts";
-import { Chip } from "@heroui/react";
+import type { BillingStatus } from "@/types/billing/billingTableData.ts";
 import BillingDetailsModal from "@/components/Billings/BillingDetails/billing-details-modal.tsx";
+import StatusCell from "@/components/Invoices/InovoiceTableCells/status-cell.tsx";
+import type { Billing } from "@/types/billing/billingType.ts";
 
 export const billingTableColumnWidths: Record<string, string> = {
   no: "w-[6%]",
-  tenantId: "w-[9%]",
-  tenantName: "w-[14%]",
+  tenantId: "w-[11%]",
+  tenantName: "w-[20%]",
   roomNo: "w-[9%]",
-  contractType: "w-[21%]",
+  contractType: "w-[13%]",
   totalAmount: "w-[11%]",
   dueDate: "w-[11%]",
   status: "w-[11%]",
   billingIdForAction: "w-[8%]",
 };
 
-export const billingsTableColumns: ColumnDef<BillingTableData>[] = [
+export const getBillingTableColumns = (
+  currentPage: number,
+  limit: number,
+): ColumnDef<Billing>[] => [
   {
-    accessorKey: "no",
+    id: "no",
     header: "No.",
-    cell: (info) => info.getValue(),
+    cell: (info) => `${(currentPage - 1) * limit + info.row.index + 1}.`,
   },
   {
-    accessorKey: "tenantId",
-    header: "TenantId",
-    cell: (info) => info.getValue(),
+    id: "tenantId",
+    header: "Tenant ID",
+    accessorFn: (row) => row.room.tenant.id.split("-")[0],
   },
   {
-    accessorKey: "tenantName",
+    id: "tenantName",
     header: "Tenant Name",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => row.room.tenant.name,
   },
   {
-    accessorKey: "roomNo",
+    id: "roomNo",
     header: "Room No",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) => row.room.roomNo,
   },
   {
-    accessorKey: "contractType",
+    id: "contractType",
     header: "Contract Type",
-    cell: (info) => info.getValue(),
+    accessorFn: (row) =>
+      row.room.contract.length
+        ? row.room.contract[0].contractType.name
+        : "24 Months",
   },
   {
     accessorKey: "totalAmount",
     header: "Total Amount",
-    cell: (info) => info.getValue(),
   },
   {
-    accessorKey: "status",
+    id: "status",
     header: "Status",
+    accessorFn: (row) => row.invoice?.status,
     cell: (info) => {
       const status = info.getValue() as BillingStatus;
-
-      let color: "default" | "success" | "warning" | "danger" = "default";
-
-      switch (status) {
-        case "Pending":
-          color = "warning";
-          break;
-        case "Paid":
-          color = "success";
-          break;
-        case "Overdue":
-          color = "danger";
-          break;
-        default:
-          color = "default";
-      }
-
-      return (
-        <Chip
-          color={color}
-          variant="flat"
-          radius="lg"
-          classNames={{
-            base: `min-w-20 h-6 px-2 `,
-            content: `text-xs capitalize text-center font-semibold`,
-          }}
-        >
-          {status}
-        </Chip>
-      );
+      return <StatusCell status={status} />;
     },
   },
   {
     accessorKey: "dueDate",
-    header: "DueDate",
-    cell: (info) => info.getValue(),
+    header: "Due Date",
+    cell: (info) => {
+      const dueDate = info.getValue() as Date;
+      return new Date(dueDate).toLocaleDateString();
+    },
   },
   {
-    accessorKey: "billingIdForAction",
+    id: "actions",
     header: "Actions",
-    cell: (info) => {
-      return <BillingDetailsModal billingId={info.getValue() as string} />;
-    },
+    cell: (info) => <BillingDetailsModal billing={info.row.original} />,
   },
 ];

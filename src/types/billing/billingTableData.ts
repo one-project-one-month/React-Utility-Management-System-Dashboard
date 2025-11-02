@@ -1,3 +1,5 @@
+import type { Billing } from "@/types/billing/billingType.ts";
+
 export type BillingStatus = "Pending" | "Paid" | "Overdue";
 
 export interface BillingTableData {
@@ -9,5 +11,5 @@ export interface BillingTableData {
   totalAmount: number;
   dueDate: string;
   status: BillingStatus;
-  billingIdForAction: string;
+  billingForAction: Billing;
 }

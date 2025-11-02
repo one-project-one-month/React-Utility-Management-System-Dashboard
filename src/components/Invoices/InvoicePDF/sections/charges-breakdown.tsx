@@ -8,7 +8,7 @@ interface Props {
 
 interface ChargeItem {
   label: string;
-  value: number;
+  value: string | number;
 }
 
 export default function ChargesBreakdown({ billing }: Props) {

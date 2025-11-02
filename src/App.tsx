@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import PageLayout from "@/layout/PageLayout";
 import NotFound from "@/page/NotFound";
 import LoginPage from "./page/Auth";
+import LoadingSpinner from "./components/loading-spinner";
 
 function App() {
      const routes = useRoutes();
@@ -13,7 +14,7 @@ function App() {
      return (
           <HeroUIProvider navigate={navigate} useHref={useHref}>
                <main className="font-roboto text-foreground bg-background">
-                    <Suspense fallback={null}>
+                    <Suspense fallback={<LoadingSpinner label="Loading" />}>
                          <Routes>
                               <Route path="/login" element={<LoginPage />} />
                               <Route element={<PageLayout />}>

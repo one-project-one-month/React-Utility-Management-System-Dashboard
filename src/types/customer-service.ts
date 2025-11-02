@@ -1,15 +1,15 @@
-export interface ServiceRequest {
-  id: string; // Case Id
-  roomNo: string; // Room number/identifier
+export interface CustomerService {
+  id: string;
+  roomId: string;
+  roomNo: string;
   category: Category;
-  description: string;
+  priorityLevel: Priority;
   status: Status;
-  priority: Priority;
-  issuedDate: string; // DATE string (e.g., "YYYY-MM-DD")
+  description: string;
+  issuedDate: string;
+  createdAt: string;
+  updatedAt: string;
 }
-
 export type Category = "Complain" | "Maintenance" | "Other";
-
 export type Status = "Pending" | "Ongoing" | "Resolved";
-
 export type Priority = "Low" | "Medium" | "High";

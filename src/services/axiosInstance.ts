@@ -12,10 +12,9 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-const accessToken = Cookies.get("token");
-
 axiosInstance.interceptors.request.use(
   (config) => {
+    const accessToken = Cookies.get("token");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -24,7 +23,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -39,9 +38,8 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 401 && !error.config._retry) {
       error.config._retry = true;
       try {
-        const res = await axiosInstance.post<RefreshTokenResponse>(
-          "auth/refresh-token"
-        );
+        const res =
+          await axiosInstance.post<RefreshTokenResponse>("auth/refresh-token");
 
         const newAccessToken = res.data.content.accessToken;
 
@@ -61,7 +59,7 @@ axiosInstance.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

@@ -1,12 +1,34 @@
+import { useDispatch, useSelector } from "react-redux";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import BillingsListHeader from "@/components/Billings/BillingsPage/billings-list-header.tsx";
-import TableContainer from "@/components/shared/Table/table-container.tsx";
+import BillingsOrInvoicesListHeader from "@/components/Billings/BillingsPage/billings-or-invoices-list-header.tsx";
 import {
-  billingsTableColumns,
+  getBillingTableColumns,
   billingTableColumnWidths,
 } from "@/components/Billings/BillingsPage/billings-table-columns.tsx";
+import { useFetchBillings } from "@/hooks/billings/useBillings.ts";
+import {
+  selectPagination,
+  selectSearch,
+} from "@/store/features/billings/billingsSlice.ts";
+import { setCurrentPage } from "@/store/features/billings/billingsSlice.ts";
+import DataTable from "@/components/data-table.tsx";
 
 export default function BillingPage() {
+  const dispatch = useDispatch();
+  const pagination = useSelector(selectPagination);
+  const { page: currentPage, limit } = pagination;
+
+  const search = useSelector(selectSearch);
+
+  const { data: content, isLoading } = useFetchBillings(pagination, search);
+
+  const billings = content?.data ?? [];
+  const billingsTableColumns = getBillingTableColumns(currentPage, limit);
+
+  const handleCurrentPageChange = (newPage: number) => {
+    dispatch(setCurrentPage(newPage));
+  };
+
   return (
     <div className="h-[84vh] px-2 overflow-y-auto custom-scrollbar-3">
       <div className="min-h-[90vh]  rounded-xl    ">
@@ -16,14 +38,20 @@ export default function BillingPage() {
             { label: "Billing ", href: "/billing" },
           ]}
         />
-        <BillingsListHeader />
+
+        <BillingsOrInvoicesListHeader itemName={"Bill"} />
 
         <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl  custom-scrollbar">
-          {/*<BillingsTableContainer />*/}
-          <TableContainer
-            tableName={"BillingTable"}
+          <DataTable
+            isLoading={isLoading}
+            data={billings}
             columns={billingsTableColumns}
             columnWidths={billingTableColumnWidths}
+            isManualPagination
+            page={content?.meta?.currentPage ?? currentPage}
+            pageSize={content?.meta?.perPage ?? limit}
+            totalElements={content?.meta?.total ?? 100}
+            onPageChange={handleCurrentPageChange}
           />
         </div>
       </div>

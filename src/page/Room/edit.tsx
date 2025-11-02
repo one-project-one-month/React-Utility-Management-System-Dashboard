@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import {useNavigate, useParams} from "react-router";
 import {Textarea, Button} from "@heroui/react";
-import {BEDROOM_OPTIONS, FLOOR_OPTIONS, roomMockData, STATUS_OPTIONS} from "@/constants/roomMockData.ts";
+import {BEDROOM_OPTIONS, EDIT_ROOM_STATUS_OPTIONS, FLOOR_OPTIONS} from "@/constants/roomMockData.ts";
 import {Controller, type Resolver, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormSelect} from "@/components/Form/form-select.tsx";
@@ -16,12 +16,17 @@ import {type EditRoomFormData, editRoomSchema} from "@/types/room.ts";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
+import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
+import {useEditRoom, useFetchRoom} from "@/hooks/useRooms.ts";
 
 export default function RoomEditPage() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const room = roomMockData.find(r => r.id === id);
+    const { data: room, isLoading } = useFetchRoom(id!);
+    console.log(room);
+
+    const { mutate, isPending } = useEditRoom();
 
     const {
         control,
@@ -29,29 +34,35 @@ export default function RoomEditPage() {
         formState: { errors },
     } = useForm<EditRoomFormData>({
         resolver: zodResolver(editRoomSchema) as Resolver<EditRoomFormData>,
-        defaultValues: {
-            roomNo: room?.roomNo || 1,
-            noOfBedRoom: room?.noOfBedRoom || 1,
-            floor: room?.floor || 1,
-            dimension: room?.dimension || "",
-            status: room?.status || "available",
-            sellingPrice: room?.sellingPrice || 1,
-            maxNoPeople: room?.maxNoPeople || 1,
-            description: room?.description || "",
+        values: {
+            roomNo: room?.roomNo ?? 0,
+            noOfBedRoom: room?.noOfBedRoom ?? 1,
+            floor: room?.floor ?? 1,
+            dimension: room?.dimension ?? "",
+            status: room?.status ?? "Available",
+            sellingPrice: room?.sellingPrice ?? 0,
+            maxNoOfPeople: room?.maxNoOfPeople ?? 0,
+            description: room?.description ?? "",
         }
     });
+
+    if (isLoading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
 
     if (!room) {
         return (
             <div className="p-8">
                 <div className="text-center">
                     <h1 className="text-2xl font-semibold mb-4">Room Not Found</h1>
-                    <Button onPress={() => navigate('/room')}>
+                    <Button onPress={() => navigate('/rooms')}>
                         Back to Rooms
                     </Button>
                 </div>
             </div>
-        )
+        );
     }
 
     const handleCancel = () => {
@@ -60,15 +71,16 @@ export default function RoomEditPage() {
 
     const onSubmit = (data: EditRoomFormData) => {
         console.log("Form submitted", data);
+
+        mutate({
+            id: id!,
+            formData: data
+        });
     }
 
     return (
-        <div className={"h-[84vh] p-8 space-y-4 overflow-y-auto custom-scrollbar"}>
-            <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
-                <div>
-                    <h1 className={"text-2xl font-semibold"}>Edit Room {room.roomNo}</h1>
-                </div>
-            </div>
+        <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3"}>
+            <NavigationBreadCrumbs items={breadcrumbs.roomEdit} />
 
             <form onSubmit={handleSubmit(onSubmit)} className={"space-y-6"}>
                 <div>
@@ -146,7 +158,7 @@ export default function RoomEditPage() {
                             render={({ field }) => (
                                 <FormSelect
                                     label={"Status"}
-                                    options={STATUS_OPTIONS}
+                                    options={EDIT_ROOM_STATUS_OPTIONS}
                                     value={field.value}
                                     onChange={field.onChange}
                                     isInvalid={!!errors.status}
@@ -156,18 +168,18 @@ export default function RoomEditPage() {
                         />
 
                         <Controller
-                            name={"maxNoPeople"}
+                            name={"maxNoOfPeople"}
                             control={control}
                             render={({ field }) => (
                                 <FormInput
                                     {...field}
                                     label={"Maximum Occupancy"}
                                     placeholder={"Maximum number of people"}
-                                    value={field.value?.toString() || 0}
+                                    value={field.value?.toString() ?? ""}
                                     type={"number"}
                                     startContent={<Users size={18} className={"text-default-500"} />}
-                                    isInvalid={!!errors.maxNoPeople}
-                                    errorMessage={errors.maxNoPeople?.message}
+                                    isInvalid={!!errors.maxNoOfPeople}
+                                    errorMessage={errors.maxNoOfPeople?.message}
                                 />
                             )}
                         />
@@ -210,9 +222,10 @@ export default function RoomEditPage() {
                             control={control}
                             render={({ field }) => (
                                 <FormInput
+                                    {...field}
                                     label={"Monthly Rent Fee"}
                                     placeholder={"Enter monthly rate"}
-                                    value={field.value?.toString() || 0}
+                                    value={field.value?.toString() ?? ""}
                                     type={"number"}
                                     startContent={<DollarSign size={18} className="text-default-500" />}
                                     isInvalid={!!errors.sellingPrice}
@@ -235,8 +248,9 @@ export default function RoomEditPage() {
                     <Button
                         className="bg-primary text-white"
                         type={"submit"}
+                        isLoading={isPending}
                     >
-                        Save
+                        {isPending ? "Editing" : "Edit"}
                     </Button>
                 </div>
             </form>

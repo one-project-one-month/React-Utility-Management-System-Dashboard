@@ -1,36 +1,37 @@
 import type {ColumnDef} from "@tanstack/react-table";
-import type {UserList} from "@/types/user.ts";
 import {roleColors, roleLabels} from "@/constants/userMockData.ts";
-import DataTable from "@/components/data-table.tsx";
 import {Button, Chip, Tooltip} from "@heroui/react";
 import {Eye, Pencil, Trash2} from "lucide-react";
-import {useMemo, useState} from "react";
-import {useConfirmDialog} from "@/hooks/useConfirmDialog.tsx";
+import { useNavigate } from "react-router";
+import TablePresentation from "../data-table";
+import type {User} from "@/types/user.ts";
 
 interface UserDataTableProps {
-    data: UserList[];
+    data: User[];
     isLoading?: boolean;
     onDeleteUser?: (userId: string) => void;
+    isDeletingUser?: boolean;
+    showConfirm?: (options: any) => void;
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    onPageChange: (newPage: number) => void;
 }
 
-export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDataTableProps) {
-    const [page, setPage] = useState(1);
-    const [pageSize] = useState(10);
-    const [totalElements, setTotalElements] = useState(0);
+export function UserDataTable({
+    data,
+    isLoading = false,
+    onDeleteUser,
+    isDeletingUser = false,
+    showConfirm,
+    currentPage,
+    pageSize,
+    totalPages,
+    onPageChange
+}: UserDataTableProps) {
+    const navigate = useNavigate()
 
-    const { showConfirm, ConfirmDialog } = useConfirmDialog();
-
-    const paginatedData = useMemo(() => {
-        const start = (page - 1) * pageSize;
-        setTotalElements(data.length);
-        return data.slice(start, start + pageSize);
-    }, [data, page, pageSize]);
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    }
-
-    const columns: ColumnDef<UserList>[] = useMemo(() => [
+    const columns: ColumnDef<User>[] = [
         {
             accessorKey: "userName",
             header: "Username",
@@ -46,19 +47,18 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
                 const role = row.original.role as keyof typeof roleColors;
 
                 return (
-                    <Chip className={roleColors[role]} radius={"md"}>
+                    <Chip
+                        className={roleColors[role]}
+                        classNames={{
+                            base: roleColors[role],
+                            content: "!font-semibold text-xs"
+                        }}
+                        radius={"lg"}
+                    >
                         {roleLabels[role]}
                     </Chip>
                 )
             }
-        },
-        {
-            accessorKey: "phNumber",
-            header: "Phone No",
-        },
-        {
-            accessorKey: "emergencyNo",
-            header: "Emergency No",
         },
         {
             id: "actions",
@@ -66,34 +66,27 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
             cell: ({ row }) => {
                 const user = row.original;
 
-                const handleView = () => {
-                    window.location.href = `/user-management/users/${user.id}`;
-                }
-
-                const handleEdit = () => {
-                    window.location.href = `/user-management/users/${user.id}/edit`;
-                }
-
                 const handleDelete = () => {
-                    showConfirm({
-                        title: "Delete User",
-                        message: `Are you sure you want to delete ${user.userName}? This action cannot be undone.`,
-                        confirmText: "Delete",
-                        cancelText: "Cancel",
-                        confirmColor: "danger",
-                        onConfirm: () => {
-                            if (onDeleteUser) {
-                                onDeleteUser(user.id);
+                    if (showConfirm && onDeleteUser) {
+                        showConfirm({
+                            title: "Delete User",
+                            message: `Are you sure you want to delete ${user.userName}? This action cannot be undone.`,
+                            confirmText: "Delete",
+                            cancelText: "Cancel",
+                            confirmColor: "danger",
+                            isLoading: isDeletingUser,
+                            onConfirm: () => {
+                                onDeleteUser(user.id ?? '');
                             }
-                        }
-                    })
+                        });
+                    }
                 }
 
                 return (
                     <div className="relative flex items-center gap-2">
                         <Tooltip content="Details">
                             <Button
-                                onPress={handleView}
+                                onPress={() => navigate(`/user-management/users/${user.id}`)}
                                 isIconOnly
                                 variant="light"
                                 color="default"
@@ -103,7 +96,7 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
                         </Tooltip>
                         <Tooltip content="Edit user">
                             <Button
-                                onPress={handleEdit}
+                                onPress={() => navigate(`/user-management/users/${user.id}/edit`)}
                                 isIconOnly
                                 variant="light"
                                 color="primary"
@@ -125,21 +118,20 @@ export function UserDataTable({ data, isLoading = false, onDeleteUser }: UserDat
                 )
             }
         }
-    ], [showConfirm]);
+    ];
 
     return (
         <div>
-            <DataTable
+            <TablePresentation
                 columns={columns}
-                data={paginatedData}
+                data={data}
                 isManualPagination
                 isLoading={isLoading}
-                page={page}
+                page={currentPage}
                 pageSize={pageSize}
-                totalElements={totalElements}
-                onPageChange={handlePageChange}
+                totalElements={totalPages * pageSize}
+                onPageChange={onPageChange}
             />
-            <ConfirmDialog />
         </div>
     )
 }

@@ -8,10 +8,6 @@ export default function InvoiceFooter() {
         Thank you for your business! {"\n"}Questions? Contact us at
         09-947-633-899
       </Text>
-      <Text>
-        This is an automated invoice generated on{" "}
-        {new Date().toLocaleDateString()}
-      </Text>
     </View>
   );
 }

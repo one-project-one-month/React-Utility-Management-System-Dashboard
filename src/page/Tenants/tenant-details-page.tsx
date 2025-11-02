@@ -1,13 +1,19 @@
 import { useParams } from "react-router";
-import { mockTenants } from "@/constants/mockData/tenants/mockTenants.ts";
 import HeaderForAllPages from "@/components/Tenants/shared/header-for-all-pages.tsx";
 import TenantDetailsPageHeader from "@/components/Tenants/TenantDetailsPage/tenant-details-page-header.tsx";
 import TenantInfo from "@/components/Tenants/TenantDetailsPage/tenant-info.tsx";
+import { useTenantById } from "@/hooks/tenants/useTenantById.ts";
+
+import LoadingSpinner from "@/components/common/loading-spinner.tsx";
 
 export default function TenantDetailsPage() {
   const { id } = useParams<{ id: string }>();
 
-  const tenant = mockTenants.find((tenant) => tenant.id === id);
+  const { getTenantByIdQuery } = useTenantById(id as string);
+  const { data: content, isLoading } = getTenantByIdQuery;
+  const tenant = content?.data;
+
+  if (isLoading) return <LoadingSpinner label={"Loading tenant..."} />;
   if (!tenant) return <div>Tenant not found</div>;
 
   return (
