@@ -11,6 +11,7 @@ import {
   Command,
   Grid,
   type LucideIcon,
+  ShieldUser,
 } from "lucide-react";
 
 
@@ -95,17 +96,10 @@ const sidebarLinks: SidebarLink[] = [
 		order: 5,
 	},
 	{
-		href: "/user-management",
+		href: "/user-management/users",
 		title: "User Management",
-		icon: Users,
+		icon: ShieldUser,
 		order: 6,
-		children: [
-			{
-				href: "/user-management/users",
-				title: "Users",
-				icon: Users,
-			},
-		],
 	},
 	{
 		href: "/utility-units",

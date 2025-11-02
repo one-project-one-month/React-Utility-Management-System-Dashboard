@@ -7,11 +7,15 @@ import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import { FormInput } from "@/components/Form/form-input.tsx";
 import { Bed, DollarSign, Hash, Layers, Maximize2, Users } from "lucide-react";
 import { FormSelect } from "@/components/Form/form-select.tsx";
-import { BEDROOM_OPTIONS, FLOOR_OPTIONS, STATUS_OPTIONS } from "@/constants/roomMockData.ts";
+import {BEDROOM_OPTIONS, CREATE_ROOM_STATUS_OPTIONS, FLOOR_OPTIONS} from "@/constants/roomMockData.ts";
 import { Button, Textarea } from "@heroui/react";
+import {useCreateRoom} from "@/hooks/useRooms.ts";
+import {RoomAvailability} from "@/types/room";
 
 export default function RoomCreatePage() {
     const navigate = useNavigate();
+
+    const { mutate, isPending } = useCreateRoom();
 
     const {
         control,
@@ -24,9 +28,9 @@ export default function RoomCreatePage() {
             noOfBedRoom: 1,
             floor: 1,
             dimension: "",
-            status: "available",
+            status: RoomAvailability.AVAILABLE,
             sellingPrice: undefined,
-            maxNoPeople: undefined,
+            maxNoOfPeople: undefined,
             description: "",
         }
     });
@@ -37,16 +41,13 @@ export default function RoomCreatePage() {
 
     const onSubmit = (data: CreateRoomFormData) => {
         console.log("Form submitted", data);
+
+        mutate(data);
     }
 
     return (
         <div className={"p-2 space-y-4 h-[84vh] overflow-y-auto custom-scrollbar-3"}>
             <NavigationBreadCrumbs items={breadcrumbs.roomCreate} />
-            <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
-                <div>
-                    <h1 className={"text-2xl font-semibold"}>Create Room</h1>
-                </div>
-            </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className={"space-y-6"}>
                 <div>
@@ -122,7 +123,7 @@ export default function RoomCreatePage() {
                             render={({ field }) => (
                                 <FormSelect
                                     label={"Status"}
-                                    options={STATUS_OPTIONS}
+                                    options={CREATE_ROOM_STATUS_OPTIONS}
                                     value={field.value}
                                     onChange={field.onChange}
                                     isInvalid={!!errors.status}
@@ -132,7 +133,7 @@ export default function RoomCreatePage() {
                         />
 
                         <Controller
-                            name={"maxNoPeople"}
+                            name={"maxNoOfPeople"}
                             control={control}
                             render={({ field }) => (
                                 <FormInput
@@ -141,31 +142,8 @@ export default function RoomCreatePage() {
                                     placeholder={"Maximum number of people"}
                                     type={"number"}
                                     startContent={<Users size={18} className={"text-default-500"} />}
-                                    isInvalid={!!errors.maxNoPeople}
-                                    errorMessage={errors.maxNoPeople?.message}
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        Rent Fee
-                    </h3>
-                    <div className={"grid grid-cols-1 gap-6"}>
-                        <Controller
-                            name={"sellingPrice"}
-                            control={control}
-                            render={({ field }) => (
-                                <FormInput
-                                    {...field}
-                                    label={"Monthly Rent Fee"}
-                                    placeholder={"Enter monthly rate"}
-                                    type={"number"}
-                                    startContent={<DollarSign size={18} className="text-default-500" />}
-                                    isInvalid={!!errors.sellingPrice}
-                                    errorMessage={errors.sellingPrice?.message}
+                                    isInvalid={!!errors.maxNoOfPeople}
+                                    errorMessage={errors.maxNoOfPeople?.message}
                                 />
                             )}
                         />
@@ -198,6 +176,30 @@ export default function RoomCreatePage() {
                     </div>
                 </div>
 
+                <div>
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                        Rent Fee
+                    </h3>
+                    <div className={"grid grid-cols-1 gap-6"}>
+                        <Controller
+                            name={"sellingPrice"}
+                            control={control}
+                            render={({ field }) => (
+                                <FormInput
+                                    {...field}
+                                    label={"Monthly Rent Fee"}
+                                    placeholder={"Enter monthly rate"}
+                                    value={field.value ?? undefined}
+                                    type={"number"}
+                                    startContent={<DollarSign size={18} className="text-default-500" />}
+                                    isInvalid={!!errors.sellingPrice}
+                                    errorMessage={errors.sellingPrice?.message}
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+
                 <div className={"flex justify-end gap-3 pt-4 mb-12"}>
                     <Button
                         type={"button"}
@@ -210,8 +212,9 @@ export default function RoomCreatePage() {
                     <Button
                         className="bg-primary text-white"
                         type={"submit"}
+                        isLoading={isPending}
                     >
-                        Create
+                        {isPending ? "Creating" : "Create"}
                     </Button>
                 </div>
             </form>
