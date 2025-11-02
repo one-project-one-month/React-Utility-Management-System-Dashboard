@@ -6,18 +6,6 @@ import PageLayout from "@/layout/PageLayout";
 import NotFound from "@/page/NotFound";
 import LoginPage from "./page/Auth";
 
-import Dashboard from "@/page/Dashboard";
-import Billing from "@/page/Billing";
-// import Invoices from "@/page/Invoices";
-// import ContractTypes from "@/page/Contract/ContractTypes";
-// import TenantsContracts from "@/page/Contract/TenantsContracts";
-import Tenants from "@/page/Tenants";
-import ContractListPage from "./page/Contract/History";
-// import UserManagement from "@/page/User Management";
-// import UtilityUnits from "@/page/UtilityUnits";
-// import CustomerSupport from "@/page/CustomerSupport";
-// import Rooms from "@/page/Room";
-
 function App() {
      const routes = useRoutes();
      const navigate = useNavigate();
@@ -38,11 +26,6 @@ function App() {
                                    ))}
                               </Route>
                               <Route path="*" element={<NotFound />} />
-
-                              <Route path="/" element={<Dashboard />} />
-                              <Route path="/billing" element={<Billing />} />
-                              <Route path="/tenants" element={<Tenants />} />
-                              <Route path="/contract" element={<ContractListPage />} />
                          </Routes>
                     </Suspense>
                </main>
