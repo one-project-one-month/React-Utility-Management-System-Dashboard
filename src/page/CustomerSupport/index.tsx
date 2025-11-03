@@ -22,7 +22,6 @@ import {
 } from "@heroui/react";
 import { useCustomerService, useDeleteCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
 import { SkeletonLoader } from "@/components/skeleton-loader";
-import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import { formatDate } from "@/helpers/date";
 
 const FILTER_OPTIONS = {
@@ -55,9 +54,9 @@ export default function CustomerSupportPage() {
 
     const totalPages = data?.content?.meta?.lastPage ?? 1;
     const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
-    const { mutate: deleteService } = useDeleteCustomerService();
+    const { mutate: deleteService, isPending: isDeleting } = useDeleteCustomerService();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
-    const { showConfirm, ConfirmDialog, closeDialog } = useConfirmDialog();
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [editStatus, setEditStatus] = useState<Status | undefined>();
     const services: CustomerService[] = Array.isArray(data?.content?.data)
@@ -92,12 +91,8 @@ export default function CustomerSupportPage() {
     };
 
     const handleDeleteBtn = (id: string) => {
-        showConfirm({
-            title: "Delete Service",
-            confirmText: "Delete",
-            confirmColor: "danger",
-            onConfirm: () => deleteService({id, onDeleteClose: closeDialog}),
-        });
+        setSelectedServiceId(id);
+        onDeleteOpen();
     };
 
     return (
@@ -192,7 +187,6 @@ export default function CustomerSupportPage() {
                         onChange={setPage}
                     />
                 )}
-                <ConfirmDialog />
             </div>
 
             {/* Edit Modal */}
@@ -242,6 +236,7 @@ export default function CustomerSupportPage() {
                                     <Button
                                         color="primary"
                                         isDisabled={isUpdating}
+                                        isLoading={isUpdating}
                                         onPress={() => {
                                             if (!selectedServiceId) return;
                                             updateService({
@@ -253,13 +248,40 @@ export default function CustomerSupportPage() {
                                                 onEditClose: onEditClose,
                                             });
                                         }}
-                                        >
-                                        {isUpdating ? "Changing..." : "Save Changes"}
+                                    >
+                                        Save Changes
                                     </Button>
                                 </ModalFooter>
                             </>
                         );
                     }}
+                </ModalContent>
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton={false} shouldBlockScroll={true}>
+                <ModalContent>
+                    <ModalHeader>
+                        <h2 className="text-2xl font-semibold">Confirm Deletion</h2>
+                    </ModalHeader>
+                    <ModalBody>
+                        Are you sure you want to delete this service? This action cannot be undone.
+                    </ModalBody>
+                    <ModalFooter className="flex justify-end gap-2">
+                        <Button variant="light" onPress={onDeleteClose}>Cancel</Button>
+                        <Button
+                            color="danger"
+                            isDisabled={!selectedServiceId}
+                            isLoading={isDeleting}
+                            onPress={() => {
+                                if (selectedServiceId) {
+                                    deleteService({ id: selectedServiceId, onDeleteClose });
+                                }
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </div>
