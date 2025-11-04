@@ -8,27 +8,31 @@ import {
 import { useGetRevenueByMonthAndYear } from "@/hooks/dashboardData/useDashboardData.ts";
 
 // Total Revenue
+
+const months = {
+  Jan: "1",
+  Feb: "2",
+  Mar: "3",
+  Apr: "4",
+  May: "5",
+  Jun: "6",
+  Jul: "7",
+  Aug: "8",
+  Sep: "9",
+  Oct: "10",
+  Nov: "11",
+  Dec: "12",
+};
 function StatCardRevenue() {
   const now = new Date();
   const currentMonthName = now.toLocaleString("en-US", { month: "short" });
-  const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const prevMonthName = prevMonthDate.toLocaleString("en-US", {
-    month: "short",
-  });
 
-  const year = String(now.getFullYear());
+  const currentMonth = months[currentMonthName];
 
-  const { data: thisMonthContent } = useGetRevenueByMonthAndYear({
-    month: currentMonthName,
-    year,
-  });
-  const { data: prevMonthContent } = useGetRevenueByMonthAndYear({
-    month: prevMonthName,
-    year,
-  });
+  const { data: thisMonthContent } = useGetRevenueByMonthAndYear(currentMonth);
 
-  const thisMonthRevenue = thisMonthContent?.data ?? 1550000;
-  const prevMonthRevenue = prevMonthContent?.data ?? 1200000;
+  const thisMonthRevenue = thisMonthContent?.data.thisMonthRevenue ?? 1550000;
+  const prevMonthRevenue = thisMonthContent?.data.prevMonthRevenue ?? 1200000;
 
   const change =
     ((thisMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100;

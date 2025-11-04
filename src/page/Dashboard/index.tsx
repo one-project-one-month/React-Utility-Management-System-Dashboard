@@ -17,11 +17,13 @@ import {
 } from "@/hooks/dashboardData/useDashboardData.ts";
 
 export default function Dashboard() {
-  const { data: activeTenantContent } = useGetActiveTenantsCount();
+  const { data: activeTenantContent, isLoading: isLoadingTenants } =
+    useGetActiveTenantsCount();
   const activeTenantsCount = activeTenantContent?.data;
 
   const { data: allRoomsCountContent } = useGetAllRoomsCount();
-  const allRoomsCount = allRoomsCountContent?.data;
+  const allRoomsCount = allRoomsCountContent?.data.allRoomsCount;
+  const availableRoomsCount = allRoomsCountContent?.data.roomStatusCount;
 
   return (
     <div className="h-screen min-h-screen overflow-y-scroll [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-6 pb-50 space-y-6">
@@ -35,13 +37,15 @@ export default function Dashboard() {
         <StatCardRevenue />
         <StatCardTenants
           title="Active Tenants"
-          activeTenants={activeTenantsCount ?? 13}
-          totalRoom={allRoomsCount ?? 20}
+          isLoading={isLoadingTenants}
+          activeTenants={activeTenantsCount ?? 0}
+          totalRoom={allRoomsCount ?? 90}
         />
         <StatCardOccupancy
           title="Occupancy Rate"
-          activeTenants={activeTenantsCount ?? 13}
+          activeTenants={activeTenantsCount ?? 0}
           totalRoom={allRoomsCount ?? 20}
+          availableRoom={availableRoomsCount ?? 0}
         />
         <StatCardPending />
       </div>

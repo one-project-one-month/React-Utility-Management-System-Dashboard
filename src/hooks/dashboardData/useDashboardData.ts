@@ -4,16 +4,14 @@ import {
   getALlPendingIssuesCount,
   getAllRoomsCount,
   getRevenueByMonthAndYear,
+  getTotalUnitsByMonth,
+  type MonthParamForRevenue,
 } from "@/services/dashboardServices.ts";
 
-interface MonthAndYear {
-  month: string;
-  year: string;
-}
-export const useGetRevenueByMonthAndYear = ({ month, year }: MonthAndYear) => {
+export const useGetRevenueByMonthAndYear = (month: MonthParamForRevenue) => {
   return useQuery({
     queryKey: ["billingsByMonthAndYear"],
-    queryFn: () => getRevenueByMonthAndYear(month, year),
+    queryFn: () => getRevenueByMonthAndYear(month),
   });
 };
 
@@ -35,5 +33,12 @@ export const useGetPendingIssuesCount = () => {
   return useQuery({
     queryKey: ["pendingIssuesCount"],
     queryFn: getALlPendingIssuesCount,
+  });
+};
+
+export const useGetTotalUnitsByMonth = () => {
+  return useQuery({
+    queryKey: ["totalUnitsByMonth"],
+    queryFn: getTotalUnitsByMonth,
   });
 };

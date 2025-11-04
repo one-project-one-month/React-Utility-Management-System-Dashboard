@@ -26,7 +26,14 @@ import type { CustomerService } from "@/types/customer-service.ts";
 const columns: ColumnDef<CustomerService>[] = [
   { accessorKey: "roomNo", header: "Room No" },
   { accessorKey: "category", header: "Category" },
-  { accessorKey: "issuedDate", header: "Date" },
+  {
+    accessorKey: "issuedDate",
+    header: "Date",
+    cell: (info) => {
+      const date = info.getValue();
+      return new Date(date as Date).toLocaleDateString();
+    },
+  },
   {
     header: "Action",
     cell: ({ row }) => (

@@ -10,8 +10,9 @@ import { useGetPendingIssuesCount } from "@/hooks/dashboardData/useDashboardData
 // Pending Issues
 function StatCardPending() {
   const { data: pendingIssuesCountContent } = useGetPendingIssuesCount();
-  const pendingIssuesCount = pendingIssuesCountContent?.data ?? 0;
-  const highPriority = 3;
+  const pendingIssuesCount = pendingIssuesCountContent?.data.statusCount ?? 0;
+  const highPriority =
+    pendingIssuesCountContent?.data.statusAndPriorityCount ?? 0;
   const isPositive: boolean = pendingIssuesCount === 0;
   return (
     //  transition delay-100 duration-250 ease-in-out hover:scale-110

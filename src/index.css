@@ -7,6 +7,16 @@
 
 @config "../tailwind.config.js";
 
+:root {
+    --color-chart-primary: #3B82F6;
+    --color-chart-bg: #EEEEEE;
+}
+
+.dark {
+    --color-chart-primary: #60A5FA;
+    --color-chart-bg: #374151;
+}
+
 @layer utilities {
      .custom-scrollbar {
           scrollbar-width: thin;

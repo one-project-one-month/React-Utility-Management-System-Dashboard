@@ -2,11 +2,11 @@ import TablePresentation from "@/components/data-table";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
 import { Chip } from "@heroui/chip";
-import { Eye } from "lucide-react";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { useFetchBillings } from "@/hooks/billings/useBillings.ts";
 import type { Billing } from "@/types/billing/billingType.ts";
+import BillingDetailsModal from "@/components/Billings/BillingDetails/billing-details-modal.tsx";
 
 // type Billing = {
 //   name: string;
@@ -62,7 +62,8 @@ const columns: ColumnDef<Billing>[] = [
           classNames={{
             base: "min-w-20 h-6 px-2 transition hover:scale-120 hover:cursor-default",
             content: "text-xs capitalize text-center font-semibold",
-          }} >
+          }}
+        >
           {status}
         </Chip>
       );
@@ -80,7 +81,7 @@ const columns: ColumnDef<Billing>[] = [
           onPress={() => handleOpen(row.original)}
           className="transition hover:scale-120"
         >
-          <Eye size={18} />
+          <BillingDetailsModal billing={row.original} />
         </Button>
       </Tooltip>
     ),
