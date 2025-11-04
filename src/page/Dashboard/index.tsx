@@ -7,7 +7,7 @@ import StatCardRevenue from "./statcard-revenue";
 import StatCardTenants from "./statcard-tenants";
 import StatCardOccupancy from "./statcard-occupancy";
 import StatCardPending from "./statcard-pending";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { lazy, Suspense } from "react";
 
 const Rechart = lazy(() => import("./rechart"));
