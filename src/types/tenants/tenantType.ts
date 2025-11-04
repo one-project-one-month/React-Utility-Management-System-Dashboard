@@ -50,7 +50,7 @@ export interface Room {
   floor: number;
   dimension: string;
   noOfBedRoom: number;
-  status: "Available" | "Rented" | "Maintenance";
+  status: "Available" | "Rented" | "InMaintenance" | "Purchased";
   sellingPrice: string | null;
   maxNoOfPeople: number;
   description: string;

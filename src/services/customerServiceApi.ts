@@ -6,14 +6,14 @@ import type { ApiResponse } from "./apiResponse";
 
 export const fetchCustomerServices = async (
   pagination: Pagination,
-  filters?: any
+  filters?: any,
 ) => {
   const query = buildQueryParams({
     ...pagination,
     filter: filters,
   });
-  const res = await axiosInstance.get<ApiResponse<CustomerService>>(
-    `/customer-services?${query}`
+  const res = await axiosInstance.get<ApiResponse<CustomerService[]>>(
+    `/customer-services?${query}`,
   );
   return res.data;
 };
@@ -21,14 +21,14 @@ export const fetchCustomerServices = async (
 export const updateCustomerService = async (id: string, updates: any) => {
   const res = await axiosInstance.put<ApiResponse<CustomerService>>(
     `/customer-services/${id}`,
-    updates
+    updates,
   );
   return res.data;
 };
 
 export const deleteCustomerService = async (id: string) => {
   const res = await axiosInstance.delete<ApiResponse<CustomerService>>(
-    `/customer-services/${id}`
+    `/customer-services/${id}`,
   );
   return res.data;
 };
