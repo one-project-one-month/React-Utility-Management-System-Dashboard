@@ -16,8 +16,8 @@ import {type EditRoomFormData, editRoomSchema} from "@/types/room.ts";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {FormInput} from "@/components/Form/form-input.tsx";
-import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
 import {useEditRoom, useFetchRoom} from "@/hooks/useRooms.ts";
+import {SkeletonLoader} from "@/components/skeleton-loader.tsx";
 
 export default function RoomEditPage() {
     const { id } = useParams();
@@ -48,7 +48,45 @@ export default function RoomEditPage() {
 
     if (isLoading) {
         return (
-            <LoadingSpinner />
+            <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"}>
+                <NavigationBreadCrumbs items={breadcrumbs.roomEdit} />
+
+                <div className={"space-y-6"}>
+                    <div>
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            Room Information
+                        </h3>
+                        <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
+                            {[...Array(6)].map((_, i) => (
+                                <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            Room Description
+                        </h3>
+                        <div className={"space-y-6"}>
+                            <SkeletonLoader height="6rem" rounded={"rounded-2xl"} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            Rent Fee
+                        </h3>
+                        <div className={"space-y-6"}>
+                            <SkeletonLoader height="2.5rem" rounded={"rounded-xl"} />
+                        </div>
+                    </div>
+
+                    <div className={"flex justify-end gap-2"}>
+                        <SkeletonLoader height="2.5rem" width="5.5rem" />
+                        <SkeletonLoader height="2.5rem" width="5.5rem" />
+                    </div>
+                </div>
+            </div>
         );
     }
 

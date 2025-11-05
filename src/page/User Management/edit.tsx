@@ -9,9 +9,9 @@ import {FormInput} from "@/components/Form/form-input.tsx";
 import {breadcrumbs} from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import {useEditUser, useFetchTenants, useFetchUser} from "@/hooks/useUsers.ts";
-import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
 import {useEffect, useMemo} from "react";
-import type {TenantType} from "@/types/tenants/tenantType.ts";
+import type {Tenant} from "@/types/tenants/tenantType.ts";
+import {SkeletonLoader} from "@/components/skeleton-loader.tsx";
 
 export default function UserEditPage() {
     const { id } = useParams();
@@ -25,7 +25,7 @@ export default function UserEditPage() {
 
     const tenantOptions = useMemo(() => {
         if (!tenants) return [];
-        return tenants.map((tenant: TenantType) => ({
+        return tenants.map((tenant: Tenant) => ({
             key: tenant.id,
             label: tenant.name || tenant.id
         }));
@@ -66,7 +66,33 @@ export default function UserEditPage() {
 
     if (isLoading) {
         return (
-            <LoadingSpinner />
+            <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"}>
+                <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
+
+                <div className={"space-y-6"}>
+                    <div>
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            User Information
+                        </h3>
+                        <div className={"grid grid-cols-1 md:grid-cols-2 gap-6"}>
+                            {[...Array(2)].map((_, i) => (
+                                <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
+                        {[...Array(3)].map((_, i) => (
+                            <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
+                        ))}
+                    </div>
+
+                    <div className={"flex justify-end gap-2"}>
+                        <SkeletonLoader height="2.5rem" width="5.5rem" />
+                        <SkeletonLoader height="2.5rem" width="5.5rem" />
+                    </div>
+                </div>
+            </div>
         );
     }
 
