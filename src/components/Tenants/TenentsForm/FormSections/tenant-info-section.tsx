@@ -7,8 +7,9 @@ import type { Pagination } from "@/types/pagination.ts";
 import { RoomAvailability } from "@/types/room.ts";
 
 import LoadRoomsButtons from "@/components/Tenants/TenentsForm/FormSections/load-rooms-buttons.tsx";
-import type { Room } from "@/types/room";
+
 import { useFetchRooms } from "@/hooks/useRooms.ts";
+import type { Room } from "@/types/tenants/tenantType.ts";
 
 type Props = TenantFormSectionProps & {
   currentRoom?: Room;
@@ -87,7 +88,7 @@ export default function TenantInfoSection({
             errorMessage={errors.roomId?.message ?? ""}
             isInvalid={!!errors.roomId}
             placeholder="Choose a room"
-            items={rooms}
+            items={rooms as Room[]}
             isLoadingItems={isLoading}
           />
           <LoadRoomsButtons
