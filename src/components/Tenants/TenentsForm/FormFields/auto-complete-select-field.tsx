@@ -2,7 +2,7 @@ import { type Control, Controller } from "react-hook-form";
 import type { TenantFormValues } from "@/schemas/tenants/tenantsFormSchema.ts";
 import type { TenantFormAutoCompleteSelectFieldNames } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
-import type { Room } from "@/types/room";
+import type { Room } from "@/types/tenants/tenantType.ts";
 
 interface Props {
   label: string;
@@ -45,8 +45,6 @@ export default function AutoCompleteSelectField({
             isLoading={isLoadingItems}
           >
             {items.map((item) => {
-              // const roomNo = "roomNo" in item ? item.roomNo : null;
-              // const textValue = roomNo ? `Room ${roomNo}` : "---";
               const textValue = `Room ${item.roomNo}`;
               return (
                 <AutocompleteItem key={item.id} textValue={textValue}>

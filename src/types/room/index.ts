@@ -15,5 +15,6 @@ export type Room = {
 export enum RoomAvailability {
   AVAILABLE = "Available",
   RENTED = "Rented",
-  MAINTENANCE = "Maintenance",
+  InMAINTENANCE = "InMaintenance",
+  PURCHASED = "Purchased",
 }
