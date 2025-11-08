@@ -5,9 +5,11 @@ import AutoCompleteSelectField from "@/components/Tenants/TenentsForm/FormFields
 import { useEffect, useState } from "react";
 import type { Pagination } from "@/types/pagination.ts";
 import { RoomAvailability } from "@/types/room.ts";
-import { useFetchRooms } from "@/hooks/useFetchRoom.ts";
+
 import LoadRoomsButtons from "@/components/Tenants/TenentsForm/FormSections/load-rooms-buttons.tsx";
-import type { Room } from "@/types/room";
+
+import { useFetchRooms } from "@/hooks/useRooms.ts";
+import type { Room } from "@/types/tenants/tenantType.ts";
 
 type Props = TenantFormSectionProps & {
   currentRoom?: Room;
@@ -29,8 +31,8 @@ export default function TenantInfoSection({
     },
   });
 
-  const { data, isLoading, isFetching } = useFetchRooms(pagination);
-  const availableRooms = data?.content.data ?? [];
+  const { data: content, isLoading, isFetching } = useFetchRooms(pagination);
+  const availableRooms = content?.data ?? [];
   const rooms = currentRoom ? [...availableRooms, currentRoom] : availableRooms;
 
   const handleLoadMore = () => {
@@ -44,14 +46,14 @@ export default function TenantInfoSection({
   };
 
   useEffect(() => {
-    const meta = data?.content.meta;
+    const meta = content?.meta;
     if (meta) {
       const hasMore = meta.lastPage > pagination.page;
       const hasPrevious = pagination.page > 1;
       setHasMoreRooms(hasMore);
       setHasPreviousRooms(hasPrevious);
     }
-  }, [data?.content, pagination.page]);
+  }, [content, pagination.page]);
 
   return (
     <FormSectionCard>
@@ -86,7 +88,7 @@ export default function TenantInfoSection({
             errorMessage={errors.roomId?.message ?? ""}
             isInvalid={!!errors.roomId}
             placeholder="Choose a room"
-            items={rooms}
+            items={rooms as Room[]}
             isLoadingItems={isLoading}
           />
           <LoadRoomsButtons

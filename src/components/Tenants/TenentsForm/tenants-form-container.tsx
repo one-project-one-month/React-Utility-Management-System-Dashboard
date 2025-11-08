@@ -7,7 +7,7 @@ import ContactInfoSection from "@/components/Tenants/TenentsForm/FormSections/co
 import FormActionButtons from "@/components/Form/form-action-buttons.tsx";
 
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
-import type { Room } from "@/types/room";
+import type { Room } from "@/types/tenants/tenantType.ts";
 
 interface Props {
   tenantId?: string;

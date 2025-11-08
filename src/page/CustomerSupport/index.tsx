@@ -1,6 +1,6 @@
 import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-service-list-card";
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
-import type { Category, Priority, Status } from "@/types/customer-service";
+import type { Category, CustomerService, Priority, Status } from "@/types/customer-service";
 import { Filter, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
@@ -54,11 +54,15 @@ export default function CustomerSupportPage() {
 
     const totalPages = data?.content?.meta?.lastPage ?? 1;
     const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
-    const { mutate: deleteService } = useDeleteCustomerService();
+    const { mutate: deleteService, isPending: isDeleting } = useDeleteCustomerService();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [editStatus, setEditStatus] = useState<Status | undefined>();
-    const services = data?.content?.data ?? [];
+    const services: CustomerService[] = Array.isArray(data?.content?.data)
+        ? data!.content!.data
+        : [];
+
     
     useEffect(() => {
         if (isError) {
@@ -87,23 +91,8 @@ export default function CustomerSupportPage() {
     };
 
     const handleDeleteBtn = (id: string) => {
-        deleteService(id, {
-            onSuccess: () => {
-                addToast({
-                    title: "Service Deleted",
-                    description: "Deleted successfully!",
-                    color: "success",
-                    timeout: 3000,
-                });
-            },
-            onError: () =>
-                addToast({
-                    title: "Delete Failed",
-                    description: "Something went wrong while deleting the service.",
-                    color: "danger",
-                    timeout: 3000,
-                }),
-        });
+        setSelectedServiceId(id);
+        onDeleteOpen();
     };
 
     return (
@@ -155,44 +144,50 @@ export default function CustomerSupportPage() {
             </div>
 
             {/* Service Requests */}
-            {isLoading ? (
-                <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
-                    <h3 className="text-lg font-medium">Loading Services...</h3>
-                    <div className="space-y-2">
-                        {[...Array(limit)].map((_, i) => (
-                            <SkeletonLoader key={i} height="6rem" />
-                        ))}
-                    </div>
-                </div>
-            ) : (
-                <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
-                    <h3 className="text-lg font-medium">
-                        Customer Services: <span className="text-gray-400">{services.length}</span>
-                    </h3>
+            <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
+                {isLoading ? (
+                    <>
+                        <h3 className="text-lg font-medium">Loading Services...</h3>
+                        <div className="space-y-2">
+                            {[...Array(limit)].map((_, i) => (
+                                <SkeletonLoader key={i} height="6rem" />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <h3 className="text-lg font-medium">
+                            Customer Services:{" "}
+                            <span className="text-gray-400">{services.length}</span>
+                        </h3>
 
-                    <div className="space-y-2">
-                        {services.map((service) => (
-                            <CustomerServiceListCard
-                                key={service.id}
-                                service={service}
-                                onEdit={() => handleEditBtn(service.id, service.status)}
-                                onDelete={() => handleDeleteBtn(service.id)}
-                            />
-                        ))}
-                        {services.length === 0 && (
-                            <div className="text-center p-6 text-gray-200">
-                                No services found matching the current filters.
-                            </div>
-                        )}
-                    </div>
+                        <div className="space-y-2">
+                            {services.map((service) => (
+                                <CustomerServiceListCard
+                                    key={service.id}
+                                    service={service}
+                                    onEdit={() => handleEditBtn(service.id, service.status)}
+                                    onDelete={handleDeleteBtn}
+                                />
+                            ))}
+                            {services.length === 0 && (
+                                <div className="text-center p-6 text-gray-200">
+                                    No services found matching the current filters.
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
+                {/* Pagination always visible */}
+                {totalPages > 1 && (
                     <Pagination
                         className="mt-4"
                         total={totalPages}
                         page={page}
                         onChange={setPage}
                     />
-                </div>
-            )}
+                )}
+            </div>
 
             {/* Edit Modal */}
             <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl" hideCloseButton={false} shouldBlockScroll={true}>
@@ -241,6 +236,7 @@ export default function CustomerSupportPage() {
                                     <Button
                                         color="primary"
                                         isDisabled={isUpdating}
+                                        isLoading={isUpdating}
                                         onPress={() => {
                                             if (!selectedServiceId) return;
                                             updateService({
@@ -249,16 +245,43 @@ export default function CustomerSupportPage() {
                                                     status: editStatus ?? service.status,
                                                     priorityLevel: service.priorityLevel,
                                                 },
-                                                onClose: onEditClose,
+                                                onEditClose: onEditClose,
                                             });
                                         }}
-                                        >
-                                        {isUpdating ? "Changing..." : "Save Changes"}
+                                    >
+                                        Save Changes
                                     </Button>
                                 </ModalFooter>
                             </>
                         );
                     }}
+                </ModalContent>
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton={false} shouldBlockScroll={true}>
+                <ModalContent>
+                    <ModalHeader>
+                        <h2 className="text-2xl font-semibold">Confirm Deletion</h2>
+                    </ModalHeader>
+                    <ModalBody>
+                        Are you sure you want to delete this service? This action cannot be undone.
+                    </ModalBody>
+                    <ModalFooter className="flex justify-end gap-2">
+                        <Button variant="light" onPress={onDeleteClose}>Cancel</Button>
+                        <Button
+                            color="danger"
+                            isDisabled={!selectedServiceId}
+                            isLoading={isDeleting}
+                            onPress={() => {
+                                if (selectedServiceId) {
+                                    deleteService({ id: selectedServiceId, onDeleteClose });
+                                }
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </div>
