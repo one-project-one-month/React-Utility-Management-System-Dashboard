@@ -8,63 +8,92 @@ import { FormSelect } from "@/components/Form/form-select.tsx";
 import { FormInput } from "@/components/Form/form-input.tsx";
 import { breadcrumbs } from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import {
-  useEditUser,
-  useFetchTenants,
-  useFetchUser,
-} from "@/hooks/useUsers.ts";
-import { LoadingSpinner } from "@/components/Room/loading-spinner.tsx";
-import { useEffect, useMemo } from "react";
-import type { Tenant } from "@/types/tenants/tenantType.ts";
+import {useEditUser, useFetchTenants, useFetchUser} from "@/hooks/useUsers.ts";
+import {useEffect, useMemo} from "react";
+import type {Tenant} from "@/types/tenants/tenantType.ts";
+import {SkeletonLoader} from "@/components/skeleton-loader.tsx";
 
 export default function UserEditPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-  const { data: tenants, isLoading: isTenantLoading } = useFetchTenants();
-  const { data: user, isLoading } = useFetchUser(id!);
-  console.log(user);
+    const { data: tenants, isLoading: isTenantLoading  } = useFetchTenants();
+    const { data: user, isLoading } = useFetchUser(id!);
+    console.log(user);
 
-  const { mutate, isPending } = useEditUser();
+    const { mutate, isPending } = useEditUser();
 
-  const tenantOptions = useMemo(() => {
-    if (!tenants) return [];
-    return tenants.map((tenant: Tenant) => ({
-      key: tenant.id,
-      label: tenant.name || tenant.id,
-    }));
-  }, [tenants]);
+    const tenantOptions = useMemo(() => {
+        if (!tenants) return [];
+        return tenants.map((tenant: Tenant) => ({
+            key: tenant.id,
+            label: tenant.name || tenant.id
+        }));
+    }, [tenants]);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    reset,
-    setValue,
-  } = useForm<EditUserFormData>({
-    resolver: zodResolver(editUserSchema) as Resolver<EditUserFormData>,
-    defaultValues: {
-      userName: "",
-      email: "",
-      role: "Tenant",
-      tenantId: null,
-      isActive: true,
-    },
-  });
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        watch,
+        reset,
+        setValue
+    } = useForm<EditUserFormData>({
+        resolver: zodResolver(editUserSchema) as Resolver<EditUserFormData>,
+        defaultValues: {
+            userName: "",
+            email: "",
+            role: "Tenant",
+            tenantId: null,
+            isActive: true
+        }
+    });
 
-  const selectedRole = watch("role");
+    const selectedRole = watch("role");
 
-  useEffect(() => {
-    if (user) {
-      reset({
-        userName: user.userName,
-        email: user.email,
-        password: user.password,
-        role: user.role || "Tenant",
-        tenantId: user.tenantId,
-        isActive: user.isActive,
-      });
+    useEffect(() => {
+        if (user) {
+            reset({
+                userName: user.userName,
+                email: user.email,
+                password: user.password,
+                role: user.role || "Tenant",
+                tenantId: user.tenantId,
+                isActive: user.isActive
+            });
+        }
+    }, [user, reset]);
+
+    if (isLoading) {
+        return (
+            <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"}>
+                <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
+
+                <div className={"space-y-6"}>
+                    <div>
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            User Information
+                        </h3>
+                        <div className={"grid grid-cols-1 md:grid-cols-2 gap-6"}>
+                            {[...Array(2)].map((_, i) => (
+                                <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
+                        {[...Array(3)].map((_, i) => (
+                            <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
+                        ))}
+                    </div>
+
+                    <div className={"flex justify-end gap-2"}>
+                        <SkeletonLoader height="2.5rem" width="5.5rem" />
+                        <SkeletonLoader height="2.5rem" width="5.5rem" />
+                    </div>
+                </div>
+            </div>
+        );
     }
   }, [user, reset]);
 

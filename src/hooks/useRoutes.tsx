@@ -21,7 +21,6 @@ const EditRoomPage = lazy(() => import("@/page/Room/edit"));
 
 // User Management
 const UserPage = lazy(() => import("@/page/User Management"));
-const UserDetailPage = lazy(() => import("@/page/User Management/detail"));
 const CreateUserPage = lazy(() => import("@/page/User Management/create"));
 const EditUserPage = lazy(() => import("@/page/User Management/edit"));
 
@@ -91,7 +90,6 @@ export const useRoutes = () => {
 
         // User Management
         { title: "User Management", path: "/user-management/users", element: <UserPage /> },
-        { title: "User Details", path: "/user-management/users/:id", element: <UserDetailPage /> },
         { title: "Create Room", path: "/user-management/users/create", element: <CreateUserPage /> },
         { title: "Edit Room", path: "/user-management/users/:id/edit", element: <EditUserPage /> },
 

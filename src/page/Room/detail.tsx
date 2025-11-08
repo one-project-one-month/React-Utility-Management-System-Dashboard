@@ -12,9 +12,9 @@ import {formatContractDuration, formatCurrency} from "@/utils/roomFormat.ts";
 import {Tab, Tabs} from "@heroui/tabs";
 import type {Bill, CustomerService} from "@/types/room.ts";
 import {RoomHistoryCard} from "@/components/Room/room-history-card.tsx";
-import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
 import {EmptyState} from "@/components/common/empty-state.tsx";
 import {useFetchRoom} from "@/hooks/useRooms.ts";
+import {SkeletonLoader} from "@/components/skeleton-loader.tsx";
 
 export default function RoomDetailPage() {
     const { id } = useParams();
@@ -25,7 +25,29 @@ export default function RoomDetailPage() {
 
     if (isLoading) {
         return (
-            <LoadingSpinner />
+            <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"}>
+                <NavigationBreadCrumbs items={breadcrumbs.roomDetail} />
+
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="flex items-center gap-2">
+                        <SkeletonLoader height="2rem" width="10rem" />
+                        <SkeletonLoader height="1.5rem" width="5rem" />
+                    </div>
+                    <SkeletonLoader height="2.5rem" width="2.5rem" />
+                </div>
+
+                <div className={"space-y-6"}>
+                    <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
+                        <SkeletonLoader height="10rem" />
+                        <SkeletonLoader height="15rem" />
+                    </div>
+
+                    <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
+                        <SkeletonLoader height="15rem" />
+                        <SkeletonLoader height="20rem" />
+                    </div>
+                </div>
+            </div>
         );
     }
 
@@ -74,7 +96,7 @@ export default function RoomDetailPage() {
                     <RoomCard title={"Room Description"}>
                         <p className="text-default-600 leading-relaxed">{room.description}</p>
                     </RoomCard>
-                    
+
                     <RoomCard title={"Room Information"}>
                         <InfoRow label={"Row Number"} value={room.roomNo} />
                         <InfoRow label={"BedRooms"} value={room.noOfBedRoom} />
@@ -102,13 +124,13 @@ export default function RoomDetailPage() {
                                     <div className={"max-h-48 overflow-y-auto space-y-4 pr-2"}>
                                         {room.customerService.length > 0 ? (
                                             room.customerService.map((service: CustomerService) => (
-                                                    <RoomHistoryCard
-                                                        key={service.id}
-                                                        title={service.description}
-                                                        subTitle={service.category}
-                                                        date={service.issuedDate}
-                                                    />
-                                                ))
+                                                <RoomHistoryCard
+                                                    key={service.id}
+                                                    title={service.description}
+                                                    subTitle={service.category}
+                                                    date={service.issuedDate}
+                                                />
+                                            ))
                                         ) : (
                                             <EmptyState />
                                         )}
