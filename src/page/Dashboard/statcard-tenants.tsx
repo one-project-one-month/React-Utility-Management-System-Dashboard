@@ -14,13 +14,14 @@ function StatCardTenants({
      const isPositive: boolean =
           activeTenants > 0 && activeTenants <= totalRoom ? true : false;
      return (
-          <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
+          //  transition delay-100 duration-250 ease-in-out hover:scale-110
+          <Card className="p-1 w-full">
                {/* HEADER */}
                <CardHeader>
                     <div className="flex w-full justify-between items-center">
                          {/* Chip Icon */}
                          <Chip
-                              color={isPositive ? "primary" : "danger"}
+                              color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="sm"
                               variant="flat"
@@ -38,7 +39,7 @@ function StatCardTenants({
                               color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="full"
-                              variant="flat"
+                              variant="light"
                               className="h-12"
                          >
                               {isPositive ? (
@@ -52,17 +53,17 @@ function StatCardTenants({
 
                {/* BODY */}
                <CardBody className="pt-2">
-                    <h3 className="text-gray-600 text-xl mb-2.5 dark:text-gray-400">
+                    <h3 className="text-gray-600 text-lg mb-3.5 dark:text-gray-400">
                          {title}
                     </h3>
-                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                    <p className="text-2xl font-normal text-gray-800 dark:text-gray-200">
                          {activeTenants}
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
-                    <p className="text-gray-600 text-xl dark:text-gray-400">
+                    <p className="text-gray-600 text-md dark:text-gray-400">
                          Out of {totalRoom} total rooms
                     </p>
                </CardFooter>

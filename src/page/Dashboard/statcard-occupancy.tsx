@@ -21,7 +21,8 @@ function StatCardOccupancy({
      const isPositive = rate >= 0;
      const formattedChange = `${isPositive ? "" : ""}${rate.toFixed(0)}%`;
      return (
-          <Card className="p-1 w-full transition delay-100 duration-250 ease-in-out hover:scale-110">
+          //  transition delay-100 duration-250 ease-in-out hover:scale-110
+          <Card className="p-1 w-full">
                {/* HEADER */}
                <CardHeader>
                     <div className="flex w-full justify-between items-center">
@@ -45,7 +46,7 @@ function StatCardOccupancy({
                               color={isPositive ? "success" : "danger"}
                               size="lg"
                               radius="full"
-                              variant="flat"
+                              variant="light"
                               className="h-12"
                          >
                               {isPositive ? (
@@ -59,17 +60,17 @@ function StatCardOccupancy({
 
                {/* BODY */}
                <CardBody className="pt-2">
-                    <h3 className="text-gray-600 text-xl mb-2.5 dark:text-gray-400">
+                    <h3 className="text-gray-600 text-lg mb-3.5 dark:text-gray-400">
                          {title}
                     </h3>
-                    <p className="text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+                    <p className="text-2xl font-normal text-gray-800 dark:text-gray-200">
                          {formattedChange}
                     </p>
                </CardBody>
 
                {/* FOOTER */}
                <CardFooter className="pt-0">
-                    <p className="text-gray-600 text-xl dark:text-gray-400">
+                    <p className="text-gray-600 text-md dark:text-gray-400">
                          {availableRoom <= 0
                               ? "No room available"
                               : `${availableRoom} rooms available`}

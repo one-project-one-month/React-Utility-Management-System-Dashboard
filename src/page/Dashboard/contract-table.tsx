@@ -2,7 +2,7 @@ import TablePresentation from "@/components/data-table";
 import { type ColumnDef } from "@tanstack/react-table";
 import { Tooltip } from "@heroui/tooltip";
 import { Button } from "@heroui/button";
-import { FileText } from "lucide-react";
+import { Eye } from "lucide-react";
 
 type Contracts = {
      name: string;
@@ -32,7 +32,7 @@ const columns: ColumnDef<Contracts>[] = [
                          onPress={() => handleOpen(row.original)}
                          className="transition hover:scale-120"
                     >
-                         <FileText size={18} />
+                         <Eye size={18} />
                     </Button>
                </Tooltip>
           ),

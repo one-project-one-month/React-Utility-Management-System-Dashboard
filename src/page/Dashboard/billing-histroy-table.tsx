@@ -2,7 +2,7 @@ import TablePresentation from "@/components/data-table";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
 import { Chip } from "@heroui/chip";
-import { FileText } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 
@@ -51,7 +51,10 @@ const columns: ColumnDef<Billing>[] = [
                          color={color}
                          variant="flat"
                          radius="full"
-                         className="transition hover:scale-120 hover:cursor-default"
+                         classNames={{
+                              base: "min-w-20 h-6 px-2 transition hover:scale-120 hover:cursor-default",
+                              content: "text-xs capitalize text-center font-semibold",
+                         }}
                     >
                          {status}
                     </Chip>
@@ -70,7 +73,7 @@ const columns: ColumnDef<Billing>[] = [
                          onPress={() => handleOpen(row.original)}
                          className="transition hover:scale-120"
                     >
-                         <FileText size={18} />
+                         <Eye size={18} />
                     </Button>
                </Tooltip>
           ),
