@@ -36,8 +36,7 @@ interface Props {
 
 export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] =
-    useState<BillingStatus>("Pending");
+  const [selectedStatus, setSelectedStatus] = useState<BillingStatus>("Pending");
 
   const dispatch = useDispatch();
 

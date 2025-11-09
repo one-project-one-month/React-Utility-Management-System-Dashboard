@@ -3,23 +3,27 @@ import { parseDate } from '@internationalized/date';
 import { format } from 'date-fns'
 import type { CreateTenantContractSchema } from "@/types/schema/contractSchema";
 import { Autocomplete, AutocompleteItem, DatePicker, Input, Select, SelectItem } from "@heroui/react";
-
-const rooms = Array.from({ length: 80 }, (_, i) => {
-    const roomNumber = 100 + i * 10;
-    return {
-        label: `Room ${roomNumber}`,
-        key: roomNumber,
-    };
-});
-
-const CONTRACT_OPTIONS = [
-    { label: "3 - months", key: 3 },
-    { label: "6 - months", key: 6 },
-    { label: "1 - year", key: 12 },
-]
+import { useFetchContractTypeOptions, useFetchRoomOptions } from "@/hooks/useContract";
+import { useEffect, useState } from "react";
 
 const FormRoomContract = () => {
-    const { control } = useFormContext<CreateTenantContractSchema>()
+    const [contractDuration, setContractDuration] = useState<number>(0)
+    const [rentFee, setRentFee] = useState<number>(0)
+    const { control, setValue } = useFormContext<CreateTenantContractSchema>()
+    const { data: rooms = [], isLoading: loadingRooms } = useFetchRoomOptions()
+    const { data: contractTypes = [], isLoading: loadingContractTypes } = useFetchContractTypeOptions()
+
+    useEffect(() => {
+        if (!contractDuration) return;
+
+        const TODAY = new Date();
+        const END_DATE = new Date(TODAY);
+
+        END_DATE.setMonth(END_DATE.getMonth() + contractDuration);
+
+        setValue("expiryDate", END_DATE);
+    }, [contractDuration, setValue]);
+
     return (
         <>
             <h2>
@@ -31,48 +35,54 @@ const FormRoomContract = () => {
                     name="roomNo"
                     render={({ field, fieldState }) => (
                         <Autocomplete
-    
+                            isLoading={loadingRooms}
+                            isRequired
+                            defaultItems={rooms}
                             label="Select Room No"
                             labelPlacement="outside"
-                            selectedKey={field.value ? String(field.value) : ""}
-                            onSelectionChange={(key) => {
-                                if (key) {
-                                    field.onChange(Number(key))
-                                } else {
-                                    field.onChange(undefined)
-                                }
-                            }}
-                            isInvalid={fieldState.invalid}
+                            onSelectionChange={(key) => field.onChange(key)}
                             errorMessage={fieldState.error?.message}
                         >
-                            {rooms.map((room) => (
-                                <AutocompleteItem key={room.key}>{room.label}</AutocompleteItem>
-                            ))}
+                            {(room) =>
+                                <AutocompleteItem
+                                    key={room.key}
+                                    textValue={String(room.label)}
+                                >
+                                    Room {room.label}
+                                </AutocompleteItem>
+                            }
+
                         </Autocomplete>
                     )}
                 />
+
                 <Controller
                     control={control}
                     name="contractId"
                     render={({ field, fieldState }) => (
                         <Select
-    
+                            isLoading={loadingContractTypes}
                             label="Select Contract Type"
                             labelPlacement={"outside"}
                             placeholder="Contract Type"
-                            selectedKeys={field.value ? [String(field.value)] : []}
                             variant="bordered"
                             onSelectionChange={(keys) => {
                                 const key = Array.from(keys)[0];
-                                field.onChange(Number(key));
+                                field.onChange(key)
                             }}
-                            defaultSelectedKeys={[3]}
                             isInvalid={fieldState.invalid}
                             errorMessage={fieldState.error?.message}
-
                         >
-                            {CONTRACT_OPTIONS.map((option) => (
-                                <SelectItem key={option.key}>{option.label}</SelectItem>
+                            {contractTypes.map((option) => (
+                                <SelectItem
+                                    key={option.key}
+                                    onClick={() => {
+                                        setContractDuration(option.duration)
+                                        setRentFee(Number(option.fee))
+                                    }}
+                                >
+                                    {option.label}
+                                </SelectItem>
                             ))}
                         </Select>
                     )}
@@ -82,26 +92,42 @@ const FormRoomContract = () => {
                     name="createdDate"
                     render={({ field, fieldState }) => (
                         <DatePicker
-                            label="Start Contract Date"
+                            isReadOnly
+                            label="Contract Start Date"
                             variant="bordered"
                             value={
                                 field.value
                                     ? parseDate(format(new Date(field.value), "yyyy-MM-dd"))
                                     : undefined
                             }
-                            onChange={(dateValue) => {
-                                field.onChange(dateValue ? new Date(dateValue.toString()) : null);
-                            }}
                             isInvalid={fieldState.invalid}
                             errorMessage={fieldState.error?.message}
                         />
                     )}
                 />
-                <DatePicker isReadOnly label="Contract Date" value={parseDate(format(new Date(), "yyyy-MM-dd"))} />
+
+                <Controller
+                    control={control}
+                    name="expiryDate"
+                    render={({ field, fieldState }) => (
+                        <DatePicker
+                            isReadOnly
+                            label="Contract End Date"
+                            variant="bordered"
+                            value={
+                                field.value
+                                    ? parseDate(format(new Date(field.value), "yyyy-MM-dd"))
+                                    : undefined
+                            }
+                            isInvalid={fieldState.invalid}
+                            errorMessage={fieldState.error?.message}
+                        />
+                    )}
+                />
                 <Input
                     isReadOnly
                     disabled
-                    defaultValue="50000 MMK"
+                    value={rentFee.toLocaleString() + " MMK"}
                     label="Total Rent Fee"
                     labelPlacement="outside"
                     type="text"

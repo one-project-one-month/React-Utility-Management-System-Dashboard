@@ -1,104 +1,111 @@
 import { useNavigate, useParams } from "react-router";
-import { ROLE_OPTIONS } from "@/constants/userMockData.ts";
-import { Controller, type Resolver, useForm } from "react-hook-form";
+import { type Resolver, useForm, Controller } from "react-hook-form";
 import { type EditUserFormData, editUserSchema } from "@/types/user.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Switch } from "@heroui/react";
-import { FormSelect } from "@/components/Form/form-select.tsx";
-import { FormInput } from "@/components/Form/form-input.tsx";
 import { breadcrumbs } from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import {useEditUser, useFetchTenants, useFetchUser} from "@/hooks/useUsers.ts";
-import {useEffect, useMemo} from "react";
-import type {Tenant} from "@/types/tenants/tenantType.ts";
-import {SkeletonLoader} from "@/components/skeleton-loader.tsx";
+import { useEditUser, useFetchTenants, useFetchUser } from "@/hooks/useUsers.ts";
+import { useEffect, useMemo } from "react";
+import type { Tenant } from "@/types/tenants/tenantType.ts";
+import { SkeletonLoader } from "@/components/skeleton-loader.tsx";
+import { Button, Switch } from "@heroui/react";
+import { FormInput } from "@/components/Form/form-input";
+import { FormSelect } from "@/components/Form/form-select";
+
+const ROLE_OPTIONS = [
+  { key: "Admin", label: "Admin" },
+  { key: "Tenant", label: "Tenant" },
+  { key: "Manager", label: "Manager" },
+];
 
 export default function UserEditPage() {
-    const { id } = useParams();
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    const { data: tenants, isLoading: isTenantLoading  } = useFetchTenants();
-    const { data: user, isLoading } = useFetchUser(id!);
-    console.log(user);
+  const { data: tenants, isLoading: isTenantLoading } = useFetchTenants();
+  const { data: user, isLoading } = useFetchUser(id!);
+  const { mutate, isPending } = useEditUser();
 
-    const { mutate, isPending } = useEditUser();
+  const tenantOptions = useMemo(() => {
+    if (!tenants) return [];
+    return tenants.map((tenant: Tenant) => ({
+      key: tenant.id,
+      label: tenant.name || tenant.id,
+    }));
+  }, [tenants]);
 
-    const tenantOptions = useMemo(() => {
-        if (!tenants) return [];
-        return tenants.map((tenant: Tenant) => ({
-            key: tenant.id,
-            label: tenant.name || tenant.id
-        }));
-    }, [tenants]);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+    setValue,
+  } = useForm<EditUserFormData>({
+    resolver: zodResolver(editUserSchema) as Resolver<EditUserFormData>,
+    defaultValues: {
+      userName: "",
+      email: "",
+      role: "Tenant",
+      tenantId: null,
+      isActive: true,
+    },
+  });
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-        watch,
-        reset,
-        setValue
-    } = useForm<EditUserFormData>({
-        resolver: zodResolver(editUserSchema) as Resolver<EditUserFormData>,
-        defaultValues: {
-            userName: "",
-            email: "",
-            role: "Tenant",
-            tenantId: null,
-            isActive: true
-        }
-    });
+  const selectedRole = watch("role");
 
-    const selectedRole = watch("role");
-
-    useEffect(() => {
-        if (user) {
-            reset({
-                userName: user.userName,
-                email: user.email,
-                password: user.password,
-                role: user.role || "Tenant",
-                tenantId: user.tenantId,
-                isActive: user.isActive
-            });
-        }
-    }, [user, reset]);
-
-    if (isLoading) {
-        return (
-            <div className={"h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"}>
-                <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
-
-                <div className={"space-y-6"}>
-                    <div>
-                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                            User Information
-                        </h3>
-                        <div className={"grid grid-cols-1 md:grid-cols-2 gap-6"}>
-                            {[...Array(2)].map((_, i) => (
-                                <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
-                        {[...Array(3)].map((_, i) => (
-                            <SkeletonLoader key={i} height="2.5rem" width="10rem" rounded={"rounded-xl"} />
-                        ))}
-                    </div>
-
-                    <div className={"flex justify-end gap-2"}>
-                        <SkeletonLoader height="2.5rem" width="5.5rem" />
-                        <SkeletonLoader height="2.5rem" width="5.5rem" />
-                    </div>
-                </div>
-            </div>
-        );
+  useEffect(() => {
+    if (user) {
+      reset({
+        userName: user.userName,
+        email: user.email,
+        password: user.password,
+        role: user.role || "Tenant",
+        tenantId: user.tenantId,
+        isActive: user.isActive,
+      });
     }
   }, [user, reset]);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6">
+        <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              User Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[...Array(2)].map((_, i) => (
+                <SkeletonLoader
+                  key={i}
+                  height="2.5rem"
+                  width="10rem"
+                  rounded="rounded-xl"
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, i) => (
+              <SkeletonLoader
+                key={i}
+                height="2.5rem"
+                width="10rem"
+                rounded="rounded-xl"
+              />
+            ))}
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <SkeletonLoader height="2.5rem" width="5.5rem" />
+            <SkeletonLoader height="2.5rem" width="5.5rem" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
@@ -117,33 +124,35 @@ export default function UserEditPage() {
   const onSubmit = (data: EditUserFormData) => {
     const transformedData = {
       ...data,
-      tenantId: data.tenantId == "" ? null : data.tenantId,
+      tenantId: data.tenantId === "" ? null : data.tenantId,
     };
     console.log(transformedData);
     mutate({
       id: id!,
-      formData: data,
+      formData: transformedData,
     });
   };
 
   return (
-    <div className={"p-2 space-y-4"}>
+    <div className="p-2 space-y-4">
       <NavigationBreadCrumbs items={breadcrumbs.userEdit} />
 
-      <form onSubmit={handleSubmit(onSubmit)} className={"space-y-6"}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           User Information
         </h3>
-        <div className={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
+
+        {/* Username + Email */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Controller
-            name={"userName"}
+            name="userName"
             control={control}
             render={({ field }) => (
               <FormInput
                 {...field}
-                label={"Username"}
-                placeholder={"Enter username"}
-                value={field.value?.toString() || ""}
+                label="Username"
+                placeholder="Enter username"
+                value={field.value || ""}
                 isInvalid={!!errors.userName}
                 errorMessage={errors.userName?.message}
               />
@@ -151,14 +160,14 @@ export default function UserEditPage() {
           />
 
           <Controller
-            name={"email"}
+            name="email"
             control={control}
             render={({ field }) => (
               <FormInput
                 {...field}
-                label={"Email"}
-                placeholder={"Enter email"}
-                value={field.value?.toString() || ""}
+                label="Email"
+                placeholder="Enter email"
+                value={field.value || ""}
                 isInvalid={!!errors.email}
                 errorMessage={errors.email?.message}
               />
@@ -166,20 +175,20 @@ export default function UserEditPage() {
           />
         </div>
 
-        <div className={"grid grid-cols-1 md:grid-cols-3 gap-4"}>
+        {/* Role, Tenant, Status */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Controller
-            name={"role"}
+            name="role"
             control={control}
             render={({ field }) => (
               <FormSelect
-                label={"Role"}
-                placeholder={"Select role"}
+                label="Role"
+                placeholder="Select role"
                 options={ROLE_OPTIONS}
-                value={field.value?.toString() || ""}
+                value={field.value || ""}
                 onChange={(value) => {
                   field.onChange(value);
-
-                  if (value !== "tenant") {
+                  if (value !== "Tenant") {
                     setValue("tenantId", null);
                   }
                 }}
@@ -190,13 +199,13 @@ export default function UserEditPage() {
           />
 
           <Controller
-            name={"tenantId"}
+            name="tenantId"
             control={control}
             render={({ field }) => (
               <FormSelect
                 {...field}
-                label={"Tenant"}
-                placeholder={"Select tenant"}
+                label="Tenant"
+                placeholder="Select tenant"
                 value={field.value || ""}
                 options={tenantOptions}
                 onChange={field.onChange}
@@ -229,21 +238,22 @@ export default function UserEditPage() {
           />
         </div>
 
-        <div className={"flex justify-end gap-2"}>
+        {/* Buttons */}
+        <div className="flex justify-end gap-2">
           <Button
-            type={"button"}
-            variant={"bordered"}
-            className={"border-[0.5px]"}
+            type="button"
+            variant="bordered"
+            className="border-[0.5px]"
             onPress={() => navigate("/user-management/users")}
           >
             Cancel
           </Button>
           <Button
-            type={"submit"}
-            className={"text-white bg-primary"}
+            type="submit"
+            className="text-white bg-primary"
             isLoading={isPending}
           >
-            {isPending ? "Editing" : "Edit"}
+            {isPending ? "Editing..." : "Edit"}
           </Button>
         </div>
       </form>

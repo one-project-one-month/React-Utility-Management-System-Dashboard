@@ -1,7 +1,7 @@
 export type Contracts = {
 	id: number;
 	name: string;
-	duration: string;
+	duration: number;
 	price: number;
 	facilities?: string[];
 };

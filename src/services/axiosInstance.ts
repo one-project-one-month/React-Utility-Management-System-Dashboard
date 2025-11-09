@@ -36,6 +36,7 @@ axiosInstance.interceptors.response.use(
     }
 
     if (error.response.status === 401 && !error.config._retry) {
+      console.log('401 and trying to reconnect')
       error.config._retry = true;
       try {
         const res =
