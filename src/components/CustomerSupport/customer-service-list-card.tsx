@@ -5,14 +5,15 @@ import type { CustomerService } from "@/types/customer-service";
 import { ServiceChip } from "./service-chip";
 import { useState, useRef, useEffect } from "react";
 import { formatDate } from "@/helpers/date";
+import { useDeleteCustomerService } from "@/hooks/useCustomerService";
+import { ConfirmDialog } from "../confirm-dialog";
 
 interface CustomerServiceCardProps {
     service: CustomerService;
     onEdit: (serviceId: string) => void;
-    onDelete: (serviceId: string) => void;
 }
 
-export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerServiceCardProps) {
+export function CustomerServiceListCard({ service, onEdit }: CustomerServiceCardProps) {
 
     const handleEdit = (e: PressEvent) => {
         e.continuePropagation();
@@ -29,6 +30,20 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
             setIsOverflowing(el.scrollHeight > el.clientHeight);
         }
     }, [service.description]);
+
+    // 00000000
+    const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
+    const { mutateAsync: deleteService, isPending: isDeleting } = useDeleteCustomerService();
+
+
+    const handleDelete = async (id: string) => {
+        await deleteService({ id });
+
+    };
+
+    const handleCancelDelete = () => {
+        setDeleteConfirmModalOpen(false);
+    };
 
     return (
         <div>
@@ -76,24 +91,32 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                                 >
                                     <Pencil size={20} className="text-default-500" />
                                 </Button>
-                                <div onClick={(e)=>e.stopPropagation()}>
                                 <Button
-                                    onPress={() => {
-                                        onDelete(service.id);
-                                    }}
+                                    onPress={() => setDeleteConfirmModalOpen(true)}
                                     isIconOnly
                                     variant="light"
                                     color="danger"
                                     aria-label="Delete property"
                                 >
                                     <Trash2 size={20} />
-                                    </Button>
-                                </div>
+                                </Button>
                             </div>
                         </div>
                     </div>
                 </CardBody>
             </Card>
+
+            {/* Delete Dialog */}
+            <ConfirmDialog
+                isOpen={deleteConfirmModalOpen}
+                title={"Confirm Deletion"}
+                message={"Are you sure you want to delete this service? This action cannot be undone."}
+                confirmText="Delete"
+                confirmColor="danger"
+                isLoading={isDeleting}
+                onConfirm={() => handleDelete(service.id)}
+                onCancel={handleCancelDelete}
+            />
         </div>
     )
 }

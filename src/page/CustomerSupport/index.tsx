@@ -20,10 +20,10 @@ import {
     addToast,
     Pagination
 } from "@heroui/react";
-import { useCustomerService, useDeleteCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
+import { useCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
 import { SkeletonLoader } from "@/components/skeleton-loader";
 import { formatDate } from "@/helpers/date";
-import { useConfirmDialog } from "@/hooks/useConfirmDialog";
+// import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 
 const FILTER_OPTIONS = {
     category: ["Complain", "Maintenance", "Other"] as Category[],
@@ -55,15 +55,12 @@ export default function CustomerSupportPage() {
 
     const totalPages = data?.content?.meta?.lastPage ?? 1;
     const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
-    const { mutateAsync: deleteService, isPending: isDeleting } = useDeleteCustomerService();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
-    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [editStatus, setEditStatus] = useState<Status | undefined>();
     const services: CustomerService[] = Array.isArray(data?.content?.data)
         ? data!.content!.data
         : [];
-    const { showConfirm, ConfirmDialog, closeDialog } = useConfirmDialog();
 
 
     useEffect(() => {
@@ -90,18 +87,6 @@ export default function CustomerSupportPage() {
         setSelectedServiceId(id);
         setEditStatus(currentStatus);
         onEditOpen();
-    };
-
-    const handleDeleteBtn = (id: string) => {
-        showConfirm({
-            title: "Confirm Deletion",
-            message: "Are you sure you want to delete this service? This action cannot be undone.",
-            confirmText: "Delete",
-            confirmColor: "danger",
-            onConfirm: async () => {
-                await deleteService({ id });
-            },
-        });
     };
 
     return (
@@ -176,7 +161,7 @@ export default function CustomerSupportPage() {
                                     key={service.id}
                                     service={service}
                                     onEdit={() => handleEditBtn(service.id, service.status)}
-                                    onDelete={handleDeleteBtn}
+                                    // onDelete={() => setConfirmOpen(true)}
                                 />
                             ))}
                             {services.length === 0 && (
@@ -264,34 +249,6 @@ export default function CustomerSupportPage() {
                 </ModalContent>
             </Modal>
 
-            {/* Delete Confirmation Modal */}
-            <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton={false} shouldBlockScroll={true}>
-                <ModalContent>
-                    <ModalHeader>
-                        <h2 className="text-2xl font-semibold">Confirm Deletion</h2>
-                    </ModalHeader>
-                    <ModalBody>
-                        Are you sure you want to delete this service? This action cannot be undone.
-                    </ModalBody>
-                    <ModalFooter className="flex justify-end gap-2">
-                        <Button variant="light" onPress={onDeleteClose}>Cancel</Button>
-                        <Button
-                            color="danger"
-                            isDisabled={!selectedServiceId}
-                            isLoading={isDeleting}
-                            onPress={() => {
-                                if (selectedServiceId) {
-                                    deleteService({ id: selectedServiceId, onDeleteClose });
-                                }
-                            }}
-                        >
-                            Delete
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
-            <ConfirmDialog />
         </div>
     );
 }
