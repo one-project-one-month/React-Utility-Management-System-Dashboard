@@ -23,6 +23,7 @@ import {
 import { useCustomerService, useDeleteCustomerService, useUpdateCustomerService } from "@/hooks/useCustomerService";
 import { SkeletonLoader } from "@/components/skeleton-loader";
 import { formatDate } from "@/helpers/date";
+import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 
 const FILTER_OPTIONS = {
     category: ["Complain", "Maintenance", "Other"] as Category[],
@@ -54,7 +55,7 @@ export default function CustomerSupportPage() {
 
     const totalPages = data?.content?.meta?.lastPage ?? 1;
     const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
-    const { mutate: deleteService, isPending: isDeleting } = useDeleteCustomerService();
+    const { mutateAsync: deleteService, isPending: isDeleting } = useDeleteCustomerService();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
@@ -62,6 +63,7 @@ export default function CustomerSupportPage() {
     const services: CustomerService[] = Array.isArray(data?.content?.data)
         ? data!.content!.data
         : [];
+    const { showConfirm, ConfirmDialog, closeDialog } = useConfirmDialog();
 
 
     useEffect(() => {
@@ -91,8 +93,15 @@ export default function CustomerSupportPage() {
     };
 
     const handleDeleteBtn = (id: string) => {
-        setSelectedServiceId(id);
-        onDeleteOpen();
+        showConfirm({
+            title: "Confirm Deletion",
+            message: "Are you sure you want to delete this service? This action cannot be undone.",
+            confirmText: "Delete",
+            confirmColor: "danger",
+            onConfirm: async () => {
+                await deleteService({ id });
+            },
+        });
     };
 
     return (
@@ -179,14 +188,6 @@ export default function CustomerSupportPage() {
                     </>
                 )}
                 {/* Pagination always visible */}
-                {/* {totalPages > 1 && (
-                    <Pagination
-                        className="mt-4"
-                        total={totalPages}
-                        page={page}
-                        onChange={setPage}
-                    />
-                )} */}
                 <Pagination
                     className="mt-4"
                     total={totalPages}
@@ -289,6 +290,8 @@ export default function CustomerSupportPage() {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+
+            <ConfirmDialog />
         </div>
     );
 }

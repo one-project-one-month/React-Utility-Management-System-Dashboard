@@ -19,10 +19,6 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
         onEdit(service.id);
     };
 
-    const handleDelete = () => {
-        onDelete(service.id);
-    };
-
     const [isLineClamp, setIsLineClamp] = useState(true);
     const [isOverflowing, setIsOverflowing] = useState(false);
     const descRef = useRef<HTMLSpanElement>(null);
@@ -80,15 +76,19 @@ export function CustomerServiceListCard({ service, onEdit, onDelete }: CustomerS
                                 >
                                     <Pencil size={20} className="text-default-500" />
                                 </Button>
+                                <div onClick={(e)=>e.stopPropagation()}>
                                 <Button
-                                    onPress={handleDelete}
+                                    onPress={() => {
+                                        onDelete(service.id);
+                                    }}
                                     isIconOnly
                                     variant="light"
                                     color="danger"
                                     aria-label="Delete property"
                                 >
                                     <Trash2 size={20} />
-                                </Button>
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>

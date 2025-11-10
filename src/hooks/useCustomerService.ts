@@ -38,7 +38,6 @@ export const useCustomerService = (
 
 export const useUpdateCustomerService = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ id, updates }: UpdateServiceArgs) =>
       updateCustomerService({id, updates}),
@@ -70,19 +69,26 @@ export const useDeleteCustomerService = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id }: DeleteServiceArgs) =>
-      deleteCustomerService(id),
+    mutationFn: async ({ id }: DeleteServiceArgs) => {
+      return await deleteCustomerService(id);
+    },
     onSuccess: async (_, variables) => {
-      await queryClient.refetchQueries({ queryKey: ["customer-services"] });
+      // ✅ Always refresh data after deletion
+      await queryClient.invalidateQueries({ queryKey: ["customer-services"] });
+
+      // ✅ Show success toast
       addToast({
         title: "Service Deleted",
         description: "Deleted successfully!",
         color: "success",
         timeout: 3000,
       });
+
+      // ✅ Optionally close local modal if provided
       variables?.onDeleteClose?.();
     },
-    onError: () => {
+    onError: (error: unknown) => {
+      console.error("Delete failed:", error);
       addToast({
         title: "Delete Failed",
         description: "Something went wrong while deleting the service.",
