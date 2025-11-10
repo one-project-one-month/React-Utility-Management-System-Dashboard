@@ -1,6 +1,6 @@
 import { CustomerServiceListCard } from "@/components/CustomerSupport/customer-service-list-card";
 import { ServiceFilterSelect } from "@/components/CustomerSupport/service-filter-select";
-import type { Category, CustomerService, Priority, Status } from "@/types/customer-service";
+import type { Category, CustomerService, Priority, ServiceFilter, Status } from "@/types/customer-service";
 import { Filter, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
@@ -27,16 +27,16 @@ import { formatDate } from "@/helpers/date";
 const FILTER_OPTIONS = {
     category: ["Complain", "Maintenance", "Other"] as Category[],
     status: ["Pending", "Ongoing", "Resolved"] as Status[],
-    priority: ["Low", "Medium", "High"] as Priority[],
+    priorityLevel: ["Low", "Medium", "High"] as Priority[],
 };
 
-const INIT_FILTERS = {
-    category: "",
-    status: "",
-    priority: "",
+const INIT_FILTERS : ServiceFilter = {
+    category: undefined,
+    status: undefined,
+    priorityLevel: undefined,
 };
 
-const STATUS_OPTIONS = ["Pending", "Ongoing", "Resolved"];
+const STATUS_OPTIONS = ['Ongoing', 'Pending', 'Resolved'] as Status[];
 
 export default function CustomerSupportPage() {
     const [page, setPage] = useState(1);
@@ -45,10 +45,10 @@ export default function CustomerSupportPage() {
     const debouncedSearch = useDebounce(searchTerm, 500);
     const [filters, setFilters] = useState(INIT_FILTERS);
 
-    const { data, isLoading, isError } = useCustomerService(page, limit, {
+    const { data, isLoading, isError, isFetching } = useCustomerService(page, limit, {
         category: filters.category || undefined,
         status: filters.status || undefined,
-        priorityLevel: filters.priority || undefined,
+        priorityLevel: filters.priorityLevel || undefined,
         search: debouncedSearch || undefined,
     });
 
@@ -63,7 +63,7 @@ export default function CustomerSupportPage() {
         ? data!.content!.data
         : [];
 
-    
+
     useEffect(() => {
         if (isError) {
             addToast({
@@ -125,27 +125,27 @@ export default function CustomerSupportPage() {
                     <ServiceFilterSelect
                         label="Category"
                         options={FILTER_OPTIONS.category}
-                        value={filters.category}
+                        value={filters.category || ""}
                         onChange={(val) => setFilters(prev => ({ ...prev, category: val as Category | "" }))}
                     />
                     <ServiceFilterSelect
                         label="Priority"
-                        options={FILTER_OPTIONS.priority}
-                        value={filters.priority}
+                        options={FILTER_OPTIONS.priorityLevel}
+                        value={filters.priorityLevel || ""}
                         onChange={(val) => setFilters(prev => ({ ...prev, priority: val as Priority | "" }))}
                     />
                     <ServiceFilterSelect
                         label="Status"
                         options={FILTER_OPTIONS.status}
-                        value={filters.status}
-                        onChange={(val) => setFilters(prev => ({ ...prev, status: val as Status | "All" | "" }))}
+                        value={filters.status || ""}
+                        onChange={(val) => setFilters(prev => ({ ...prev, status: val as Status | "" }))}
                     />
                 </div>
             </div>
 
             {/* Service Requests */}
             <div className="bg-gray-200/20 rounded-xl p-3 md:p-5 space-y-3">
-                {isLoading ? (
+                {isLoading || isFetching ? (
                     <>
                         <h3 className="text-lg font-medium">Loading Services...</h3>
                         <div className="space-y-2">
@@ -179,14 +179,20 @@ export default function CustomerSupportPage() {
                     </>
                 )}
                 {/* Pagination always visible */}
-                {totalPages > 1 && (
+                {/* {totalPages > 1 && (
                     <Pagination
                         className="mt-4"
                         total={totalPages}
                         page={page}
                         onChange={setPage}
                     />
-                )}
+                )} */}
+                <Pagination
+                    className="mt-4"
+                    total={totalPages}
+                    page={page}
+                    onChange={setPage}
+                />
             </div>
 
             {/* Edit Modal */}
@@ -210,7 +216,7 @@ export default function CustomerSupportPage() {
 
                                         {/* Status (editable) */}
                                         <Select
-                                            aria-label="Status"                                           
+                                            aria-label="Status"
                                             className="max-w-[40%]"
                                             selectedKeys={[editStatus ?? service.status]}
                                             radius="full"
@@ -243,7 +249,6 @@ export default function CustomerSupportPage() {
                                                 id: selectedServiceId,
                                                 updates: {
                                                     status: editStatus ?? service.status,
-                                                    priorityLevel: service.priorityLevel,
                                                 },
                                                 onEditClose: onEditClose,
                                             });

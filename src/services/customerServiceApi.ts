@@ -1,12 +1,12 @@
 import axiosInstance from "@/services/axiosInstance";
-import type { CustomerService } from "@/types/customer-service";
+import type { CustomerService, ServiceFilter, UpdateServiceRequest } from "@/types/customer-service";
 import type { Pagination } from "@/types/pagination";
 import { buildQueryParams } from "./utils";
 import type { ApiResponse } from "./apiResponse";
 
 export const fetchCustomerServices = async (
   pagination: Pagination,
-  filters?: any,
+  filters?: ServiceFilter,
 ) => {
   const query = buildQueryParams({
     ...pagination,
@@ -18,10 +18,10 @@ export const fetchCustomerServices = async (
   return res.data;
 };
 
-export const updateCustomerService = async (id: string, updates: any) => {
+export const updateCustomerService = async ({ id, updates } : UpdateServiceRequest) => {
   const res = await axiosInstance.put<ApiResponse<CustomerService>>(
     `/customer-services/${id}`,
-    updates,
+    updates
   );
   return res.data;
 };
