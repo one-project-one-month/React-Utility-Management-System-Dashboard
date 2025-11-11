@@ -20,7 +20,10 @@ export default function TenantDetailsPage() {
     <div className="h-[calc(100vh-70px)] overflow-y-auto custom-scrollbar-3">
       <div className="h-[calc(100vh-30px)]">
         <HeaderForAllPages action={"viewDetails"} tenantId={id} />
-        <TenantDetailsPageHeader tenant={tenant} />
+        <TenantDetailsPageHeader
+          tenantId={tenant.id}
+          tenantName={tenant.name}
+        />
         <TenantInfo tenant={tenant} />
       </div>
     </div>

@@ -3,12 +3,15 @@ import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { FileSignature, History, Pencil } from "lucide-react";
 import { useNavigate } from "react-router";
-import type { Tenant } from "@/types/tenants/tenantType.ts";
 
 interface Props {
-  tenant: Tenant;
+  tenantId: string;
+  tenantName: string;
 }
-export default function TenantDetailsPageHeader({ tenant }: Props) {
+export default function TenantDetailsPageHeader({
+  tenantId,
+  tenantName,
+}: Props) {
   const navigate = useNavigate();
   return (
     <div className="flex justify-between w-full items-center">
@@ -18,8 +21,8 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
           className="object-cover w-17 h-17 rounded-full"
         />
         <div className="flex flex-col ml-2">
-          <h1 className="text-lg font-semibold">{tenant?.name}</h1>
-          <h2 className="text-foreground/50">Tenant ID : {tenant?.id}</h2>
+          <h1 className="text-lg font-semibold">{tenantName}</h1>
+          <h2 className="text-foreground/50">Tenant ID : {tenantId}</h2>
         </div>
       </div>
 
@@ -30,7 +33,7 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
             variant={"light"}
             color="primary"
             onPress={() => {
-              navigate(`/tenants/update/${tenant?.id}`);
+              navigate(`/tenants/update/${tenantId}`);
             }}
           >
             <Pencil size={25} />
@@ -54,7 +57,7 @@ export default function TenantDetailsPageHeader({ tenant }: Props) {
             variant={"light"}
             color="primary"
             onPress={() => {
-              navigate(`/tenants/${tenant?.id}/activities`);
+              navigate(`/tenants/${tenantId}/activities`);
             }}
           >
             <History size={25} />

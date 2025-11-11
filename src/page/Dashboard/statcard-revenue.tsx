@@ -6,10 +6,15 @@ import {
   CircleAlert,
 } from "lucide-react";
 import { useGetRevenueByMonthAndYear } from "@/hooks/dashboardData/useDashboardData.ts";
+import type { MonthParamForRevenue } from "@/services/dashboardServices.ts";
 
 // Total Revenue
 
-const months = {
+type Months = {
+  [key: string]: MonthParamForRevenue;
+};
+
+const months: Months = {
   Jan: "1",
   Feb: "2",
   Mar: "3",
