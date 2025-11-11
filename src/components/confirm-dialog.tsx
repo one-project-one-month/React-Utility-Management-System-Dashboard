@@ -49,7 +49,7 @@ export function ConfirmDialog({
                             {icon}
                             <span className="text-2xl font-semibold">{title}</span>
                         </ModalHeader>
-                        <ModalBody className="text-gray-600 text-center">{message}</ModalBody>
+                        <ModalBody className="text-center">{message}</ModalBody>
                         <ModalFooter className="flex w-full gap-x-2">
                             <Button
                                 variant="light"

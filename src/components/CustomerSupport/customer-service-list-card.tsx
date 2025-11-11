@@ -1,67 +1,79 @@
 import { Card, CardBody } from "@heroui/react";
-import { Button, type PressEvent } from "@heroui/button";
+import { Button } from "@heroui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import type { CustomerService } from "@/types/customer-service";
+import type { CustomerService, Status } from "@/types/customer-service";
 import { ServiceChip } from "./service-chip";
 import { useState, useRef, useEffect } from "react";
 import { formatDate } from "@/helpers/date";
-import { useDeleteCustomerService } from "@/hooks/useCustomerService";
+import {
+    useDeleteCustomerService,
+    useUpdateCustomerService,
+} from "@/hooks/useCustomerService";
 import { ConfirmDialog } from "../confirm-dialog";
+import { EditDialog } from "./edit-dialog";
 
-interface CustomerServiceCardProps {
-    service: CustomerService;
-    onEdit: (serviceId: string) => void;
-}
-
-export function CustomerServiceListCard({ service, onEdit }: CustomerServiceCardProps) {
-
-    const handleEdit = (e: PressEvent) => {
-        e.continuePropagation();
-        onEdit(service.id);
-    };
-
+export function CustomerServiceListCard({ service }: { service: CustomerService }) {
     const [isLineClamp, setIsLineClamp] = useState(true);
     const [isOverflowing, setIsOverflowing] = useState(false);
     const descRef = useRef<HTMLSpanElement>(null);
 
-    useEffect(() => {
-        const el = descRef.current;
-        if (el) {
-            setIsOverflowing(el.scrollHeight > el.clientHeight);
-        }
-    }, [service.description]);
+    const [editConfirmModalOpen, setEditConfirmModalOpen] = useState(false);
+    const [selectedService, setSelectedService] = useState<CustomerService | null>(null);
 
-    // 00000000
+    const { mutate: updateService, isPending: isUpdating } = useUpdateCustomerService();
+
     const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
     const { mutateAsync: deleteService, isPending: isDeleting } = useDeleteCustomerService();
 
+    useEffect(() => {
+        const el = descRef.current;
+        if (el) setIsOverflowing(el.scrollHeight > el.clientHeight);
+    }, [service.description]);
 
-    const handleDelete = async (id: string) => {
-        await deleteService({ id });
-
+    // ✅ Open Edit Dialog
+    const handleEdit = () => {
+        setSelectedService(service);
+        setEditConfirmModalOpen(true);
     };
 
-    const handleCancelDelete = () => {
+    // ✅ Save updated status
+    const handleSave = (status: Status) => {
+        if (!selectedService?.id) return;
+        updateService({
+            id: selectedService.id,
+            updates: { status },
+            onEditClose() {
+                setEditConfirmModalOpen(false);
+            },
+        });
+    };
+
+    // ✅ Delete service
+    const handleDelete = async (id: string) => {
+        await deleteService({ id });
         setDeleteConfirmModalOpen(false);
     };
 
     return (
         <div>
             <Card className="w-full rounded-xl shadow-none transition delay-30 duration-300 ease-in-out hover:scale-101">
-                <CardBody className={"p-2"}>
+                <CardBody className="p-2">
                     <div className="flex flex-col md:flex-row gap-3 p-2">
-                        <div
-                            className="flex-1 flex flex-col gap-2"
-                        >
+                        {/* Info Section */}
+                        <div className="flex-1 flex flex-col gap-2">
                             <div className="flex items-center gap-3 mb-2">
                                 <h3 className="text-xl font-semibold">Room-{service.roomNo}</h3>
                                 <ServiceChip label={service.category} />
                                 <ServiceChip label={service.priorityLevel} />
                                 <ServiceChip label={service.status} />
-
                             </div>
+
                             <div className="flex flex-col items-start gap-1 text-sm text-default-500">
-                                <span ref={descRef} className={`${isLineClamp ? "line-clamp-2" : ""}`}>{service.description}
+                                <span
+                                    ref={descRef}
+                                    className={`${isLineClamp ? "line-clamp-2" : ""}`}
+                                >
+                                    {service.description}
                                 </span>
                                 {isOverflowing && (
                                     <button
@@ -75,9 +87,9 @@ export function CustomerServiceListCard({ service, onEdit }: CustomerServiceCard
                             </div>
                         </div>
 
+                        {/* Actions */}
                         <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:min-w-fit">
                             <div className="text-lg font-semibold">
-                                {/* ISSUED DATE */}
                                 {formatDate(service.issuedDate)}
                             </div>
 
@@ -87,7 +99,7 @@ export function CustomerServiceListCard({ service, onEdit }: CustomerServiceCard
                                     isIconOnly
                                     variant="light"
                                     color="default"
-                                    aria-label="Edit property"
+                                    aria-label="Edit service"
                                 >
                                     <Pencil size={20} className="text-default-500" />
                                 </Button>
@@ -96,7 +108,7 @@ export function CustomerServiceListCard({ service, onEdit }: CustomerServiceCard
                                     isIconOnly
                                     variant="light"
                                     color="danger"
-                                    aria-label="Delete property"
+                                    aria-label="Delete service"
                                 >
                                     <Trash2 size={20} />
                                 </Button>
@@ -106,17 +118,28 @@ export function CustomerServiceListCard({ service, onEdit }: CustomerServiceCard
                 </CardBody>
             </Card>
 
-            {/* Delete Dialog */}
+            {/* ✅ Edit Dialog */}
+            {selectedService && (
+                <EditDialog
+                    isOpen={editConfirmModalOpen}
+                    onClose={() => setEditConfirmModalOpen(false)}
+                    service={selectedService}
+                    isUpdating={isUpdating}
+                    onSave={handleSave}
+                />
+            )}
+
+            {/* ✅ Delete Dialog */}
             <ConfirmDialog
                 isOpen={deleteConfirmModalOpen}
-                title={"Confirm Deletion"}
-                message={"Are you sure you want to delete this service? This action cannot be undone."}
+                title="Confirm Deletion"
+                message="Are you sure you want to delete this service? This action cannot be undone."
                 confirmText="Delete"
                 confirmColor="danger"
                 isLoading={isDeleting}
                 onConfirm={() => handleDelete(service.id)}
-                onCancel={handleCancelDelete}
+                onCancel={() => setDeleteConfirmModalOpen(false)}
             />
         </div>
-    )
+    );
 }

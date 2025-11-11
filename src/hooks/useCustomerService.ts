@@ -17,8 +17,6 @@ interface DeleteServiceArgs {
   id: string;
   onDeleteClose?: () => void;
 }
- 
-
 
 export const useCustomerService = (
   page: number,
@@ -42,7 +40,6 @@ export const useUpdateCustomerService = () => {
     mutationFn: ({ id, updates }: UpdateServiceArgs) =>
       updateCustomerService({id, updates}),
     onSuccess: async (_, variables) => {
-      // await queryClient.refetchQueries({ queryKey: ["customer-services"] });
       await queryClient.invalidateQueries({ queryKey: ["customer-services"] });
       addToast({
         title: "Update Successful",
@@ -98,71 +95,3 @@ export const useDeleteCustomerService = () => {
     },
   });
 };
-
-// export const useDeleteCustomerService = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: async ({ id }: DeleteServiceArgs) => {
-//       return await deleteCustomerService(id);
-//     },
-
-//     onMutate: async ({ id }) => {
-//       await queryClient.cancelQueries({ queryKey: ["customer-services"] });
-
-//       // Snapshot current data
-//       const previousData = queryClient.getQueryData<
-//         ApiResponse<CustomerService[]>
-//       >(["customer-services"]);
-
-//       // Optimistically update cache
-//       if (previousData?.content?.data) {
-//         queryClient.setQueryData<ApiResponse<CustomerService[]>>(
-//           ["customer-services"],
-//           {
-//             ...previousData,
-//             content: {
-//               ...previousData.content,
-//               data: previousData.content.data.filter(
-//                 (service) => service.id !== id
-//               ),
-//             },
-//           }
-//         );
-//       }
-
-//       // Return rollback snapshot
-//       return { previousData };
-//     },
-
-//     onError: (error, _, context) => {
-//       // Rollback if error
-//       if (context?.previousData) {
-//         queryClient.setQueryData(["customer-services"], context.previousData);
-//       }
-
-//       console.error("Delete failed:", error);
-//       addToast({
-//         title: "Delete Failed",
-//         description: "Something went wrong while deleting the service.",
-//         color: "danger",
-//         timeout: 3000,
-//       });
-//     },
-
-//     onSuccess: (_, variables) => {
-//       addToast({
-//         title: "Service Deleted",
-//         description: "Deleted successfully!",
-//         color: "success",
-//         timeout: 3000,
-//       });
-
-//       variables?.onDeleteClose?.();
-//     },
-
-//     onSettled: () => {
-//       queryClient.invalidateQueries({ queryKey: ["customer-services"] });
-//     },
-//   });
-// };
