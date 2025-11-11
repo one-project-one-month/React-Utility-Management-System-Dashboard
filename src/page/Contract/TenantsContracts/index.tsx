@@ -7,15 +7,18 @@ import type { CreateTenantContractSchema } from "@/types/schema/contractSchema"
 import { defaultValues, tenantsContractValidationSchema } from "./utils/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Divider } from "@heroui/react"
+import { useCreateTenantContract } from "@/hooks/useContract"
 
 const TenantContractPage = () => {
+    const {mutateAsync, isPending } = useCreateTenantContract()
     const form = useForm<CreateTenantContractSchema>({
         resolver: zodResolver(tenantsContractValidationSchema),
         defaultValues: defaultValues
     })
 
-    const onSubmit = (values: CreateTenantContractSchema) => {
-        console.log('form submitted', values)
+    const onSubmit = async(values: CreateTenantContractSchema) => {
+       mutateAsync(values)
+       form.reset()
     }
 
     return (
@@ -34,7 +37,7 @@ const TenantContractPage = () => {
                     <FormRoomContract />
                     <div className="flex justify-end gap-2 mt-6">
                         <Button color="default">Cancel</Button>
-                        <FormButton type="submit">
+                        <FormButton type="submit" isLoading={isPending} >
                             Create Contract
                         </FormButton>
                     </div>

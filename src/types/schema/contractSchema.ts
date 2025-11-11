@@ -1,7 +1,7 @@
 export type CreateTenantContractSchema = {
-  roomNo: string,
-  contractId: string,
-  tenantId: number,
+  roomId: string,
+  contractTypeId: string,
+  tenantId: string,
   createdDate: Date,
   expiryDate: Date,
 };

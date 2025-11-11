@@ -1,9 +1,14 @@
-import type { Contracts } from "@/types/contract";
+import type { Contracts, NewContract } from "@/types/contract";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createContractType, fetchContractTypes } from "@/services/contractService";
+import {
+  createContractType,
+  createNewContract,
+  fetchContractTypes,
+  fetchTenantNoContract,
+} from "@/services/contractService";
 import { addToast } from "@heroui/react";
 import { AxiosError } from "axios";
-import { fetchRooms } from "@/services/roomService";
+import { fetchRoom } from "@/services/roomService";
 
 export const useCreateContractType = () => {
   const queryClient = useQueryClient();
@@ -61,45 +66,74 @@ export const useCreateContractType = () => {
   });
 };
 
-export const useFetchContractTypes = () => {
-    return useQuery({
-        queryKey: ['contract-types'],
-        queryFn: () => fetchContractTypes()
-    })
-}
+export const useCreateTenantContract = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newContract: Partial<NewContract>) =>
+      createNewContract(newContract),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: [""] }); // replace actaul query key here
+      addToast({
+        title: data.message,
+        color: "success",
+        timeout: 3000,
+        shouldShowTimeoutProgress: true,
+        radius: "sm",
+      });
+    },
+    onError: (error) => {
+      addToast({
+        title: error.message,
+        color: "danger",
+        timeout: 3000,
+        shouldShowTimeoutProgress: true,
+        radius: "sm",
+      });
+    },
+  });
+};
 
-export const useFetchRoomOptions = () => {
+export const useFetchContractTypes = () => {
   return useQuery({
-    queryKey: ['tenant-contract'],
-    queryFn: () => fetchRooms({
-      page: 1,
-      limit: 10,
-      filter: {
-        status: "Available"
-      }
-    }),
-    select: (rooms) => {
-      return rooms.data.map((room) => ({
-        key: room.id,
-        label: room.roomNo
-      })) 
-    }
-  })
-}
+    queryKey: ["contract-types"],
+    queryFn: () => fetchContractTypes(),
+  });
+};
+
+export const useFetchRoomWithId = (roomId: string) => {
+  return useQuery({
+    queryKey: ["tenant-roomNo", roomId],
+    queryFn: () => fetchRoom(roomId),
+    select: (room) => room.roomNo,
+    enabled: !!roomId,
+  });
+};
 
 export const useFetchContractTypeOptions = () => {
   return useQuery({
-    queryKey: ['tenant-contract-type'],
+    queryKey: ["tenant-contract-type"],
     queryFn: () => fetchContractTypes(),
     select: (contractTypes) => {
       return contractTypes.data.map((contractType) => ({
         key: contractType.id,
         label: contractType.name,
         duration: contractType.duration,
-        fee: contractType.price
-      }))
-    }
-  })
-}
+        fee: contractType.price,
+      }));
+    },
+  });
+};
 
-
+export const useFetchTenantsNoContract = () => {
+  return useQuery({
+    queryKey: ["tenants-no-contract"],
+    queryFn: () => fetchTenantNoContract(),
+    select: (tenants) => {
+      return tenants.data.map((tenant) => ({
+        key: tenant.id,
+        label: tenant.name,
+        roomId: tenant.roomId,
+      }));
+    },
+  });
+};

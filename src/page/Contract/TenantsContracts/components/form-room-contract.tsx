@@ -2,15 +2,17 @@ import { Controller, useFormContext } from "react-hook-form";
 import { parseDate } from '@internationalized/date';
 import { format } from 'date-fns'
 import type { CreateTenantContractSchema } from "@/types/schema/contractSchema";
-import { Autocomplete, AutocompleteItem, DatePicker, Input, Select, SelectItem } from "@heroui/react";
-import { useFetchContractTypeOptions, useFetchRoomOptions } from "@/hooks/useContract";
+import { DatePicker, Input, Select, SelectItem } from "@heroui/react";
+import { useFetchContractTypeOptions, useFetchRoomWithId } from "@/hooks/useContract";
 import { useEffect, useState } from "react";
 
 const FormRoomContract = () => {
     const [contractDuration, setContractDuration] = useState<number>(0)
     const [rentFee, setRentFee] = useState<number>(0)
-    const { control, setValue } = useFormContext<CreateTenantContractSchema>()
-    const { data: rooms = [], isLoading: loadingRooms } = useFetchRoomOptions()
+    const { control, setValue, watch } = useFormContext<CreateTenantContractSchema>()
+
+    const roomId = watch('roomId');
+    const { data: roomNo, isLoading } = useFetchRoomWithId(roomId)
     const { data: contractTypes = [], isLoading: loadingContractTypes } = useFetchContractTypeOptions()
 
     useEffect(() => {
@@ -30,35 +32,16 @@ const FormRoomContract = () => {
                 Room & Contract
             </h2>
             <section className="grid grid-cols-2 gap-5">
-                <Controller
-                    control={control}
-                    name="roomNo"
-                    render={({ field, fieldState }) => (
-                        <Autocomplete
-                            isLoading={loadingRooms}
-                            isRequired
-                            defaultItems={rooms}
-                            label="Select Room No"
-                            labelPlacement="outside"
-                            onSelectionChange={(key) => field.onChange(key)}
-                            errorMessage={fieldState.error?.message}
-                        >
-                            {(room) =>
-                                <AutocompleteItem
-                                    key={room.key}
-                                    textValue={String(room.label)}
-                                >
-                                    Room {room.label}
-                                </AutocompleteItem>
-                            }
-
-                        </Autocomplete>
-                    )}
+                <Input
+                    isDisabled
+                    label="Room No"
+                    labelPlacement="outside"
+                    size="sm"
+                    value={isLoading ? "Loading..." : String(roomNo)}
                 />
-
                 <Controller
                     control={control}
-                    name="contractId"
+                    name="contractTypeId"
                     render={({ field, fieldState }) => (
                         <Select
                             isLoading={loadingContractTypes}

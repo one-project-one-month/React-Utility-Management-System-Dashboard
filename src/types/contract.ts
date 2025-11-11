@@ -14,3 +14,13 @@ export type TenantContracts = {
 	endDate: string;
 	occupants: number;
 };
+
+export type NewContract = {
+  id: string;
+  roomId: string;
+  contractTypeId: string;
+  tenantId: string;
+  createdDate: Date;
+  expiryDate: Date;
+  updatedDate: Date;
+};
