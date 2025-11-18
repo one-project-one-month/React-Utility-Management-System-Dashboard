@@ -8,8 +8,10 @@ import { defaultValues, tenantsContractValidationSchema } from "./utils/validati
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Divider } from "@heroui/react"
 import { useCreateTenantContract } from "@/hooks/useContract"
+import { useNavigate } from "react-router"
 
 const TenantContractPage = () => {
+    const navigate = useNavigate()
     const {mutateAsync, isPending } = useCreateTenantContract()
     const form = useForm<CreateTenantContractSchema>({
         resolver: zodResolver(tenantsContractValidationSchema),
@@ -36,7 +38,7 @@ const TenantContractPage = () => {
                     <Divider />
                     <FormRoomContract />
                     <div className="flex justify-end gap-2 mt-6">
-                        <Button color="default">Cancel</Button>
+                        <Button color="default" onPress={() => navigate(-1)}>Cancel</Button>
                         <FormButton type="submit" isLoading={isPending} >
                             Create Contract
                         </FormButton>

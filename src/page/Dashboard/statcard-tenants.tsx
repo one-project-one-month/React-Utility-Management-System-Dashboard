@@ -23,7 +23,6 @@ function StatCardTenants({
      const isPositive: boolean =
           activeTenants > 0 && activeTenants <= totalRoom;
      return (
-          //  transition delay-100 duration-250 ease-in-out hover:scale-110
           <Card className="p-1 w-full">
                {/* HEADER */}
                <CardHeader>
