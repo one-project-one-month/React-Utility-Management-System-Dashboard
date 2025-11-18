@@ -2,12 +2,14 @@ import { Input, Select, SelectItem } from "@heroui/react"
 import { Controller, useFormContext } from "react-hook-form"
 import type { CreateTenantContractSchema } from "@/types/schema/contractSchema"
 import { useFetchTenantsNoContract } from "@/hooks/useContract"
+import { setTenantId, setTenantName } from "@/store/features/contract/contractSlice"
+import { useDispatch } from "react-redux"
 
 
 const FormPersonalInfo = () => {
     const { data: tenantsWithoutContract = [], isLoading } = useFetchTenantsNoContract()
     const { control, watch, setValue } = useFormContext<CreateTenantContractSchema>()
-
+    const dispatch = useDispatch()
     return (
         <>
             <h2 className="font-semibold">
@@ -41,7 +43,11 @@ const FormPersonalInfo = () => {
                             {tenantsWithoutContract.map((option) => (
                                 <SelectItem
                                     key={option.key}
-                                    onClick={() => setValue('roomId', option.roomId)}
+                                    onClick={() => {
+                                        setValue('roomId', option.roomId)
+                                        dispatch(setTenantName(option.label))
+                                        dispatch(setTenantId(option.key))
+                                    }}
                                 >
                                     {option.label}
                                 </SelectItem>

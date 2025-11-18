@@ -5,11 +5,14 @@ import type { CreateTenantContractSchema } from "@/types/schema/contractSchema";
 import { DatePicker, Input, Select, SelectItem } from "@heroui/react";
 import { useFetchContractTypeOptions, useFetchRoomWithId } from "@/hooks/useContract";
 import { useEffect, useState } from "react";
+import { setContractType, setEndDate, setRentalFee, setRoomNo, setStartDate } from "@/store/features/contract/contractSlice";
+import { useDispatch } from "react-redux";
 
 const FormRoomContract = () => {
     const [contractDuration, setContractDuration] = useState<number>(0)
     const [rentFee, setRentFee] = useState<number>(0)
     const { control, setValue, watch } = useFormContext<CreateTenantContractSchema>()
+    const dispatch = useDispatch()
 
     const roomId = watch('roomId');
     const { data: roomNo, isLoading } = useFetchRoomWithId(roomId)
@@ -24,7 +27,18 @@ const FormRoomContract = () => {
         END_DATE.setMonth(END_DATE.getMonth() + contractDuration);
 
         setValue("expiryDate", END_DATE);
-    }, [contractDuration, setValue]);
+
+        dispatch(setStartDate(TODAY.toISOString()));
+        dispatch(setEndDate(END_DATE.toISOString()));
+    }, [contractDuration, dispatch, setValue]);
+
+
+
+    useEffect(() => {
+        if (roomNo) {
+            dispatch(setRoomNo(roomNo))
+        }
+    }, [dispatch, roomNo])
 
     return (
         <>
@@ -62,6 +76,8 @@ const FormRoomContract = () => {
                                     onClick={() => {
                                         setContractDuration(option.duration)
                                         setRentFee(Number(option.fee))
+                                        dispatch(setContractType(option.label))
+                                        dispatch(setRentalFee(option.fee))
                                     }}
                                 >
                                     {option.label}
