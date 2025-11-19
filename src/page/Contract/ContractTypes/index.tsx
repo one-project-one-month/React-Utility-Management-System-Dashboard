@@ -27,7 +27,7 @@ export default function ContractTypePage() {
     }
 
     return (
-        <section  >
+        <section className="flex flex-col h-full">
             <NavigationBreadCrumbs
                 items={[
                     { label: "Contract", href: null },
@@ -48,13 +48,13 @@ export default function ContractTypePage() {
                     </form>
                 </div>
             </FormProvider>
+
             <Divider className="my-3" />
 
             <h1 className="sm:text-2xl mt-2">Contract Types</h1>
-
             <br />
 
-            <div className="h-96 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto pb-14">
                 <ContractTable />
             </div>
 
