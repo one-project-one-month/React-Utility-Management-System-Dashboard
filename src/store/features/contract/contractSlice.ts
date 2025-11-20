@@ -1,6 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Pagination } from "@/types/pagination.ts";
 
 interface InitialState {
+   pagination: Pagination;
    tenantName: string | undefined;
    tenantId: string | undefined;
    roomNo: number | undefined;
@@ -11,6 +13,10 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
+   pagination: {
+      page: 1,
+      limit: 10,
+   },
    tenantName: undefined,
    tenantId: undefined,
    roomNo: undefined,
@@ -24,6 +30,9 @@ const contractSlice = createSlice({
    name: "contract",
    initialState,
    reducers: {
+      setCurrentPage: (state, action: PayloadAction<number>) => {
+         state.pagination.page = action.payload;
+      },
       setTenantName: (state, action: PayloadAction<string>) => {
          state.tenantName = action.payload;
       },
@@ -47,16 +56,35 @@ const contractSlice = createSlice({
       },
    },
    selectors: {
-    selectTenantName: (contract) => contract.tenantName,
-    selectTenantId: (contract) => contract.tenantId,
-    selectRoomNo: (contract) => contract.roomNo,
-    selectContractType: (contract) => contract.contractType,
-    selectStartDate: (contract) => contract.startDate,
-    selectEndDate: (contract) => contract.endDate,
-    selectRentalFee: (contract) => contract.rentalFee
-   }
+      selectPagination: contract => contract.pagination,
+      selectTenantName: contract => contract.tenantName,
+      selectTenantId: contract => contract.tenantId,
+      selectRoomNo: contract => contract.roomNo,
+      selectContractType: contract => contract.contractType,
+      selectStartDate: contract => contract.startDate,
+      selectEndDate: contract => contract.endDate,
+      selectRentalFee: contract => contract.rentalFee,
+   },
 });
 
-export const { setTenantName, setTenantId, setRoomNo, setContractType, setStartDate, setEndDate, setRentalFee}  = contractSlice.actions
-export const { selectTenantName, selectTenantId, selectRoomNo, selectContractType, selectStartDate, selectEndDate, selectRentalFee} = contractSlice.selectors
+export const {
+   setCurrentPage,
+   setTenantName,
+   setTenantId,
+   setRoomNo,
+   setContractType,
+   setStartDate,
+   setEndDate,
+   setRentalFee,
+} = contractSlice.actions;
+export const {
+   selectPagination,
+   selectTenantName,
+   selectTenantId,
+   selectRoomNo,
+   selectContractType,
+   selectStartDate,
+   selectEndDate,
+   selectRentalFee,
+} = contractSlice.selectors;
 export default contractSlice.reducer;
