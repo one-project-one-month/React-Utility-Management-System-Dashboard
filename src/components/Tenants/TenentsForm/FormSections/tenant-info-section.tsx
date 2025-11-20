@@ -82,6 +82,7 @@ export default function TenantInfoSection({
         />
         <div className="flex flex-col gap-1">
           <AutoCompleteSelectField
+            isDisabled={!!currentRoom}
             label="Select Room"
             control={control}
             fieldName="roomId"

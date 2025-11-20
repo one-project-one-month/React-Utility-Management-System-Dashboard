@@ -4,7 +4,7 @@ import type { BillingStatus } from "@/types/billing/billingTableData";
 
 interface InitialState {
   search: string;
-  pagination: Pagination
+  pagination: Pagination;
 }
 
 const initialState: InitialState = {
@@ -14,8 +14,8 @@ const initialState: InitialState = {
     limit: 10,
     filter: {
       status: undefined,
-    }
-  }
+    },
+  },
 };
 
 const billingsSlice = createSlice({
@@ -28,6 +28,7 @@ const billingsSlice = createSlice({
 
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
+      state.pagination.page = 1;
     },
 
     setFilters: (state, action: PayloadAction<BillingStatus>) => {
@@ -45,5 +46,5 @@ const billingsSlice = createSlice({
 });
 
 export const { setCurrentPage, setSearch, setFilters } = billingsSlice.actions;
-export const { selectSearch, selectPagination } =billingsSlice.selectors;
+export const { selectSearch, selectPagination } = billingsSlice.selectors;
 export default billingsSlice.reducer;

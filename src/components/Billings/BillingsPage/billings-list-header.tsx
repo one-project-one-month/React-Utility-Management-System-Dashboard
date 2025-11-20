@@ -9,13 +9,9 @@ import { useEffect, useState } from "react";
 import { useAutoGenerateBill } from "@/hooks/billings/useBillings.ts";
 
 import {
-  setFilters as setBillingFilters,
-  setSearch as setBillingSearch,
+  setFilters,
+  setSearch,
 } from "@/store/features/billings/billingsSlice.ts";
-import {
-  setFilters as setInvoiceFilters,
-  setSearch as setInvoiceSearch,
-} from "@/store/features/invoices/invoicesSlice.ts";
 
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
 
@@ -30,11 +26,7 @@ const statusOptions: StatusOption[] = [
   { key: "Overdue", label: "Overdue" },
 ];
 
-interface Props {
-  itemName: "Bill" | "Invoice";
-}
-
-export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
+export default function BillingsListHeader() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedStatus, setSelectedStatus] =
     useState<BillingStatus>("Pending");
@@ -53,20 +45,12 @@ export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
     event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent,
   ) => {
     if (event.key === "Enter") {
-      if (itemName === "Bill") {
-        dispatch(setBillingSearch(searchValue));
-      } else if (itemName === "Invoice") {
-        dispatch(setInvoiceSearch(searchValue));
-      }
+      dispatch(setSearch(searchValue));
     }
   };
 
   useEffect(() => {
-    if (itemName === "Bill") {
-      dispatch(setBillingFilters(selectedStatus));
-    } else if (itemName === "Invoice") {
-      dispatch(setInvoiceFilters(selectedStatus));
-    }
+    dispatch(setFilters(selectedStatus));
   }, [selectedStatus]);
 
   return (
@@ -112,24 +96,22 @@ export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
           ))}
         </Select>
       </div>
-      {itemName === "Bill" && (
-        <Button
-          color={"primary"}
-          isLoading={isLoading}
-          onPress={handleClickCreateNew}
-          className={
-            "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
-          }
-        >
-          {isLoading ? (
-            `Creating New Billings`
-          ) : (
-            <>
-              <Plus /> Create New Billings
-            </>
-          )}
-        </Button>
-      )}
+      <Button
+        color={"primary"}
+        isLoading={isLoading}
+        onPress={handleClickCreateNew}
+        className={
+          "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
+        }
+      >
+        {isLoading ? (
+          `Creating New Billings`
+        ) : (
+          <>
+            <Plus /> Create New Billings
+          </>
+        )}
+      </Button>
     </div>
   );
 }

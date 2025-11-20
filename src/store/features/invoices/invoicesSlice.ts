@@ -28,6 +28,7 @@ const invoicesSlice = createSlice({
 
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
+      state.pagination.page = 1;
     },
 
     setFilters: (state, action: PayloadAction<BillingStatus>) => {

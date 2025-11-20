@@ -11,7 +11,7 @@ import {
 import { setCurrentPage } from "@/store/features/invoices/invoicesSlice.ts";
 import { useFetchBillings } from "@/hooks/billings/useBillings.ts";
 import DataTable from "@/components/data-table.tsx";
-import BillingsOrInvoicesListHeader from "@/components/Billings/BillingsPage/billings-or-invoices-list-header.tsx";
+import InvoicesListHeader from "@/components/Invoices/invoices-list-header.tsx";
 
 export default function InvoicesPage() {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export default function InvoicesPage() {
             { label: "Invoices ", href: "/invoices" },
           ]}
         />
-        <BillingsOrInvoicesListHeader itemName={"Invoice"} />
+        <InvoicesListHeader />
 
         <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl   custom-scrollbar">
           <DataTable
