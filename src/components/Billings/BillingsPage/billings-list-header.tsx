@@ -28,8 +28,7 @@ const statusOptions: StatusOption[] = [
 
 export default function BillingsListHeader() {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] =
-    useState<BillingStatus>("Pending");
+  const [selectedStatus, setSelectedStatus] = useState<BillingStatus>("Pending");
 
   const dispatch = useDispatch();
 

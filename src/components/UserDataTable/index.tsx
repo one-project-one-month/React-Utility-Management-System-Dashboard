@@ -1,7 +1,7 @@
 import type {ColumnDef} from "@tanstack/react-table";
 import {roleColors, roleLabels} from "@/constants/userMockData.ts";
 import {Button, Chip, Tooltip} from "@heroui/react";
-import {Eye, Pencil, Trash2} from "lucide-react";
+import {Pencil, Trash2} from "lucide-react";
 import { useNavigate } from "react-router";
 import TablePresentation from "../data-table";
 import type {User} from "@/types/user.ts";
@@ -83,17 +83,7 @@ export function UserDataTable({
                 }
 
                 return (
-                    <div className="relative flex items-center gap-2">
-                        <Tooltip content="Details">
-                            <Button
-                                onPress={() => navigate(`/user-management/users/${user.id}`)}
-                                isIconOnly
-                                variant="light"
-                                color="default"
-                            >
-                                <Eye size={18} className={"text-default-500"} />
-                            </Button>
-                        </Tooltip>
+                    <div className="relative flex justify-center items-center gap-2">
                         <Tooltip content="Edit user">
                             <Button
                                 onPress={() => navigate(`/user-management/users/${user.id}/edit`)}

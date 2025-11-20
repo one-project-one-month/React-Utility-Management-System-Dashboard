@@ -1,17 +1,15 @@
 import { Input, Select, SelectItem } from "@heroui/react"
 import { Controller, useFormContext } from "react-hook-form"
 import type { CreateTenantContractSchema } from "@/types/schema/contractSchema"
-import { useState } from "react"
+import { useFetchTenantsNoContract } from "@/hooks/useContract"
+import { setTenantId, setTenantName } from "@/store/features/contract/contractSlice"
+import { useDispatch } from "react-redux"
 
-const TENANTS_OPTIONS = [
-    { label: "Wunna", key: 123 },
-    { label: "Aung", key: 124 },
-    { label: "Tiji Jojo", key: 125 },
-]
 
 const FormPersonalInfo = () => {
-    const [tenantId, setTenantId] = useState<string>("")
-    const { control } = useFormContext<CreateTenantContractSchema>()
+    const { data: tenantsWithoutContract = [], isLoading } = useFetchTenantsNoContract()
+    const { control, watch, setValue } = useFormContext<CreateTenantContractSchema>()
+    const dispatch = useDispatch()
     return (
         <>
             <h2 className="font-semibold">
@@ -23,28 +21,36 @@ const FormPersonalInfo = () => {
                     label="Tenants ID"
                     labelPlacement="outside"
                     size='sm'
-                    value={tenantId}
+                    value={watch('tenantId') || ''}
                 />
                 <Controller
                     control={control}
                     name="tenantId"
                     render={({ field, fieldState }) => (
                         <Select
+                            isLoading={isLoading}
                             label="Tenants Name"
                             labelPlacement={"outside"}
                             placeholder="Select Tenant Name"
-                            selectedKeys={field.value ? [String(field.value)] : []}
                             variant="bordered"
                             onSelectionChange={(keys) => {
                                 const key = Array.from(keys)[0];
-                                field.onChange(Number(key));
-                                setTenantId(String(key))
+                                field.onChange(key);
                             }}
                             isInvalid={fieldState.invalid}
                             errorMessage={fieldState.error?.message}
                         >
-                            {TENANTS_OPTIONS.map((option) => (
-                                <SelectItem key={option.key}>{option.label}</SelectItem>
+                            {tenantsWithoutContract.map((option) => (
+                                <SelectItem
+                                    key={option.key}
+                                    onClick={() => {
+                                        setValue('roomId', option.roomId)
+                                        dispatch(setTenantName(option.label))
+                                        dispatch(setTenantId(option.key))
+                                    }}
+                                >
+                                    {option.label}
+                                </SelectItem>
                             ))}
                         </Select>
                     )}

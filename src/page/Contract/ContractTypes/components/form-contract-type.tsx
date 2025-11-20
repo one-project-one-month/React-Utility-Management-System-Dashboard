@@ -9,10 +9,10 @@ export default function FormContractType() {
     const { control } = useFormContext<Contracts>();
 
     const durationOptions = [
-        { key: "3-months", label: '3 Months' },
-        { key: "6-months", label: '6 Months' },
-        { key: "1 year", label: '1 Years' },
-        { key: "2 years", label: '2 Years' },
+        { key: "3", label: '3 Months' },
+        { key: "6", label: '6 Months' },
+        { key: "12", label: '1 Years' },
+        { key: "24", label: '2 Years' },
     ];
 
     const facilitiesOptions = [
@@ -69,7 +69,8 @@ export default function FormContractType() {
                         variant="bordered"
                         onSelectionChange={(keys) => {
                             const key = Array.from(keys)[0];
-                            field.onChange(key);
+                            const numValue = key ? Number(key) : null;
+                            field.onChange(numValue);
                         }}
                         defaultSelectedKeys={[3]}
                         isInvalid={fieldState.invalid}

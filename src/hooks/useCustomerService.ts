@@ -3,22 +3,25 @@ import {
   updateCustomerService,
   deleteCustomerService,
 } from "@/services/customerServiceApi";
-import type { CustomerService } from "@/types/customer-service";
+import type { CustomerService, ServiceFilter, UpdateServiceRequest } from "@/types/customer-service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Pagination } from "@/types/pagination";
 import type { ApiResponse } from "@/services/apiResponse";
 import { addToast } from "@heroui/react";
 
-interface UpdateServiceArgs {
+interface UpdateServiceArgs extends UpdateServiceRequest {
+  onEditClose?: () => void;
+}
+
+interface DeleteServiceArgs {
   id: string;
-  updates: Partial<CustomerService>;
-  onClose?: () => void;
+  onDeleteClose?: () => void;
 }
 
 export const useCustomerService = (
   page: number,
   limit: number,
-  filters?: any,
+  filters?: ServiceFilter,
 ) => {
   const pagination: Pagination = { page, limit, filter: filters };
   return useQuery({
@@ -27,26 +30,28 @@ export const useCustomerService = (
       const res = await fetchCustomerServices(pagination, filters);
       return res as ApiResponse<CustomerService[]>;
     },
+    placeholderData: (previousData) => previousData,
   });
 };
 
 export const useUpdateCustomerService = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ id, updates }: UpdateServiceArgs) =>
-      updateCustomerService(id, updates),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["customer-services"] });
+      updateCustomerService({id, updates}),
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ["customer-services"] });
       addToast({
         title: "Update Successful",
         description: "Service status has been updated successfully.",
         color: "success",
         timeout: 3000,
       });
-      variables?.onClose?.();
+      variables?.onEditClose?.();
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
+      console.log({ error });
       addToast({
         title: "Update failed",
         description: error?.response?.data?.message ?? "Please try again.",
@@ -61,9 +66,32 @@ export const useDeleteCustomerService = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteCustomerService(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customer-services"] });
+    mutationFn: async ({ id }: DeleteServiceArgs) => {
+      return await deleteCustomerService(id);
+    },
+    onSuccess: async (_, variables) => {
+      // ✅ Always refresh data after deletion
+      await queryClient.invalidateQueries({ queryKey: ["customer-services"] });
+
+      // ✅ Show success toast
+      addToast({
+        title: "Service Deleted",
+        description: "Deleted successfully!",
+        color: "success",
+        timeout: 3000,
+      });
+
+      // ✅ Optionally close local modal if provided
+      variables?.onDeleteClose?.();
+    },
+    onError: (error: unknown) => {
+      console.error("Delete failed:", error);
+      addToast({
+        title: "Delete Failed",
+        description: "Something went wrong while deleting the service.",
+        color: "danger",
+        timeout: 3000,
+      });
     },
   });
 };

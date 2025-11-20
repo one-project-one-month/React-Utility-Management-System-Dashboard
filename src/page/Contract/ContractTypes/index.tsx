@@ -6,28 +6,28 @@ import FormButton from "@/components/Form/form-button"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contractTypeValidationSchema } from "./utils/validation";
 import ContractTable from "./components/contract-table";
-
-
-type Contracts = {
-    name: string;
-    duration: string;
-    price: number;
-    facilities?: string[];
-};
+import type { Contracts } from "@/types/contract";
+import { useCreateContractType } from "@/hooks/useContract";
 
 export default function ContractTypePage() {
-    const form = useForm<Contracts>({
+    const { mutateAsync, isPending } = useCreateContractType()
+    const form = useForm({
         resolver: zodResolver(contractTypeValidationSchema),
-        defaultValues: { name: "", duration: "", price: 0 }
+        defaultValues: {
+            name: "",
+            duration: 0,
+            price: 0,
+            facilities: []
+        }
     });
 
-    const onSubmit = (data: Contracts) => {
-        console.log("Success", data);
+    const onSubmit = async (data: Partial<Contracts>) => {
+        await mutateAsync(data);
+        form.reset()
     }
 
-
     return (
-        <section  >
+        <section className="flex flex-col h-full">
             <NavigationBreadCrumbs
                 items={[
                     { label: "Contract", href: null },
@@ -40,23 +40,24 @@ export default function ContractTypePage() {
 
             <FormProvider {...form}>
                 <div className="">
-
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormContractType />
-
-                        <FormButton type="submit">Create</FormButton>
+                        <FormButton type="submit" isLoading={isPending} >
+                            {isPending ? "Creating" : "Create"}
+                        </FormButton>
                     </form>
-
                 </div>
             </FormProvider>
 
             <Divider className="my-3" />
 
             <h1 className="sm:text-2xl mt-2">Contract Types</h1>
-
             <br />
 
-            <ContractTable />
+            <div className="flex-1 overflow-y-auto pb-14">
+                <ContractTable />
+            </div>
+
         </section >
     )
 }

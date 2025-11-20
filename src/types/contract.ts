@@ -1,7 +1,7 @@
 export type Contracts = {
 	id: number;
 	name: string;
-	duration: string;
+	duration: number;
 	price: number;
 	facilities?: string[];
 };
@@ -13,4 +13,14 @@ export type TenantContracts = {
 	startDate: string;
 	endDate: string;
 	occupants: number;
+};
+
+export type NewContract = {
+  id: string;
+  roomId: string;
+  contractTypeId: string;
+  tenantId: string;
+  createdDate: Date;
+  expiryDate: Date;
+  updatedDate: Date;
 };

@@ -8,11 +8,11 @@ import {RoomListCard} from "@/components/Room/room-list-card.tsx";
 import {FilterAutocomplete} from "@/components/common/filter-autocomplete.tsx";
 import {SearchInput} from "@/components/common/search-input.tsx";
 import { useFetchRooms } from "@/hooks/useRooms.ts";
-import {LoadingSpinner} from "@/components/Room/loading-spinner.tsx";
 import NavigationBreadCrumbs from "@/components/breadcrumb";
 import { breadcrumbs } from "@/constants/breadcrumbs";
 import { useState } from "react";
 import type { Pagination as PaginationType } from "@/types/pagination";
+import {SkeletonLoader} from "@/components/skeleton-loader.tsx";
 
 const filterOptions = {
     noOfBedRoom: ["1", "2", "3", "4", "5"],
@@ -47,9 +47,6 @@ export default function RoomPage() {
     const meta = roomsData?.meta;
     const totalPages = meta?.lastPage || 1;
 
-    console.log("rooms:", rooms);
-    console.log("meta:", meta);
-
     const handleViewRoom = (roomId: string) => {
         navigate(`/rooms/${roomId}`);
     }
@@ -72,10 +69,6 @@ export default function RoomPage() {
         setPagination(prev => ({ ...prev, page }));
         scrollTo({ top: 0, behavior: 'smooth' });
     };
-
-    if (isLoading) {
-        return <LoadingSpinner />;
-    }
 
     return (
         <div className="h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6">
@@ -133,21 +126,29 @@ export default function RoomPage() {
                 </div>
             </div>
 
-            <div className="space-y-4">
-                {rooms.map((room: Room) => (
-                    <RoomListCard
-                        key={room.id}
-                        room={room}
-                        onCardClick={handleViewRoom}
-                        onEdit={handleEditRoom}
-                    />
-                ))}
-                {rooms.length === 0 && (
-                    <div className="text-center p-6 text-gray-500">
-                        No rooms found matching the current filters.
-                    </div>
-                )}
-            </div>
+            {isLoading ? (
+                <div className="space-y-4">
+                    {[...Array(pagination.limit)].map((_, i) => (
+                        <SkeletonLoader key={i} height="8rem" rounded={"rounded-2xl"} />
+                    ))}
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {rooms.map((room: Room) => (
+                        <RoomListCard
+                            key={room.id}
+                            room={room}
+                            onCardClick={handleViewRoom}
+                            onEdit={handleEditRoom}
+                        />
+                    ))}
+                    {rooms.length === 0 && (
+                        <div className="text-center p-6 text-gray-500">
+                            No rooms found matching the current filters.
+                        </div>
+                    )}
+                </div>
+            )}
 
             {totalPages > 1 && (
                 <Pagination

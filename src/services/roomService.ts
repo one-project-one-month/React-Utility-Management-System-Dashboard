@@ -32,3 +32,4 @@ export const editRoom = async (id: string, formData: EditRoomFormData) => {
 
     return res.data;
 }
+

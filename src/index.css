@@ -8,13 +8,13 @@
 @config "../tailwind.config.js";
 
 :root {
-    --color-chart-primary: #3B82F6;
-    --color-chart-bg: #EEEEEE;
+     --color-chart-primary: #5586c0ff;
+     --color-chart-bg: #cae2fcff;
 }
 
 .dark {
-    --color-chart-primary: #60A5FA;
-    --color-chart-bg: #374151;
+     --color-chart-primary: #93b1d5ff;
+     --color-chart-bg: #132742ff;
 }
 
 @layer utilities {
@@ -124,4 +124,10 @@
 
 @theme {
      --font-roboto: "Roboto", sans-serif;
+}
+
+/* existing global styles ... */
+
+.recharts-wrapper svg {
+     outline: none;
 }

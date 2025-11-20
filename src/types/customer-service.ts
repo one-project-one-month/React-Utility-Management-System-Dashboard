@@ -13,3 +13,17 @@ export interface CustomerService {
 export type Category = "Complain" | "Maintenance" | "Other";
 export type Status = "Pending" | "Ongoing" | "Resolved";
 export type Priority = "Low" | "Medium" | "High";
+
+export type ServiceFilter = Partial<{
+  category: Category | "";
+  status: Status | "";
+  priorityLevel: Priority | "";
+  search: string;
+}>;
+
+export interface UpdateServiceRequest {
+  id: string;
+  updates: {
+    status: Status;
+  };
+}
