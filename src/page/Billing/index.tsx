@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
-import BillingsOrInvoicesListHeader from "@/components/Billings/BillingsPage/billings-or-invoices-list-header.tsx";
+import BillingsListHeader from "@/components/Billings/BillingsPage/billings-list-header.tsx";
 import {
   getBillingTableColumns,
   billingTableColumnWidths,
@@ -39,7 +39,7 @@ export default function BillingPage() {
           ]}
         />
 
-        <BillingsOrInvoicesListHeader itemName={"Bill"} />
+        <BillingsListHeader />
 
         <div className="pr-2 overflow-y-auto rounded-xl custom-scrollbar">
           <DataTable

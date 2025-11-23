@@ -13,6 +13,7 @@ interface Props {
   placeholder: string;
   items: Room[];
   isLoadingItems: boolean;
+  isDisabled: boolean;
 }
 export default function AutoCompleteSelectField({
   label,
@@ -23,6 +24,7 @@ export default function AutoCompleteSelectField({
   placeholder,
   items,
   isLoadingItems,
+  isDisabled,
 }: Props) {
   return (
     <div>
@@ -39,6 +41,7 @@ export default function AutoCompleteSelectField({
             onSelectionChange={(key) => field.onChange(key || "")}
             errorMessage={errorMessage}
             isInvalid={isInvalid}
+            isDisabled={isDisabled}
             placeholder={placeholder}
             size="sm"
             variant="bordered"

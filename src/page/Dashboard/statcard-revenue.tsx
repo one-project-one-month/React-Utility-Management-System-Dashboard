@@ -16,21 +16,24 @@ import { useGetRevenueByMonthAndYear } from "@/hooks/dashboardData/useDashboardD
 import type { MonthParamForRevenue } from "@/services/dashboardServices";
 
 // Total Revenue
-type Months = { [key: string]: MonthParamForRevenue };
+
+type Months = {
+  [key: string]: MonthParamForRevenue;
+};
 
 const months: Months = {
-     Jan: "1",
-     Feb: "2",
-     Mar: "3",
-     Apr: "4",
-     May: "5",
-     Jun: "6",
-     Jul: "7",
-     Aug: "8",
-     Sep: "9",
-     Oct: "10",
-     Nov: "11",
-     Dec: "12",
+  Jan: "1",
+  Feb: "2",
+  Mar: "3",
+  Apr: "4",
+  May: "5",
+  Jun: "6",
+  Jul: "7",
+  Aug: "8",
+  Sep: "9",
+  Oct: "10",
+  Nov: "11",
+  Dec: "12",
 };
 function StatCardRevenue() {
      const now = new Date();

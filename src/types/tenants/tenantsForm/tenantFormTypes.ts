@@ -25,7 +25,6 @@ export type TenantFormFieldNames =
   | "occupants"
   | "email"
   | "roomId"
-  // | "contractId"
   | `occupants.${number}`
   | `occupants.${number}.name`
   | `occupants.${number}.nrc`
