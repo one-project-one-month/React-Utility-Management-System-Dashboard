@@ -63,6 +63,8 @@ const TablePresentation = <TData, TValue>({
     .flatMap((headerGroup) => headerGroup.headers).length;
 
   const skeletonRows = Array.from({ length: pageSize }, (_, i) => i);
+  const estimatedRowHeight = 56; // adjust to match your row height (px)
+  const bodyMinHeight = `${pageSize * estimatedRowHeight}px`;
 
   return (
     <Table
@@ -72,28 +74,25 @@ const TablePresentation = <TData, TValue>({
         base: "w-full",
         table: "w-full  table-fixed ",
       }}
+      style={{minHeight: bodyMinHeight}}
       bottomContent={
-        isManualPagination && (
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            className="flex w-full justify-end"
-            color="primary"
-            page={
-              isManualPagination
-                ? page
-                : table.getState().pagination?.pageIndex + 1
-            }
-            total={totalPages}
-            onChange={(newPage) => {
-              if (onPageChange) {
-                onPageChange(newPage);
-              }
-              // table.setPageIndex(newPage - 1)
-            }}
-          />
-        )
+        <div className="w-full flex justify-end" style={{ minHeight: 56 }}>
+          {isManualPagination && (
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              className="flex"
+              color="primary"
+              page={isManualPagination ? page : table.getState().pagination?.pageIndex + 1}
+              total={totalPages}
+              onChange={(newPage) => {
+                if (onPageChange) onPageChange(newPage);
+              }}
+              isDisabled={isLoading}
+            />
+          )}
+        </div>
       }
     >
       <TableHeader
@@ -110,16 +109,16 @@ const TablePresentation = <TData, TValue>({
                 (header.column.id === "actions" ||
                   header.column.id === "billingIdForAction" ||
                   header.column.id === "status") &&
-                  "text-center",
+                "text-center",
               )}
             >
               <div className="whitespace-normal break-words max-w-[200px]">
                 {header.isPlaceholder
                   ? null
                   : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
               </div>
             </TableColumn>
           );
@@ -132,38 +131,38 @@ const TablePresentation = <TData, TValue>({
       >
         {isLoading
           ? skeletonRows.map((rowIdx) => (
-              <TableRow key={`skeleton-${rowIdx}`}>
-                {Array.from({ length: numColumns }).map((_, colIdx) => (
-                  <TableCell key={`skeleton-cell-${rowIdx}-${colIdx}`}>
-                    <SkeletonLoader className="h-4 w-full rounded-lg" />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            <TableRow key={`skeleton-${rowIdx}`}>
+              {Array.from({ length: numColumns }).map((_, colIdx) => (
+                <TableCell key={`skeleton-cell-${rowIdx}-${colIdx}`}>
+                  <SkeletonLoader className="h-6 py-3 w-full rounded-lg" />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
           : (row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={clsx(
-                      (columnWidths && columnWidths[cell.column.id]) ||
-                        "w-auto",
-                      (cell.column.id === "actions" ||
-                        cell.column.id === "billingIdForAction" ||
-                        cell.column.id === "status") &&
-                        "text-center",
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell
+                  key={cell.id}
+                  className={clsx(
+                    (columnWidths && columnWidths[cell.column.id]) ||
+                    "w-auto",
+                    (cell.column.id === "actions" ||
+                      cell.column.id === "billingIdForAction" ||
+                      cell.column.id === "status") &&
+                    "text-center",
+                  )}
+                >
+                  <div className="whitespace-normal break-words max-w-[200px]">
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext(),
                     )}
-                  >
-                    <div className="whitespace-normal break-words max-w-[200px]">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </div>
-                  </TableCell>
-                ))}
-              </TableRow>
-            )}
+                  </div>
+                </TableCell>
+              ))}
+            </TableRow>
+          )}
       </TableBody>
     </Table>
   );

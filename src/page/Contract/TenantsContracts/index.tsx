@@ -6,17 +6,16 @@ import FormButton from "@/components/Form/form-button";
 import type { CreateTenantContractSchema } from "@/types/schema/contractSchema";
 import { defaultValues, tenantsContractValidationSchema } from "./utils/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Divider } from "@heroui/react";
+import { Divider } from "@heroui/react";
 import { useCreateTenantContract } from "@/hooks/useContract";
-import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { pdf } from "@react-pdf/renderer";
 import ContractPdf from "./components/contract-pdf";
 import { useSelector } from "react-redux";
 import { selectContractType, selectEndDate, selectRentalFee, selectRoomNo, selectStartDate, selectTenantId, selectTenantName } from "@/store/features/contract/contractSlice";
+import FormCancelButton from "@/components/Form/form-cancel-button";
 
 const TenantContractPage = () => {
-    const navigate = useNavigate();
     const { mutateAsync, isPending, isSuccess } = useCreateTenantContract();
     const tenantName = useSelector(selectTenantName)
     const tenantId = useSelector(selectTenantId)
@@ -74,7 +73,7 @@ const TenantContractPage = () => {
     };
 
     return (
-        <div>
+        <div className="h-screen pb-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-2">
             <NavigationBreadCrumbs
                 items={[
                     { label: "Contract", href: null },
@@ -91,10 +90,7 @@ const TenantContractPage = () => {
                     <FormRoomContract />
 
                     <div className="flex justify-end gap-2 mt-6">
-                        <Button color="default" onPress={() => navigate(-1)}>
-                            Cancel
-                        </Button>
-
+                        <FormCancelButton />
                         <FormButton type="submit" isLoading={isPending}>
                             Create Contract
                         </FormButton>

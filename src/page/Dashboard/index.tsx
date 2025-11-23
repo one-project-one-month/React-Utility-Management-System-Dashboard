@@ -35,13 +35,11 @@ export default function Dashboard() {
    const availableRoomsCount = allRoomsCountContent?.data.roomStatusCount;
 
    return (
-      <div className="h-screen overflow-y-auto pb-48 space-y-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-         {/* Title */}
-         <h1 className="text-5xl font-semibold text-gray-900 dark:text-gray-100">
+      <div className="h-screen overflow-y-auto pb-48 space-y-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+         <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
             Dashboard
          </h1>
 
-         {/* Stats */}
          <Suspense fallback={<p>Loading stats...</p>}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                <StatCardRevenue />
@@ -64,20 +62,24 @@ export default function Dashboard() {
 
          {/* Analytics */}
          <Suspense fallback={<p>Loading analytics...</p>}>
-            <div className="grid grid-cols-1 lg:grid-cols-6 gap-1.5">
-               <section className="col-span-4 row-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 p-6 bg-slate-50 dark:bg-slate-950">
+               <section className="col-span-1 lg:col-span-4 lg:row-span-2">
                   <BillRevenueAnalytics />
                </section>
-               <section className="col-span-2">
+
+               <section className="col-span-1 lg:col-span-2">
                   <TenantCountAnalytics />
                </section>
-               <section className="col-span-2">
+
+               <section className="col-span-1 lg:col-span-2">
                   <RoomAnalytics />
                </section>
-               <section className="col-span-4">
+
+               <section className="col-span-1 lg:col-span-4">
                   <CustomerServiceAnalytics />
                </section>
-               <section className="col-span-2">
+
+               <section className="col-span-1 lg:col-span-2">
                   <BillAnalyticsChart />
                </section>
             </div>

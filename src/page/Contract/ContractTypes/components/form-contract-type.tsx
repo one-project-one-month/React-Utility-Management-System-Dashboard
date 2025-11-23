@@ -23,14 +23,15 @@ export default function FormContractType() {
     ];
 
     return (
-        <section className="space-y-4 sm:columns-2">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <Controller
                 name="name"
                 control={control}
                 render={({ field, fieldState }) => (
                     <Input
                         {...field}
-                        label="Name"
+                        label="Contract Name"
+                        labelPlacement="outside"
                         placeholder="Enter Contract Name"
                         errorMessage={fieldState.error?.message}
                         isInvalid={!!fieldState.invalid}
@@ -45,6 +46,7 @@ export default function FormContractType() {
                 render={({ field, fieldState }) => (
                     <Input
                         label="Price"
+                        labelPlacement="outside"
                         placeholder="Enter Price"
                         errorMessage={fieldState.error?.message}
                         isInvalid={!!fieldState.invalid}
@@ -63,7 +65,7 @@ export default function FormContractType() {
                 render={({ field, fieldState }) => (
                     <Select
                         label="Select Contract Type"
-                        labelPlacement={"inside"}
+                        labelPlacement="outside"
                         placeholder="Contract Type"
                         selectedKeys={field.value ? [String(field.value)] : []}
                         variant="bordered"
@@ -89,9 +91,8 @@ export default function FormContractType() {
                 name="facilities"
                 render={({ field, fieldState }) => (
                     <Select
-                        // {...field}
                         label="Select Facilities"
-                        labelPlacement={"inside"}
+                        labelPlacement="outside"
                         placeholder="Choose Facilities"
                         // selectedKeys={field.value}
                         variant="bordered"

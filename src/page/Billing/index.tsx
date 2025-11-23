@@ -41,7 +41,7 @@ export default function BillingPage() {
 
         <BillingsListHeader />
 
-        <div className="h-[68vh] pr-2 overflow-y-auto rounded-xl  custom-scrollbar">
+        <div className="pr-2 overflow-y-auto rounded-xl custom-scrollbar">
           <DataTable
             isLoading={isLoading}
             data={billings}

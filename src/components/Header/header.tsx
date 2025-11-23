@@ -1,5 +1,4 @@
 import {
-  Input,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -18,7 +17,6 @@ import ThemeToggle from "@/components/theme-toggle";
 import Logo from "@/assets/logo.png";
 
 import {
-  Search,
   User,
   Settings,
   LogOutIcon,
@@ -42,18 +40,10 @@ export default function Header() {
   };
 
   return (
-    <header className="flex h-14 items-center gap-4 bg-card p-6">
+    <header className="flex justify-between h-14 items-center gap-4 bg-card p-6">
       <div>
         <img src={Logo} width={40} height={40} loading="lazy" />
       </div>
-
-      <div className="flex items-center flex-1 gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-muted-foreground" />
-          <Input placeholder="Search..." className="pl-9" />
-        </div>
-      </div>
-
       <div className="flex items-center gap-2">
         <ThemeToggle />
 
