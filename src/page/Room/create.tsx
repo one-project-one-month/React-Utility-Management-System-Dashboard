@@ -1,7 +1,6 @@
 import { Controller, type Resolver, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type CreateRoomFormData, createRoomSchema } from "@/types/room.ts";
-import { useNavigate } from "react-router";
 import { breadcrumbs } from "@/constants/breadcrumbs.ts";
 import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
 import { FormInput } from "@/components/Form/form-input.tsx";
@@ -11,10 +10,9 @@ import {BEDROOM_OPTIONS, CREATE_ROOM_STATUS_OPTIONS, FLOOR_OPTIONS} from "@/cons
 import { Button, Textarea } from "@heroui/react";
 import {useCreateRoom} from "@/hooks/useRooms.ts";
 import {RoomAvailability} from "@/types/room";
+import FormCancelButton from "@/components/Form/form-cancel-button";
 
 export default function RoomCreatePage() {
-    const navigate = useNavigate();
-
     const { mutate, isPending } = useCreateRoom();
 
     const {
@@ -35,13 +33,7 @@ export default function RoomCreatePage() {
         }
     });
 
-    const handleCancel = () => {
-        navigate('/rooms');
-    }
-
     const onSubmit = (data: CreateRoomFormData) => {
-        console.log("Form submitted", data);
-
         mutate(data);
     }
 
@@ -201,14 +193,7 @@ export default function RoomCreatePage() {
                 </div>
 
                 <div className={"flex justify-end gap-3 pt-4 mb-12"}>
-                    <Button
-                        type={"button"}
-                        variant="bordered"
-                        className="border-[0.5px] border-gray-400 bg-white dark:text-black"
-                        onPress={handleCancel}
-                    >
-                        Cancel
-                    </Button>
+                    <FormCancelButton />
                     <Button
                         className="bg-primary text-white"
                         type={"submit"}

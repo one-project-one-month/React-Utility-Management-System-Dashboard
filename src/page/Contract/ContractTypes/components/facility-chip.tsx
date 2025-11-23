@@ -24,7 +24,7 @@ const FacilityChip = ({ facility }: FacilityChipProps) => {
     const icon = getFacilityIcon(facility);
     return (
         <Chip
-            color="secondary"
+            color="default"
             variant="solid"
             className="flex items-center gap-1 px-2 py-1 text-xs"
             startContent={icon}

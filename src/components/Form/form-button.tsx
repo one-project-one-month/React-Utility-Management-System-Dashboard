@@ -8,7 +8,7 @@ type FormButtonProps = {
 
 const FormButton = ({ children, type, isLoading }: FormButtonProps) => {
     return (
-        <Button type={type} color="primary" isLoading={isLoading}>
+        <Button className="px-5" type={type} color="primary" isLoading={isLoading}>
             {children}
         </Button>
     );

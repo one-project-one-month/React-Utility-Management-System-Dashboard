@@ -41,7 +41,7 @@ const FormRoomContract = () => {
     }, [dispatch, roomNo])
 
     return (
-        <>
+        <div  className="bg-default-100/50 rounded-xl p-5 space-y-6">
             <h2>
                 Room & Contract
             </h2>
@@ -93,6 +93,7 @@ const FormRoomContract = () => {
                         <DatePicker
                             isReadOnly
                             label="Contract Start Date"
+                            labelPlacement="outside"
                             variant="bordered"
                             value={
                                 field.value
@@ -112,6 +113,7 @@ const FormRoomContract = () => {
                         <DatePicker
                             isReadOnly
                             label="Contract End Date"
+                            labelPlacement="outside"
                             variant="bordered"
                             value={
                                 field.value
@@ -134,7 +136,7 @@ const FormRoomContract = () => {
                 />
             </section>
 
-        </>
+        </div>
     )
 }
 

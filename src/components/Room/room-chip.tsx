@@ -18,10 +18,10 @@ export function RoomChip({ mode, room, icon: Icon, propertyKey, label }: RoomChi
                 size={"sm"}
                 variant="flat"
                 color="default"
-                className={statusColors[room.status]}
+                className={statusColors[room.status as keyof typeof statusColors]}
                 radius={"full"}
             >
-                {statusLabels[room.status]}
+                {statusLabels[room.status as keyof typeof statusLabels]}
             </Chip>
         )
     }
