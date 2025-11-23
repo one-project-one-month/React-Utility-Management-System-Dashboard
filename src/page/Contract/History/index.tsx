@@ -81,7 +81,7 @@ export default function ContractListPage() {
    };
 
    return (
-      <div>
+      <div className="h-screen pb-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
          <NavigationBreadCrumbs
             items={[
                { label: "Contract", href: null },
