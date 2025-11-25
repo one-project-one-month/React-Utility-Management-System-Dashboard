@@ -1,4 +1,4 @@
-import {Autocomplete, AutocompleteItem} from "@heroui/react";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 
 interface FilterAutocompleteProps {
     label: string;
@@ -24,6 +24,7 @@ export function FilterAutocomplete({ label, options, value, onChange }: FilterAu
             onSelectionChange={(key) => {
                 onChange(key?.toString() || "");
             }}
+            className="w-full sm:w-48"
         >
             {options.map((option) => (
                 <AutocompleteItem key={option}>

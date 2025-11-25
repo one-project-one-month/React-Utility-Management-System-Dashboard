@@ -11,6 +11,7 @@ export const useFetchRooms = (pagination: Pagination) => {
     return useQuery({
         queryKey: ['rooms', pagination],
         queryFn: () => fetchRooms(pagination),
+        placeholderData: (previousData) => previousData,
     });
 }
 

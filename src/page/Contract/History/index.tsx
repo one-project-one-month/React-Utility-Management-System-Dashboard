@@ -2,8 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/data-table";
 
 import type { TenantContract } from "@/types/contract";
-import { Button, Tooltip, Divider } from "@heroui/react";
-import { FileText } from "lucide-react";
+import { Divider } from "@heroui/react";
 import NavigationBreadCrumbs from "@/components/breadcrumb";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -43,25 +42,24 @@ const getColumns = (
       accessorFn: row => row.room.maxNoOfPeople,
       // tenant.occupants.length should be used here. but backend didn't give it back . so I used maxNoOfPeople for now.'
    },
-   {
-      accessorKey: "actions",
-      header: "Actions",
-      cell: () => {
-         return (
-            <Tooltip content="See Contract Details" placement="top">
-               <Button
-                  isIconOnly
-                  variant="light"
-                  color="primary"
-                  radius="full"
-                  //   onPress={onOpen}
-               >
-                  <FileText size={18} />
-               </Button>
-            </Tooltip>
-         );
-      },
-   },
+   // {
+   //    accessorKey: "actions",
+   //    header: "Actions",
+   //    cell: () => {
+   //       return (
+   //          <Tooltip content="See Contract Details" placement="top">
+   //             <Button
+   //                isIconOnly
+   //                variant="light"
+   //                color="primary"
+   //                radius="full"
+   //             >
+   //                <FileText size={18} />
+   //             </Button>
+   //          </Tooltip>
+   //       );
+   //    },
+   // },
 ];
 
 export default function ContractListPage() {

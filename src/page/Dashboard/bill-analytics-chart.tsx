@@ -77,14 +77,16 @@ export default function BillAnalyticsChart() {
             </CardHeader>
 
             <CardBody className="h-[450px] flex items-center justify-center pt-4">
-                {isPending && <LoadingSpinner label="Loading analytics..." />}
-                {!isPending && isEmpty ? (
+                {isPending ? (
+                    <LoadingSpinner label="Loading analytics..." />
+                ) : isEmpty ? (
                     <div className="flex flex-col items-center gap-3">
-                        <svg className="w-16 h-16 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">No Data Available</p>
-                        <p className="text-slate-400 dark:text-slate-500 text-sm">No bill records found for this month</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">
+                            No Data Available
+                        </p>
+                        <p className="text-slate-400 dark:text-slate-500 text-sm">
+                            No bill records found for this month
+                        </p>
                     </div>
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
@@ -92,8 +94,8 @@ export default function BillAnalyticsChart() {
                             <XAxis
                                 dataKey="month"
                                 tickFormatter={(value) => {
-                                    const date = parse(value, "yyyy-MM", new Date());
-                                    return format(date, "MMMM");
+                                    const date = parse(value, "yyyy-MM", new Date())
+                                    return format(date, "MMMM")
                                 }}
                                 tick={{ fill: '#64748b', fontSize: 13 }}
                                 tickLine={{ stroke: '#cbd5e1' }}
@@ -101,11 +103,9 @@ export default function BillAnalyticsChart() {
 
                             <YAxis
                                 tickFormatter={(value) => {
-                                    if (value >= 1_000_000)
-                                        return (value / 1_000_000).toFixed(1) + "M";
-                                    if (value >= 1_000)
-                                        return (value / 1_000).toFixed(1) + "k";
-                                    return value;
+                                    if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M"
+                                    if (value >= 1_000) return (value / 1_000).toFixed(1) + "k"
+                                    return value
                                 }}
                                 tick={{ fill: '#64748b', fontSize: 13 }}
                                 tickLine={{ stroke: '#cbd5e1' }}
@@ -115,8 +115,8 @@ export default function BillAnalyticsChart() {
                                 formatter={(value, name) => {
                                     const display =
                                         String(name).charAt(0).toUpperCase() +
-                                        String(name).slice(1);
-                                    return [value.toLocaleString(), display];
+                                        String(name).slice(1)
+                                    return [value.toLocaleString(), display]
                                 }}
                                 labelStyle={{ color: "#1e293b", fontWeight: "600", fontSize: "14px" }}
                                 itemStyle={{ color: "#475569", fontSize: "13px" }}
@@ -128,16 +128,14 @@ export default function BillAnalyticsChart() {
                                 }}
                             />
 
-                            <Legend 
-                                wrapperStyle={{ paddingTop: '20px' }}
-                                iconType="circle"
-                            />
+                            <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
                             <Bar dataKey="pending" fill="#f59e0b" radius={[8, 8, 0, 0]} />
                             <Bar dataKey="paid" fill="#10b981" radius={[8, 8, 0, 0]} />
                             <Bar dataKey="overdue" fill="#ef4444" radius={[8, 8, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 )}
+
             </CardBody>
         </Card>
     );

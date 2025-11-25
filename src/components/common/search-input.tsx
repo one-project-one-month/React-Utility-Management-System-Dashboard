@@ -15,7 +15,7 @@ export function SearchInput({searchTerm, setSearchTerm}: SearchInputProps) {
             onValueChange={setSearchTerm}
             startContent={<Search size={18} className={"text-default-400"} />}
             classNames={{
-                base: "flex-1",
+                base: "w-full sm:max-w-xs",
                 inputWrapper: "border-[0.5px] border-neutral-300 dark:border-neutral-700 shadow-none"
             }}
         />

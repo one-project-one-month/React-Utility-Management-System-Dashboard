@@ -1,5 +1,5 @@
-import { LayoutDashboard, PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { Button, Divider } from "@heroui/react";
+import { LayoutDashboard } from "lucide-react";
+import { Divider } from "@heroui/react";
 import sidebarLinks from "@/constants/sidebarLinks";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import SidebarItem from "./sidebar-item";
 import { useLocation } from "react-router";
 
 export default function SideBar() {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [ isMinimized ] = useState(false);
   const { pathname } = useLocation();
   return (
     <aside className="flex-shrink-0">
@@ -41,7 +41,7 @@ export default function SideBar() {
               )}
             </div>
 
-            <Button
+            {/* <Button
               variant="light"
               onPress={() => setIsMinimized(!isMinimized)}
               className={cn(
@@ -55,7 +55,7 @@ export default function SideBar() {
               ) : (
                 <PanelLeftClose className="h-4 w-4" />
               )}
-            </Button>
+            </Button> */}
           </div>
         </div>
 

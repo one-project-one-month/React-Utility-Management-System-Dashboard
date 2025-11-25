@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, Select, SelectItem, DateRangePicker, Button } from "@heroui/react";
-import { CalendarDate, parseDate } from '@internationalized/date';
+import { CalendarDate } from '@internationalized/date';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { useFetchCustomerServiceAnalytics } from "./hooks/useFetchAnalytics";
 import type {
@@ -62,8 +62,13 @@ const transformData = (data: AnalyticsData | undefined) => {
 };
 
 const toCalendarDate = (date: Date) => {
-    return parseDate(date.toISOString().slice(0, 10));
+    return new CalendarDate(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+    );
 };
+
 
 const toJSDate = (d: CalendarDate) => new Date(d.year, d.month - 1, d.day);
 
@@ -224,6 +229,16 @@ const CustomerServiceAnalytics = () => {
                         </BarChart>
                     )}
                 </ResponsiveContainer>)}
+                {analytics && chartData.length === 0 && !isPending && (
+                    <div className="flex flex-col items-center gap-3">
+                        <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">
+                            No Data Available
+                        </p>
+                        <p className="text-slate-400 dark:text-slate-500 text-sm">
+                            No bill records found for this month
+                        </p>
+                    </div>
+                )}
             </CardBody>
         </Card>
     );
