@@ -99,18 +99,20 @@ export default function OccupantsInfoSection({
                      />
                   </div>
                   <div className="md:col-span-1 flex justify-end pt-5">
-                     <Tooltip content="Remove occupant" placement="top">
-                        <Button
-                           type="button"
-                           isIconOnly
-                           variant="flat"
-                           color="danger"
-                           size="sm"
-                           onPress={() => remove(index)}
-                        >
-                           <Trash2 size={14} />
-                        </Button>
-                     </Tooltip>
+                     {fields.length > 1 && (
+                        <Tooltip content="Remove occupant" placement="top">
+                           <Button
+                              type="button"
+                              isIconOnly
+                              variant="flat"
+                              color="danger"
+                              size="sm"
+                              onPress={() => remove(index)}
+                           >
+                              <Trash2 size={14} />
+                           </Button>
+                        </Tooltip>
+                     )}
                   </div>
                </div>
             ))}
