@@ -1,58 +1,60 @@
-import {Select, SelectItem} from "@heroui/react";
-import type {ReactNode} from "react";
+import { Select, SelectItem } from "@heroui/react";
+import type { ReactNode } from "react";
 
 interface FormSelectProps {
-    label: string;
-    placeholder?: string;
-    options: Array<{ key: string, label: string }>;
-    value?: string | null;
-    onChange: (val: string) => void;
-    startContent?: ReactNode;
-    isInvalid?: boolean;
-    errorMessage?: string;
-    isDisabled?: boolean;
+   label: string;
+   placeholder?: string;
+   options: Array<{ key: string; label: string }>;
+   value?: string | null;
+   onChange: (val: string) => void;
+   startContent?: ReactNode;
+   isInvalid?: boolean;
+   errorMessage?: string;
+   isDisabled?: boolean;
 }
 
 export function FormSelect({
-    label,
-    placeholder,
-    options,
-    value,
-    onChange,
-    startContent,
-    isInvalid,
-    errorMessage,
-    isDisabled = false
+   label,
+   placeholder,
+   options,
+   value,
+   onChange,
+   startContent,
+   isInvalid,
+   errorMessage,
+   isDisabled = false,
 }: FormSelectProps) {
-    const validKeys = value && options.some(option => option.key === value) ? [value] : [];
+   const validKeys =
+      value && options.some(option => option.key === value) ? [value] : [];
 
-    return (
-        <Select
-            label={label}
-            labelPlacement={"outside"}
-            placeholder={placeholder}
-            variant={"bordered"}
-            classNames={{
-                trigger: "bg-white border-[0.5px] shadow-none dark:text-default-600 dark:bg-transparent",
-                value: "dark:text-default-600"
-            }}
-            selectedKeys={validKeys}
-            onSelectionChange={(keys) => {
-                const selectedValue = Array.from(keys)[0]?.toString() || "";
-                onChange(selectedValue);
-            }}
-            startContent={startContent}
-            isInvalid={isInvalid}
-            errorMessage={errorMessage}
-            isDisabled={isDisabled}
-            disallowEmptySelection
-            scrollShadowProps={{
-                isEnabled: false
-            }}
-        >
-            {options.map((option) => (
-                <SelectItem key={option.key}>{option.label}</SelectItem>
-            ))}
-        </Select>
-    )
+   return (
+      <Select
+         label={label}
+         labelPlacement={"outside"}
+         placeholder={placeholder}
+         variant={"bordered"}
+         classNames={{
+            trigger:
+               "bg-white border-[0.5px] shadow-none dark:text-default-600 dark:bg-transparent",
+            value: "dark:text-default-600",
+         }}
+         selectedKeys={validKeys}
+         onSelectionChange={keys => {
+            const selectedValue = Array.from(keys)[0]?.toString() || "";
+            onChange(selectedValue);
+         }}
+         startContent={startContent}
+         isInvalid={isInvalid}
+         errorMessage={errorMessage}
+         isDisabled={isDisabled}
+         disallowEmptySelection
+         scrollShadowProps={{
+            isEnabled: false,
+         }}
+      >
+         {options.map(option => (
+            <SelectItem key={option.key}>{option.label}</SelectItem>
+         ))}
+      </Select>
+   );
 }

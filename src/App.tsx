@@ -8,30 +8,26 @@ import LoginPage from "./page/Auth";
 import LoadingSpinner from "./components/loading-spinner";
 
 function App() {
-     const routes = useRoutes();
-     const navigate = useNavigate();
+   const routes = useRoutes();
+   const navigate = useNavigate();
 
-     return (
-          <HeroUIProvider navigate={navigate} useHref={useHref}>
-               <main className="font-roboto text-foreground bg-background">
-                    <Suspense fallback={<LoadingSpinner label="Loading" />}>
-                         <Routes>
-                              <Route path="/login" element={<LoginPage />} />
-                              <Route element={<PageLayout />}>
-                                   {routes.map(({ path, element }, index) => (
-                                        <Route
-                                             key={index}
-                                             path={path}
-                                             element={element}
-                                        />
-                                   ))}
-                              </Route>
-                              <Route path="*" element={<NotFound />} />
-                         </Routes>
-                    </Suspense>
-               </main>
-          </HeroUIProvider>
-     );
+   return (
+      <HeroUIProvider navigate={navigate} useHref={useHref}>
+         <main className="font-roboto text-foreground bg-background">
+            <Suspense fallback={<LoadingSpinner label="Loading" />}>
+               <Routes>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route element={<PageLayout />}>
+                     {routes.map(({ path, element }, index) => (
+                        <Route key={index} path={path} element={element} />
+                     ))}
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+               </Routes>
+            </Suspense>
+         </main>
+      </HeroUIProvider>
+   );
 }
 
 export default App;

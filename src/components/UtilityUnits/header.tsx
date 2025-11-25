@@ -2,22 +2,18 @@ import { Input } from "@heroui/react";
 import { Search } from "lucide-react";
 
 export default function UtilityHeader() {
-  return (
-    <>
+   return (
       <div className="flex items-center justify-between mt-10">
-        <div>
-          <Input
+         <Input
             placeholder="Search"
             variant="bordered"
             radius="sm"
             size="lg"
             classNames={{
-              inputWrapper: ["border ps-4 w-full"],
+               inputWrapper: ["border ps-4 w-full"],
             }}
             startContent={<Search size={16} />}
-          />
-        </div>
+         />
       </div>
-    </>
-  );
+   );
 }

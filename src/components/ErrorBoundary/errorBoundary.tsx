@@ -1,7 +1,7 @@
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import type { ReactNode } from "react";
-import ErrorFallback from "@/components/ErrorBounary/error-fall-back.tsx";
+import ErrorFallback from "@/components/ErrorBoundary/error-fall-back";
 
 interface Props {
   children: ReactNode;
