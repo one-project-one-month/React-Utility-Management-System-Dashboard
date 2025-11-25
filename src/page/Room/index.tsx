@@ -44,8 +44,6 @@ export default function RoomPage() {
     const deferredPagination = useDeferredValue(pagination);
     const isStale = pagination !== deferredPagination;
 
-    console.log('checking for stale condition', isStale);
-
     useEffect(() => {
         setPagination(prev => ({
             ...prev,
