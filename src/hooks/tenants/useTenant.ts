@@ -8,11 +8,6 @@ import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts
 import { addToast } from "@heroui/react";
 import type { Pagination } from "@/types/pagination.ts";
 
-interface UpdateTenantParams {
-   id: string;
-   updatedTenant: TenantPayload;
-}
-
 export const useFetchAllTenants = (pagination: Pagination, search?: string) => {
    return useQuery({
       queryKey: ["tenants", pagination, search],
@@ -36,11 +31,24 @@ export const useTenantMutations = () => {
             radius: "sm",
          });
       },
+      onError: error => {
+         addToast({
+            title: error.message,
+            color: "danger",
+            timeout: 2000,
+            shouldShowTimeoutProgress: true,
+            radius: "sm",
+         });
+      },
    });
 
+   interface UpdateTenantParams {
+      id: string;
+      updatedTenant: TenantPayload;
+   }
    const updateTenantMutation = useMutation({
       mutationKey: ["updateTenant"],
-      mutationFn: ({ id, updatedTenant }: UpdateTenantParams) =>
+      mutationFn: ({ updatedTenant, id }: UpdateTenantParams) =>
          updateTenant(id, updatedTenant),
       onSuccess: (_data, variables) => {
          queryClient.invalidateQueries({ queryKey: ["tenants"] });
@@ -48,6 +56,15 @@ export const useTenantMutations = () => {
          addToast({
             title: "Updated Tenant Successfully",
             color: "success",
+            timeout: 2000,
+            shouldShowTimeoutProgress: true,
+            radius: "sm",
+         });
+      },
+      onError: error => {
+         addToast({
+            title: error.message,
+            color: "danger",
             timeout: 2000,
             shouldShowTimeoutProgress: true,
             radius: "sm",
