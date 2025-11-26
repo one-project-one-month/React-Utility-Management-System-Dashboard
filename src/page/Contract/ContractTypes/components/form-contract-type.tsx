@@ -1,26 +1,22 @@
 import { Controller, useFormContext } from "react-hook-form";
-
 import { Input, Select, SelectItem } from "@heroui/react";
-
 import type { Contracts } from "@/types/contract";
 
-
 export default function FormContractType() {
-    const { control } = useFormContext<Contracts>();
+   const { control } = useFormContext<Contracts>();
 
-    const durationOptions = [
-        { key: "3", label: '3 Months' },
-        { key: "6", label: '6 Months' },
-        { key: "12", label: '1 Years' },
-        { key: "24", label: '2 Years' },
-    ];
+   const durationOptions = [
+      { key: "6", label: "6 Months" },
+      { key: "12", label: "12 Months" },
+      { key: "24", label: "24 Months" },
+   ];
 
-    const facilitiesOptions = [
-        { key: "Air Conditioner", label: 'Air Conditioner' },
-        { key: "Television", label: 'Television' },
-        { key: "Wi-fi", label: 'Wi-fi' },
-        { key: "Refrigerator", label: 'Refrigerator' },
-    ];
+   const facilitiesOptions = [
+      { key: "Air Conditioner", label: "Air Conditioner" },
+      { key: "Television", label: "Television" },
+      { key: "Wi-fi", label: "Wi-fi" },
+      { key: "Refrigerator", label: "Refrigerator" },
+   ];
 
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -114,6 +110,3 @@ export default function FormContractType() {
         </section>
     );
 }
-
-
-

@@ -1,11 +1,11 @@
-import FormSectionCard from "@/components/Tenants/TenentsForm/FormUiWrappers/form-section-card.tsx";
+import FormSectionCard from "@/components/Tenants/TenantsForm/FormUiWrappers/form-section-card";
 import { Tooltip } from "@heroui/tooltip";
 import { Button } from "@heroui/button";
 import { Plus, Trash2 } from "lucide-react";
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
-import InputField from "@/components/Tenants/TenentsForm/FormFields/input-field.tsx";
+import InputField from "@/components/Tenants/TenantsForm/FormFields/input-field";
 import type { RelationshipToTenant } from "@/types/tenants/tenantType.ts";
-import SelectField from "@/components/Tenants/TenentsForm/FormFields/select-field.tsx";
+import SelectField from "@/components/Tenants/TenantsForm/FormFields/select-field";
 
 export default function OccupantsInfoSection({
    register,
@@ -60,24 +60,24 @@ export default function OccupantsInfoSection({
             {fields.map((field, index) => (
                <div
                   key={field.id}
-                  className="grid grid-cols-1 md:grid-cols-15 gap-3 items-end p-3 bg-background/20  rounded-lg border border-border-divider/70  "
+                  className="grid grid-cols-1 md:grid-cols-15 gap-3 items-end p-3 bg-background/20 rounded-lg border border-divider/70  "
                >
                   <div className="md:col-span-5">
                      <InputField
-                        label={"Full Name"}
-                        placeholder={"Enter occupant's full name"}
-                        type={"text"}
+                        label="Full Name"
+                        placeholder="Enter occupant's full name"
+                        type="text"
                         errorMessage={errors.occupants?.[index]?.name?.message ?? ""}
                         isInvalid={!!errors.occupants?.[index]?.name}
                         register={register}
                         nameForRegister={`occupants.${index}.name` as const}
                      />
-                  </div>{" "}
+                  </div>
                   <div className="md:col-span-5">
                      <InputField
-                        label={"NRC Number"}
-                        placeholder={"Enter NRC number"}
-                        type={"text"}
+                        label="NRC Number"
+                        placeholder="Enter NRC number"
+                        type="text"
                         errorMessage={errors.occupants?.[index]?.nrc?.message ?? ""}
                         isInvalid={!!errors.occupants?.[index]?.nrc}
                         register={register}
@@ -86,7 +86,7 @@ export default function OccupantsInfoSection({
                   </div>
                   <div className="md:col-span-4">
                      <SelectField
-                        label={"Relationship to Tenant"}
+                        label="Relationship to Tenant"
                         control={control}
                         fieldName={`occupants.${index}.relationshipToTenant`}
                         errorMessage={
@@ -94,7 +94,7 @@ export default function OccupantsInfoSection({
                               ?.message ?? ""
                         }
                         isInvalid={!!errors.occupants?.[index]?.relationshipToTenant}
-                        placeholder={"Select relationship"}
+                        placeholder="Select relationship"
                         items={relationshipOptions}
                      />
                   </div>

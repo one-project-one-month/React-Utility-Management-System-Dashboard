@@ -6,15 +6,6 @@ export type Contracts = {
    facilities?: string[];
 };
 
-// export type TenantContracts = {
-// 	id: number;
-// 	name: string;
-// 	contractType: string;
-// 	startDate: string;
-// 	endDate: string;
-// 	occupants: number;
-// };
-
 export type NewContract = {
    id: string;
    roomId: string;

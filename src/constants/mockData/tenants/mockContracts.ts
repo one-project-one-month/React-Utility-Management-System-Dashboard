@@ -29,7 +29,7 @@ export interface Tenant {
   roomId: string;
 }
 
-export type RoomStatus = "Rented" | "Purchased" | "Available";
+export type RoomStatus = "Rented" | "Purchased" | "Available" | "InMaintenance";
 
 export interface Room {
   id: string;
