@@ -44,6 +44,9 @@ const UtilityUnitDetailPage = lazy(() => import("@/page/UtilityUnits/unit-detail
 const ContractTypePage = lazy(() => import("@/page/Contract/ContractTypes"));
 const TenantContractPage = lazy(() => import("@/page/Contract/TenantsContracts"));
 const TenantContractHistoryPage = lazy(() => import("@/page/Contract/History"));
+const TenantContractDetails = lazy(
+   () => import("@/page/Contract/History/tenant-contract-details")
+);
 
 export const useRoutes = () => {
    return [
@@ -141,6 +144,11 @@ export const useRoutes = () => {
          title: "Contract History",
          path: "/contract/contract-history",
          element: <TenantContractHistoryPage />,
+      },
+      {
+         title: "Tenant Contract Details",
+         path: "/contract/contract-history/:id/details",
+         element: <TenantContractDetails />,
       },
    ];
 };

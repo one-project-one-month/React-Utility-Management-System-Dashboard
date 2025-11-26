@@ -8,11 +8,12 @@ import type { AxiosError } from "axios";
 import { addToast } from "@heroui/react";
 
 export const useFetchRooms = (pagination: Pagination) => {
-   return useQuery({
-      queryKey: ["rooms", pagination],
-      queryFn: () => fetchRooms(pagination),
-   });
-};
+    return useQuery({
+        queryKey: ['rooms', pagination],
+        queryFn: () => fetchRooms(pagination),
+        placeholderData: (previousData) => previousData,
+    });
+}
 
 export const useFetchRoom = (id: string) => {
    return useQuery({

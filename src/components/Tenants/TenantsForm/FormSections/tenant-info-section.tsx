@@ -1,15 +1,13 @@
-import FormSectionCard from "@/components/Tenants/TenantsForm/FormUiWrappers/form-section-card";
 import type { TenantFormSectionProps } from "@/types/tenants/tenantsForm/tenantFormTypes.ts";
-import InputField from "@/components/Tenants/TenantsForm/FormFields/input-field";
-import AutoCompleteSelectField from "@/components/Tenants/TenantsForm/FormFields/auto-complete-select-field";
 import { useEffect, useState } from "react";
 import type { Pagination } from "@/types/pagination.ts";
 import { RoomAvailability } from "@/types/room.ts";
-
-import LoadRoomsButtons from "@/components/Tenants/TenantsForm/FormSections/load-rooms-buttons";
-
 import { useFetchRooms } from "@/hooks/useRooms.ts";
 import type { Room } from "@/types/tenants/tenantType.ts";
+import FormSectionCard from "../FormUiWrappers/form-section-card";
+import InputField from "../FormFields/input-field";
+import AutoCompleteSelectField from "../FormFields/auto-complete-select-field";
+import LoadRoomsButtons from "./load-rooms-buttons";
 
 type Props = TenantFormSectionProps & {
    currentRoom?: Room;
@@ -91,6 +89,7 @@ export default function TenantInfoSection({
                   placeholder="Choose a room"
                   items={rooms as Room[]}
                   isLoadingItems={isLoading}
+                  isDisabled={isLoading}
                />
                <LoadRoomsButtons
                   hasPreviousRooms={hasPreviousRooms}

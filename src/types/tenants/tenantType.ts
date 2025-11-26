@@ -55,7 +55,7 @@ export interface Room {
    maxNoOfPeople: number;
    description: string;
    createdAt: string;
-   updatDedAt: string;
+   updatedAt: string;
 }
 
 export interface Tenant {

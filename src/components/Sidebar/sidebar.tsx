@@ -1,5 +1,5 @@
-import { LayoutDashboard, PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { Button, Divider } from "@heroui/react";
+import { LayoutDashboard } from "lucide-react";
+import { Divider } from "@heroui/react";
 import sidebarLinks from "@/constants/sidebarLinks";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -7,9 +7,8 @@ import SidebarItem from "./sidebar-item";
 import { useLocation } from "react-router";
 
 export default function SideBar() {
-   const [isMinimized, setIsMinimized] = useState(false);
+   const [isMinimized] = useState(false);
    const { pathname } = useLocation();
-
    return (
       <aside className="flex-shrink-0">
          <div
@@ -42,21 +41,21 @@ export default function SideBar() {
                      )}
                   </div>
 
-                  <Button
-                     variant="light"
-                     onPress={() => setIsMinimized(!isMinimized)}
-                     className={cn(
-                        "ml-auto p-0",
-                        isMinimized && "ml-0 absolute left-25"
-                     )}
-                     title={isMinimized ? "Expand sidebar" : "Minimize sidebar"}
-                  >
-                     {isMinimized ? (
-                        <PanelLeftOpen className="h-4 w-4" />
-                     ) : (
-                        <PanelLeftClose className="h-4 w-4" />
-                     )}
-                  </Button>
+                  {/* <Button
+              variant="light"
+              onPress={() => setIsMinimized(!isMinimized)}
+              className={cn(
+                "ml-auto p-0",
+                isMinimized && "ml-0 absolute left-25",
+              )}
+              title={isMinimized ? "Expand sidebar" : "Minimize sidebar"}
+            >
+              {isMinimized ? (
+                <PanelLeftOpen className="h-4 w-4" />
+              ) : (
+                <PanelLeftClose className="h-4 w-4" />
+              )}
+            </Button> */}
                </div>
             </div>
 

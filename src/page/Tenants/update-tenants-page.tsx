@@ -179,7 +179,7 @@ export default function UpdateTenantsPage() {
          action={"update"}
          isLoading={isLoadingUpdateButton}
          onSubmit={handleSubmit(onSubmit)}
-         currentRoom={tenantToBeUpdated?.room} // ဒီမှာ type error ပြနေတယ်။ backend က လာတဲ့ key ကmaxNoOfPeople ။ roomSchema  ထဲမှာ maxNoPeople လုပ်ထားလို့
+         currentRoom={tenantToBeUpdated?.room}
          tenantsFormSectionProps={tenantsFormSectionProps}
       />
    );

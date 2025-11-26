@@ -4,20 +4,21 @@ import {
    createContractType,
    createNewContract,
    fetchContractTypes,
+   fetchTenantContracts,
    fetchTenantNoContract,
 } from "@/services/contractService";
 import { addToast } from "@heroui/react";
 import { AxiosError } from "axios";
 import { fetchRoom } from "@/services/roomService";
+import type { Pagination } from "@/types/pagination.ts";
 
 export const useCreateContractType = () => {
    const queryClient = useQueryClient();
-
    return useMutation({
       mutationFn: (newContract: Partial<Contracts>) =>
          createContractType(newContract),
-      onSuccess: data => {
-         queryClient.invalidateQueries({ queryKey: ["contract-types"] });
+      onSuccess: async data => {
+         await queryClient.invalidateQueries({ queryKey: ["contract-types"] });
          addToast({
             title: data.message,
             color: "success",
@@ -27,13 +28,6 @@ export const useCreateContractType = () => {
          });
       },
       onError: error => {
-         addToast({
-            title: error.message,
-            color: "danger",
-            timeout: 3000,
-            shouldShowTimeoutProgress: true,
-            radius: "sm",
-         });
          const err = error as AxiosError;
          const status = err?.response?.status ?? err?.status;
 
@@ -143,5 +137,12 @@ export const useFetchTenantsNoContract = () => {
             roomId: tenant.roomId,
          }));
       },
+   });
+};
+
+export const useFetchTenantContracts = (pagination: Pagination) => {
+   return useQuery({
+      queryKey: ["tenant-contracts", pagination],
+      queryFn: () => fetchTenantContracts(pagination),
    });
 };

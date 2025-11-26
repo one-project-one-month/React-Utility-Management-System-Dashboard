@@ -12,9 +12,7 @@ const initialState: InitialState = {
    pagination: {
       page: 1,
       limit: 10,
-      filter: {
-         status: undefined,
-      },
+      filter: undefined,
    },
 };
 
@@ -28,6 +26,7 @@ const billingsSlice = createSlice({
 
       setSearch: (state, action: PayloadAction<string>) => {
          state.search = action.payload;
+         state.pagination.page = 1;
       },
 
       setFilters: (state, action: PayloadAction<BillingStatus>) => {

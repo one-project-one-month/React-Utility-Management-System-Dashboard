@@ -1,20 +1,13 @@
-import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { useAutoGenerateBill } from "@/hooks/billings/useBillings.ts";
-
 import {
-  setFilters as setBillingFilters,
-  setSearch as setBillingSearch,
-} from "@/store/features/billings/billingsSlice.ts";
-import {
-  setFilters as setInvoiceFilters,
-  setSearch as setInvoiceSearch,
+  setFilters,
+  setSearch,
 } from "@/store/features/invoices/invoicesSlice.ts";
 
 import type { BillingStatus } from "@/types/billing/billingTableData.ts";
@@ -30,42 +23,23 @@ const statusOptions: StatusOption[] = [
   { key: "Overdue", label: "Overdue" },
 ];
 
-interface Props {
-  itemName: "Bill" | "Invoice";
-}
-
-export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
+export default function InvoicesListHeader() {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<BillingStatus>("Pending");
+  const [selectedStatus, setSelectedStatus] =
+    useState<BillingStatus>("Pending");
 
   const dispatch = useDispatch();
-
-  const autoGenerateBillingMutation = useAutoGenerateBill();
-
-  const isLoading = autoGenerateBillingMutation.isPending;
-
-  const handleClickCreateNew = () => {
-    autoGenerateBillingMutation.mutate();
-  };
 
   const handleEnterSearch = (
     event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent,
   ) => {
     if (event.key === "Enter") {
-      if (itemName === "Bill") {
-        dispatch(setBillingSearch(searchValue));
-      } else if (itemName === "Invoice") {
-        dispatch(setInvoiceSearch(searchValue));
-      }
+      dispatch(setSearch(searchValue));
     }
   };
 
   useEffect(() => {
-    if (itemName === "Bill") {
-      dispatch(setBillingFilters(selectedStatus));
-    } else if (itemName === "Invoice") {
-      dispatch(setInvoiceFilters(selectedStatus));
-    }
+    dispatch(setFilters(selectedStatus));
   }, [selectedStatus]);
 
   return (
@@ -111,24 +85,6 @@ export default function BillingsOrInvoicesListHeader({ itemName }: Props) {
           ))}
         </Select>
       </div>
-      {itemName === "Bill" && (
-        <Button
-          color={"primary"}
-          isLoading={isLoading}
-          onPress={handleClickCreateNew}
-          className={
-            "min-w-45 hover:bg-[#668EFF] rounded-xl aria-pressed:bg-[#1955FF]"
-          }
-        >
-          {isLoading ? (
-            `Creating New Billings`
-          ) : (
-            <>
-              <Plus /> Create New Billings
-            </>
-          )}
-        </Button>
-      )}
     </div>
   );
 }

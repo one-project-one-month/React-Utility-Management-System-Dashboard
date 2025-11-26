@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, Select, SelectItem, DateRangePicker, Button } from "@heroui/react";
-import { CalendarDate, parseDate } from '@internationalized/date';
+import { CalendarDate } from '@internationalized/date';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { useFetchCustomerServiceAnalytics } from "./hooks/useFetchAnalytics";
 import type {
@@ -62,8 +62,13 @@ const transformData = (data: AnalyticsData | undefined) => {
 };
 
 const toCalendarDate = (date: Date) => {
-    return parseDate(date.toISOString().slice(0, 10));
+    return new CalendarDate(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+    );
 };
+
 
 const toJSDate = (d: CalendarDate) => new Date(d.year, d.month - 1, d.day);
 
@@ -85,13 +90,16 @@ const CustomerServiceAnalytics = () => {
     const isStatusType = chartData.length > 0 && "all" in chartData[0];
 
     return (
-        <Card className="p-4 shadow-md">
-            <CardHeader className="flex justify-between items-start gap-2">
-                <h2 className="font-semibold w-full">Customer Service Analytics</h2>
-                <div className="flex flex-col gap-1 w-full">
+        <Card className="p-6 shadow-lg bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+            <CardHeader className="flex flex-col gap-4 pb-4">
+                <div className="flex justify-between items-center w-full">
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Customer Service Analytics</h2>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 w-full items-end">
                     <DateRangePicker
-                        className="max-w-xs self-end"
-                        label="From - To"
+                        className="w-full sm:w-auto min-w-[200px]"
+                        label="Date Range"
+                        variant="bordered"
                         value={{
                             start: toCalendarDate(filter.from),
                             end: toCalendarDate(filter.to)
@@ -104,63 +112,67 @@ const CustomerServiceAnalytics = () => {
                             }));
                         }}
                     />
-                    <div className="grid grid-cols-5 gap-1">
-                        <Select
-                            className="col-span-2"
-                            placeholder="Filter By..."
-                            variant="bordered"
-                            onSelectionChange={(keys) => {
-                                const key = Array.from(keys)[0];
-                                setFilter(prev => ({
-                                    ...prev,
-                                    query: key as CustomerServiceFilter["query"]
-                                }));
-
-
-                            }}
-                        >
-                            {KEY_WORDS.map((option) => (
-                                <SelectItem key={option.key}>
-                                    {option.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                        <Select
-                            className="col-span-2"
-                            placeholder="Status..."
-                            variant="bordered"
-                            disabled={filter.query !== 'status'}
-                            onSelectionChange={(keys) => {
-                                const key = Array.from(keys)[0];
-                                setFilter(prev => ({
-                                    ...prev,
-                                    status: key as CustomerServiceFilter["status"]
-                                }));
-                            }}
-                        >
-                            {STATUS.map((option) => (
-                                <SelectItem key={option.key}>
-                                    {option.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                        <Button
-                            color="success"
-                            onPress={() => setAppliedFilter(filter)}
-                        >
-                            Apply
-                        </Button>
-                    </div>
-
+                    <Select
+                        className="w-full sm:flex-1"
+                        placeholder="Filter By..."
+                        variant="bordered"
+                        selectedKeys={[filter.query]}
+                        onSelectionChange={(keys) => {
+                            const key = Array.from(keys)[0];
+                            setFilter(prev => ({
+                                ...prev,
+                                query: key as CustomerServiceFilter["query"]
+                            }));
+                        }}
+                    >
+                        {KEY_WORDS.map((option) => (
+                            <SelectItem key={option.key}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                    <Select
+                        className="w-full sm:flex-1"
+                        placeholder="Status..."
+                        variant="bordered"
+                        isDisabled={filter.query !== 'status'}
+                        onSelectionChange={(keys) => {
+                            const key = Array.from(keys)[0];
+                            setFilter(prev => ({
+                                ...prev,
+                                status: key as CustomerServiceFilter["status"]
+                            }));
+                        }}
+                    >
+                        {STATUS.map((option) => (
+                            <SelectItem key={option.key}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                    <Button
+                        color="primary"
+                        className="w-full sm:w-auto px-8 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                        onPress={() => setAppliedFilter(filter)}
+                    >
+                        Apply Filters
+                    </Button>
                 </div>
             </CardHeader>
-            <CardBody className="h-[400px] flex items-center justify-center">
-                {isPending && <LoadingSpinner label="Loading.." />}
+            <CardBody className="h-[450px] flex items-center justify-center pt-4">
+                {isPending && <LoadingSpinner label="Loading analytics..." />}
                 {isSuccess && (<ResponsiveContainer width="100%" height="100%">
                     {isStatusType ? (
-                        <BarChart data={chartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
+                        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                            <XAxis
+                                dataKey="name"
+                                tick={{ fill: '#64748b', fontSize: 13 }}
+                                tickLine={{ stroke: '#cbd5e1' }}
+                            />
+                            <YAxis
+                                tick={{ fill: '#64748b', fontSize: 13 }}
+                                tickLine={{ stroke: '#cbd5e1' }}
+                            />
                             <Tooltip
                                 formatter={(value, name) => {
                                     const display =
@@ -168,26 +180,35 @@ const CustomerServiceAnalytics = () => {
                                         String(name).slice(1);
                                     return [value.toLocaleString(), display];
                                 }}
-                                labelStyle={{ color: "#fff", fontWeight: "bold", fontSize: "14px" }}
-                                itemStyle={{ color: "#fff", fontSize: "13px" }}
+                                labelStyle={{ color: "#1e293b", fontWeight: "600", fontSize: "14px" }}
+                                itemStyle={{ color: "#475569", fontSize: "13px" }}
                                 contentStyle={{
-                                    backgroundColor: "rgba(20, 20, 20, 0.9)",
-                                    border: "1px solid #333",
-                                    borderRadius: "8px",
-                                    color: "#fff",
+                                    backgroundColor: "#ffffff",
+                                    border: "1px solid #e2e8f0",
+                                    borderRadius: "12px",
+                                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                                 }}
                             />
-                            <Legend />
-
-                            <Bar dataKey="all" fill="#8884d8" />
-                            <Bar dataKey="high" fill="#82ca9d" />
-                            <Bar dataKey="medium" fill="#ffc658" />
-                            <Bar dataKey="low" fill="#ff8042" />
+                            <Legend
+                                wrapperStyle={{ paddingTop: '20px' }}
+                                iconType="circle"
+                            />
+                            <Bar dataKey="all" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                            <Bar dataKey="high" fill="#ef4444" radius={[8, 8, 0, 0]} />
+                            <Bar dataKey="medium" fill="#f59e0b" radius={[8, 8, 0, 0]} />
+                            <Bar dataKey="low" fill="#10b981" radius={[8, 8, 0, 0]} />
                         </BarChart>
                     ) : (
-                        <BarChart data={chartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
+                        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                            <XAxis
+                                dataKey="name"
+                                tick={{ fill: '#64748b', fontSize: 13 }}
+                                tickLine={{ stroke: '#cbd5e1' }}
+                            />
+                            <YAxis
+                                tick={{ fill: '#64748b', fontSize: 13 }}
+                                tickLine={{ stroke: '#cbd5e1' }}
+                            />
                             <Tooltip
                                 formatter={(value, name) => {
                                     const display =
@@ -195,20 +216,29 @@ const CustomerServiceAnalytics = () => {
                                         String(name).slice(1);
                                     return [value.toLocaleString(), display];
                                 }}
-                                labelStyle={{ color: "#fff", fontWeight: "bold", fontSize: "14px" }}
-                                itemStyle={{ color: "#fff", fontSize: "13px" }}
+                                labelStyle={{ color: "#1e293b", fontWeight: "600", fontSize: "14px" }}
+                                itemStyle={{ color: "#475569", fontSize: "13px" }}
                                 contentStyle={{
-                                    backgroundColor: "rgba(20, 20, 20, 0.9)",
-                                    border: "1px solid #333",
-                                    borderRadius: "8px",
-                                    color: "#fff",
+                                    backgroundColor: "#ffffff",
+                                    border: "1px solid #e2e8f0",
+                                    borderRadius: "12px",
+                                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                                 }}
                             />
-                            <Bar dataKey="count" fill="#8884d8" />
+                            <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} />
                         </BarChart>
                     )}
-
                 </ResponsiveContainer>)}
+                {analytics && chartData.length === 0 && !isPending && (
+                    <div className="flex flex-col items-center gap-3">
+                        <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">
+                            No Data Available
+                        </p>
+                        <p className="text-slate-400 dark:text-slate-500 text-sm">
+                            No bill records found for this month
+                        </p>
+                    </div>
+                )}
             </CardBody>
         </Card>
     );

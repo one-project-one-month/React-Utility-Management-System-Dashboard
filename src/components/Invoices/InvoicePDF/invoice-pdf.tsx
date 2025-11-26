@@ -22,7 +22,7 @@ export default function InvoicePDF({
   return (
     <Document>
       <Page size={{ width: 300, height: 750 }} style={styles.page}>
-        <InvoiceHeader invoice={invoice} />
+        <InvoiceHeader status={invoice.status} invoiceNo={invoice.invoiceNo} />
         <DueDateAndBillingDetails tenantId={tenant.id} billing={billing} />
         <ChargesBreakdown billing={billing} />
         <TotalAmount totalAmount={billing.totalAmount} />

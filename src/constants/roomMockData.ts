@@ -1,13 +1,13 @@
-import type { RoomStatus } from "./mockData/tenants/mockContracts";
+type StatusColorsAndLabels = { [key: string]: string };
 
-export const statusColors: Record<RoomStatus, string> = {
+export const statusColors: StatusColorsAndLabels = {
    Available: "bg-emerald-600 text-[13px] text-white p-2",
    Rented: "bg-blue-600 text-[13px] text-white p-2",
    Purchased: "bg-violet-600 text-[13px] text-white p-2",
    InMaintenance: "bg-yellow-600 text-[13px] text-white p-2",
 };
 
-export const statusLabels: Record<RoomStatus, string> = {
+export const statusLabels: StatusColorsAndLabels = {
    Available: "Available",
    Rented: "Rented",
    Purchased: "Purchased",

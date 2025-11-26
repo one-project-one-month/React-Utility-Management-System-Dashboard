@@ -1,11 +1,12 @@
 import { Text, View } from "@react-pdf/renderer";
 import { styles } from "@/components/Invoices/InvoicePDF/invoice-styles.ts";
-import type { Invoice } from "@/types/billing/billingType.ts";
+import type { InvoiceStatus } from "@/types/invoices/invoiceType.ts";
 
 interface Props {
-  invoice: Invoice;
+  status: InvoiceStatus;
+  invoiceNo: string;
 }
-export default function InvoiceHeader({ invoice }: Props) {
+export default function InvoiceHeader({ status, invoiceNo }: Props) {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "paid":
@@ -19,7 +20,7 @@ export default function InvoiceHeader({ invoice }: Props) {
     }
   };
 
-  const statusColor = getStatusColor(invoice.status);
+  const statusColor = getStatusColor(status);
 
   return (
     <View style={styles.header}>
@@ -34,9 +35,9 @@ export default function InvoiceHeader({ invoice }: Props) {
       </View>
       <View style={styles.rightHeader}>
         <Text style={styles.invoiceTitle}>INVOICE</Text>
-        <Text style={styles.invoiceNo}>#{invoice.invoiceNo}</Text>
+        <Text style={styles.invoiceNo}>#{invoiceNo}</Text>
         <View style={[styles.statusBadge, { backgroundColor: statusColor }]}>
-          <Text>{invoice.status.toUpperCase()}</Text>
+          <Text>{status.toUpperCase()}</Text>
         </View>
       </View>
     </View>

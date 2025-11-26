@@ -30,32 +30,32 @@ export default function ContractTypePage() {
    };
 
    return (
-      <section className="flex flex-col h-full">
+      <section className="h-screen pb-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
          <NavigationBreadCrumbs
             items={[
                { label: "Contract", href: null },
                { label: "Contract Type", href: "/contract-type" },
             ]}
          />
-         <h1 className="sm:text-2xl mt-2">Create New Contract Type</h1>
-
-         <Divider className="my-3" />
+         <h1 className="sm:text-xl mt-5">Create New Contract Type</h1>
 
          <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-               <FormContractType />
-               <FormButton type="submit" isLoading={isPending}>
-                  {isPending ? "Creating" : "Create"}
-               </FormButton>
-            </form>
+            <div className="mt-5">
+               <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <FormContractType />
+                  <FormButton type="submit" isLoading={isPending}>
+                     {isPending ? "Creating" : "Create"}
+                  </FormButton>
+               </form>
+            </div>
          </FormProvider>
 
-         <Divider className="my-3" />
+         <Divider className="my-8 bg-default/30" />
 
-         <h1 className="sm:text-2xl mt-2">Contract Types</h1>
+         <h1 className="sm:text-xl mt-2">Contract Types</h1>
          <br />
 
-         <div className="flex-1 overflow-y-auto pb-14">
+         <div className="">
             <ContractTable />
          </div>
       </section>

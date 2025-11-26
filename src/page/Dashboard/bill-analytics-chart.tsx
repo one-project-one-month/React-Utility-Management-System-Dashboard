@@ -53,79 +53,90 @@ export default function BillAnalyticsChart() {
             data[0].overdue === 0);
 
     return (
-        <Card className="p-4 rounded-2xl shadow-lg">
-            <CardHeader className="flex justify-between items-center">
-                <h2 className="font-semibold">Monthly Bill Analytics</h2>
-                <Select
-                    className="w-[200px]"
-                    variant="bordered"
-                    onSelectionChange={(keys) => {
-                        const key = Array.from(keys)[0];
-                        setSelectedMonth(Number(key));
-                    }}
-                    defaultSelectedKeys={new Set([String(selectedMonth)])}
-                >
-                    {MONTHS.map((option) => (
-                        <SelectItem key={option.value}>
-                            {option.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-
+        <Card className="p-6 shadow-lg bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+            <CardHeader className="flex flex-col gap-4 pb-4">
+                <div className="flex justify-between items-center w-full">
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Monthly Bill Analytics</h2>
+                    <Select
+                        className="w-[200px]"
+                        label="Select Month"
+                        variant="bordered"
+                        onSelectionChange={(keys) => {
+                            const key = Array.from(keys)[0];
+                            setSelectedMonth(Number(key));
+                        }}
+                        defaultSelectedKeys={new Set([String(selectedMonth)])}
+                    >
+                        {MONTHS.map((option) => (
+                            <SelectItem key={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                </div>
             </CardHeader>
 
-            <CardBody className="h-[450px] flex items-center justify-center">
-                {isPending && <LoadingSpinner label="Loading..." />}
-                {!isPending && isEmpty ? (
-                    <p className="text-neutral-500 text-lg">Not Available</p>
+            <CardBody className="h-[450px] flex items-center justify-center pt-4">
+                {isPending ? (
+                    <LoadingSpinner label="Loading analytics..." />
+                ) : isEmpty ? (
+                    <div className="flex flex-col items-center gap-3">
+                        <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">
+                            No Data Available
+                        </p>
+                        <p className="text-slate-400 dark:text-slate-500 text-sm">
+                            No bill records found for this month
+                        </p>
+                    </div>
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={data}>
+                        <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                             <XAxis
                                 dataKey="month"
                                 tickFormatter={(value) => {
-                                    const date = parse(value, "yyyy-MM", new Date());
-                                    return format(date, "MMMM");
+                                    const date = parse(value, "yyyy-MM", new Date())
+                                    return format(date, "MMMM")
                                 }}
+                                tick={{ fill: '#64748b', fontSize: 13 }}
+                                tickLine={{ stroke: '#cbd5e1' }}
                             />
 
                             <YAxis
                                 tickFormatter={(value) => {
-                                    if (value >= 1_000_000)
-                                        return (value / 1_000_000).toFixed(1) + "M";
-                                    if (value >= 1_000)
-                                        return (value / 1_000).toFixed(1) + "k";
-                                    return value;
+                                    if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M"
+                                    if (value >= 1_000) return (value / 1_000).toFixed(1) + "k"
+                                    return value
                                 }}
+                                tick={{ fill: '#64748b', fontSize: 13 }}
+                                tickLine={{ stroke: '#cbd5e1' }}
                             />
 
                             <Tooltip
                                 formatter={(value, name) => {
                                     const display =
                                         String(name).charAt(0).toUpperCase() +
-                                        String(name).slice(1);
-                                    return [value.toLocaleString(), display];
+                                        String(name).slice(1)
+                                    return [value.toLocaleString(), display]
                                 }}
-                                labelStyle={{ color: "#fff", fontWeight: "bold", fontSize: "14px" }}
-                                itemStyle={{ color: "#fff", fontSize: "13px" }}
+                                labelStyle={{ color: "#1e293b", fontWeight: "600", fontSize: "14px" }}
+                                itemStyle={{ color: "#475569", fontSize: "13px" }}
                                 contentStyle={{
-                                    backgroundColor: "rgba(20, 20, 20, 0.9)",
-                                    border: "1px solid #333",
-                                    borderRadius: "8px",
-                                    color: "#fff",
+                                    backgroundColor: "#ffffff",
+                                    border: "1px solid #e2e8f0",
+                                    borderRadius: "12px",
+                                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                                 }}
                             />
 
-                            <Legend />
-                            <Bar dataKey="pending" fill="#FFA500" />
-                            <Bar dataKey="paid" fill="#4CAF50" />
-                            <Bar dataKey="overdue" fill="#FF4D4F" />
+                            <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
+                            <Bar dataKey="pending" fill="#f59e0b" radius={[8, 8, 0, 0]} />
+                            <Bar dataKey="paid" fill="#10b981" radius={[8, 8, 0, 0]} />
+                            <Bar dataKey="overdue" fill="#ef4444" radius={[8, 8, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 )}
+
             </CardBody>
-
-
         </Card>
     );
 }
