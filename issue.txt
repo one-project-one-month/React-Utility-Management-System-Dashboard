@@ -1,0 +1,9 @@
+1.Logout : didn’t logout immediately and has to click any button to logout
+
+2.Customer Support : Category(--- to maintenance ,…) and Priority(--- to low,…) can’t be selected
+
+3.Customer Support : save changes and delete warning signs didn’t work in Room category(complain, maintenance,…. ), status(pending, ongoing,…..),Priority(low, medium, high)
+
+4.Rooms : Export to CSV didn’t work
+
+5. Loading effect from Suspense in PageLayout can/should remove if you don't want full page reload effect 

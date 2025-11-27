@@ -1,120 +1,224 @@
-import {
-    Download, Home,
-    Layers,
-    MapPin,
-    Pencil,
-    Trash2,
-} from "lucide-react";
-import {Button} from "@heroui/button";
-import {useNavigate, useParams} from "react-router";
-import {RoomChip} from "@/components/Room/room-chip.tsx";
-import {roomMockData} from "@/constants/roomMockData.ts";
-import { InfoRow } from "@/components/Room/room-info";
-import {RoomCard} from "@/components/Room/room-card.tsx";
-
-function formatCurrency(amount: number, currency = "MMK") {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency,
-        minimumFractionDigits: 2,
-    }).format(amount);
-}
+import { Pencil } from "lucide-react";
+import { Button, Tooltip } from "@heroui/react";
+import { useNavigate, useParams } from "react-router";
+import { RoomChip } from "@/components/Room/room-chip.tsx";
+import { InfoRow } from "@/components/common/info-row.tsx";
+import { RoomCard } from "@/components/Room/room-card.tsx";
+import { breadcrumbs } from "@/constants/breadcrumbs.ts";
+import NavigationBreadCrumbs from "@/components/breadcrumb.tsx";
+import { formatContractDuration, formatCurrency } from "@/utils/roomFormat.ts";
+import { Tab, Tabs } from "@heroui/tabs";
+import { RoomAvailability, type Bill, type CustomerService } from "@/types/room.ts";
+import { RoomHistoryCard } from "@/components/Room/room-history-card.tsx";
+import { EmptyState } from "@/components/common/empty-state.tsx";
+import { useFetchRoom } from "@/hooks/useRooms.ts";
+import { SkeletonLoader } from "@/components/skeleton-loader.tsx";
 
 export default function RoomDetailPage() {
-    const { id } = useParams();
-    const navigate = useNavigate();
+   const { id } = useParams();
+   const navigate = useNavigate();
 
-    const room = roomMockData.find(r => r.id === id);
+   const { data: room, isLoading } = useFetchRoom(id!);
 
-    if (!room) {
-        return (
-            <div className="p-8">
-                <div className="text-center">
-                    <h1 className="text-2xl font-semibold mb-4">Room Not Found</h1>
-                    <Button onPress={() => navigate('/room')}>
-                        Back to Rooms
-                    </Button>
-                </div>
-            </div>
-        )
-    }
+   if (isLoading) {
+      return (
+         <div
+            className={
+               "h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6"
+            }
+         >
+            <NavigationBreadCrumbs items={breadcrumbs.roomDetail} />
 
-    const handleEditRoom = () => {
-        navigate(`/room/${id}/edit`)
-    }
-
-    return (
-        <div className={"p-8 space-y-4"}>
-            <div className={"flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"}>
-                <div>
-                    <h1 className={"text-2xl font-semibold"}>Room {room.roomNo}</h1>
-                    <div className={"flex items-start gap-1 text-sm text-default-500 mt-1"}>
-                        <MapPin size={16} />
-                        <span>{room.address}</span>
-                    </div>
-                </div>
-
-                <div className={"flex gap-2"}>
-                    <Button
-                        onPress={handleEditRoom}
-                        variant={"bordered"}
-                        className={"border-[0.5px]"}
-                        startContent={<Pencil size={16} />}
-                    >
-                        Edit
-                    </Button>
-                    <Button
-                        color={"danger"}
-                        variant={"flat"}
-                        startContent={<Trash2 size={16} />}
-                    >
-                        Delete
-                    </Button>
-                </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+               <div className="flex items-center gap-2">
+                  <SkeletonLoader height="2rem" width="10rem" />
+                  <SkeletonLoader height="1.5rem" width="5rem" />
+               </div>
+               <SkeletonLoader height="2.5rem" width="2.5rem" />
             </div>
 
-            <div className={"bg-gray-200/20 rounded-2xl p-4 md:p-7 space-y-6"}>
-                <div className={"flex justify-between items-center"}>
-                    <RoomChip mode={"status"} room={room} />
-                    <h2 className={"text-2xl font-semibold"}>
-                        MMK {room.price.toFixed(2)}
-                    </h2>
-                </div>
+            <div className="space-y-6">
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <SkeletonLoader height="10rem" />
+                  <SkeletonLoader height="15rem" />
+               </div>
 
-                <div className={"grid grid-cols-1 lg:grid-cols-2 gap-6"}>
-                    <RoomCard title={"Description"} icon={Home}>
-                        <p className="text-default-600 leading-relaxed">{room.description}</p>
-                    </RoomCard>
-                    
-                    <RoomCard title={"Room Information"} icon={Layers}>
-                        <InfoRow label={"Row Number"} value={room.roomNo} />
-                        <InfoRow label={"BedRooms"} value={room.bedrooms} />
-                        <InfoRow label={"BathRooms"} value={room.bathrooms} />
-                        <InfoRow label={"Floor"} value={room.floor} />
-                        <InfoRow label={"Dimension"} value={room.dimension} />
-                        <InfoRow label={"Max Occupancy"} value={room.maxNoPeople} />
-                        <InfoRow label={"Monthly Rate"} value={formatCurrency(room.price)} />
-                    </RoomCard>
-                </div>
-
-                <div className={"flex flex-col sm:flex-row gap-3 pt-4"}>
-                    <Button
-                        className={"bg-primary flex-1"}
-                        size={"lg"}
-                        startContent={<Download size={18} />}
-                    >
-                        Download Room Details
-                    </Button>
-                    <Button
-                        variant="bordered"
-                        size="lg"
-                        className="flex-1 border-[0.5px] border-gray-400"
-                        onPress={() => navigate(`/room/${room.id}/utilities`)}
-                    >
-                        View Utility History
-                    </Button>
-                </div>
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <SkeletonLoader height="15rem" />
+                  <SkeletonLoader height="20rem" />
+               </div>
             </div>
-        </div>
-    )
+         </div>
+      );
+   }
+
+   if (!room) {
+      return (
+         <div className="p-8">
+            <div className="text-center">
+               <h1 className="text-2xl font-medium mb-4">Room Not Found</h1>
+               <Button onPress={() => navigate("/rooms")}>Back to Rooms</Button>
+            </div>
+         </div>
+      );
+   }
+
+   const handleEditRoom = () => {
+      navigate(`/rooms/${id}/edit`);
+   };
+
+   return (
+      <div className="h-[84vh] p-2 space-y-4 overflow-y-auto custom-scrollbar-3 pb-6">
+         <NavigationBreadCrumbs items={breadcrumbs.roomDetail} />
+         <div
+            className={
+               "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+            }
+         >
+            <div className="flex items-center gap-2">
+               <h1 className="text-2xl font-medium">Room {room.roomNo}</h1>
+               <RoomChip mode="status" room={room} />
+            </div>
+
+            <div>
+               <Tooltip content="Edit user">
+                  <Button
+                     isIconOnly
+                     onPress={handleEditRoom}
+                     variant="light"
+                     color="primary"
+                  >
+                     <Pencil size={24} className="text-primary" />
+                  </Button>
+               </Tooltip>
+            </div>
+         </div>
+
+         <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+               <RoomCard title="Room Description">
+                  <p className="text-default-600 leading-relaxed">
+                     {room.description}
+                  </p>
+               </RoomCard>
+
+               <RoomCard title="Room Information">
+                  <InfoRow label="Row Number" value={room.roomNo} />
+                  <InfoRow label="BedRooms" value={room.noOfBedRoom} />
+                  <InfoRow label="Floor No" value={room.floor} />
+                  <InfoRow label="Dimension" value={`${room.dimension}`} />
+                  <InfoRow
+                     label="Max Occupancy"
+                     value={`${room.maxNoOfPeople} People`}
+                  />
+                  <InfoRow
+                     label="Rent Fee"
+                     value={`${formatCurrency(room.sellingPrice)} MMK`}
+                     valueClassName="text-lg text-primary"
+                  />
+               </RoomCard>
+            </div>
+
+            {[RoomAvailability.RENTED, RoomAvailability.Purchased].includes(
+               room.status as RoomAvailability
+            ) && room.tenant ? (
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <RoomCard title="Tenant Information">
+                     <InfoRow label="Full Name" value={room.tenant.name} />
+                     <InfoRow label="Email" value={room.tenant.email} />
+                     <InfoRow label="NRC" value={room.tenant.nrc} />
+                     <InfoRow label="Ph Number" value={room.tenant.phoneNo} />
+                     {room.status == "Rented" && (
+                        <InfoRow
+                           label="Contract"
+                           value={formatContractDuration(
+                              room.contract[0].createdDate,
+                              room.contract[0].expiryDate
+                           )}
+                        />
+                     )}
+                     <InfoRow
+                        label="Emergency Contact"
+                        value={room.tenant.emergencyNo}
+                     />
+                  </RoomCard>
+
+                  <RoomCard title="Room History">
+                     <Tabs color="primary" aria-label="Options" fullWidth>
+                        <Tab
+                           key="Services History"
+                           title="Services History"
+                           className="space-y-4"
+                        >
+                           <div className="max-h-48 overflow-y-auto space-y-4 pr-2">
+                              {room.customerService.length > 0 ? (
+                                 room.customerService.map(
+                                    (service: CustomerService) => (
+                                       <RoomHistoryCard
+                                          key={service.id}
+                                          title={service.description}
+                                          subTitle={service.category}
+                                          date={service.issuedDate}
+                                       />
+                                    )
+                                 )
+                              ) : (
+                                 <EmptyState />
+                              )}
+                           </div>
+                        </Tab>
+                        <Tab key="Utility Unit History" title="Utility Unit History">
+                           <div className="max-h-48 overflow-y-auto space-y-4 pr-2">
+                              {room.bill.length > 0 ? (
+                                 room.bill.map((bill: Bill) => (
+                                    <RoomHistoryCard
+                                       key={bill.id}
+                                       title="Total Utility Unit"
+                                       subTitle={`${formatCurrency(
+                                          bill.totalAmount
+                                       )} MMK`}
+                                       date={bill.dueDate}
+                                    />
+                                 ))
+                              ) : (
+                                 <EmptyState />
+                              )}
+                           </div>
+                        </Tab>
+                        <Tab key="Contract History" title="Contract History">
+                           <div className="max-h-48 overflow-y-auto space-y-4 pr-2">
+                              {room.contract.length > 0 ? (
+                                 room.contract.map(contract => (
+                                    <RoomHistoryCard
+                                       key={contract.id}
+                                       title="Contract Renewed"
+                                       subTitle={formatContractDuration(
+                                          contract.createdDate,
+                                          contract.expiryDate
+                                       )}
+                                       date={contract.createdDate}
+                                    />
+                                 ))
+                              ) : (
+                                 <EmptyState />
+                              )}
+                           </div>
+                        </Tab>
+                     </Tabs>
+                  </RoomCard>
+               </div>
+            ) : (
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <RoomCard title="Tenant Information">
+                     <EmptyState />
+                  </RoomCard>
+
+                  <RoomCard title="Room History">
+                     <EmptyState />
+                  </RoomCard>
+               </div>
+            )}
+         </div>
+      </div>
+   );
 }

@@ -7,31 +7,35 @@ import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { store } from "@/store/store.ts";
 import "./index.css";
 import App from "./App.tsx";
+import CustomErrorBoundary from "@/components/ErrorBoundary/errorBoundary.tsx";
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 60, // 1 hour
-    },
-  },
+   defaultOptions: {
+      queries: {
+         staleTime: 1000 * 60 * 60, // 1 hour
+      },
+   },
 });
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <HeroUIProvider>
-          <ToastProvider
-            placement="top-right"
-            toastOffset={"top-right".includes("top") ? 10 : 0}
-          />
-          <BrowserRouter>
-            <main className="text-foreground bg-background">
-              <App />
-            </main>
-          </BrowserRouter>
-        </HeroUIProvider>
-      </QueryClientProvider>
-    </Provider>
-  </StrictMode>
+   <StrictMode>
+      <Provider store={store}>
+         <QueryClientProvider client={queryClient}>
+            <HeroUIProvider>
+               <ToastProvider
+                  placement="top-right"
+                  toastOffset={"top-right".includes("top") ? 10 : 0}
+               />
+
+               <BrowserRouter>
+                  <CustomErrorBoundary>
+                     <main className="text-foreground bg-background">
+                        <App />
+                     </main>
+                  </CustomErrorBoundary>
+               </BrowserRouter>
+            </HeroUIProvider>
+         </QueryClientProvider>
+      </Provider>
+   </StrictMode>
 );

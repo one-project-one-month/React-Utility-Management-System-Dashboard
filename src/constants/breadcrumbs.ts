@@ -15,5 +15,94 @@ export const breadcrumbs: BreadCrumbs = {
       label: "Components",
     },
   ],
-  // add your breadcrumbs here
+  roomList: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/rooms",
+      label: "Rooms",
+    },
+  ],
+  roomDetail: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/rooms",
+      label: "Rooms",
+    },
+    {
+      href: "/details",
+      label: "Details",
+    },
+  ],
+  roomCreate: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/rooms",
+      label: "Rooms",
+    },
+    {
+      href: "/create",
+      label: "Create",
+    },
+  ],
+  roomEdit: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/rooms",
+      label: "Rooms",
+    },
+    {
+      href: "/edit",
+      label: "Edit",
+    },
+  ],
+  userList: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/user-management/users",
+      label: "Users",
+    },
+  ],
+  userDetail: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/user-management/users",
+      label: "Users",
+    },
+    {
+      href: "/details",
+      label: "Details",
+    },
+  ],
+  userEdit: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/user-management/users",
+      label: "Users",
+    },
+    {
+      href: "/edit",
+      label: "Edit",
+    },
+  ],
 };
