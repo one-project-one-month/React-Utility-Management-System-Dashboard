@@ -1,0 +1,66 @@
+import { useForm, useFieldArray } from "react-hook-form";
+import {
+   tenantFormSchema,
+   type TenantFormValues,
+} from "@/schemas/tenants/tenantsFormSchema.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import TenantsFormContainer from "@/components/Tenants/TenantsForm/tenants-form-container";
+import { useTenantMutations } from "@/hooks/tenants/useTenant.ts";
+import { useEffect } from "react";
+import type { TenantPayload } from "@/types/tenants/ApiPayloads/tenantPayload.ts";
+
+export default function CreateTenantsPage() {
+   const { createTenantMutation } = useTenantMutations();
+
+   const { isPending, isSuccess } = createTenantMutation;
+   const {
+      reset,
+      register,
+      handleSubmit,
+      control,
+      formState: { errors },
+   } = useForm({
+      resolver: zodResolver(tenantFormSchema),
+      defaultValues: {
+         occupants: [{ name: "", nrc: "", relationshipToTenant: "OTHER" }],
+         phoneNo: "",
+         email: "",
+         emergencyNo: "",
+         roomId: "",
+      },
+      mode: "onChange",
+   });
+
+   const { fields, append, remove } = useFieldArray({
+      control,
+      name: "occupants",
+   });
+
+   const onSubmit = (data: TenantFormValues) => {
+      createTenantMutation.mutate(data as TenantPayload);
+   };
+
+   useEffect(() => {
+      if (isSuccess) {
+         reset();
+      }
+   }, [isSuccess]);
+
+   const tenantsFormSectionProps = {
+      register,
+      errors,
+      control,
+      fields,
+      append,
+      remove,
+   };
+
+   return (
+      <TenantsFormContainer
+         action={"create"}
+         onSubmit={handleSubmit(onSubmit)}
+         isLoading={isPending}
+         tenantsFormSectionProps={tenantsFormSectionProps}
+      />
+   );
+}

@@ -11,94 +11,108 @@ import { Navigate } from "react-router";
 import Cookies from "js-cookie";
 
 export default function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
 
-  const { mutate, isPending } = useAuth();
+   const { mutate, isPending } = useAuth();
 
-  const accessToken = Cookies.get("token");
+   const accessToken = Cookies.get("ums_token");
+   if (accessToken) return <Navigate to="/" />;
 
-  if (accessToken) {
-    return <Navigate to="/" />;
-  }
+   const onSubmit: SubmitHandler<TLoginSchema> = formData => {
+      mutate(formData);
+   };
 
-  const onSubmit: SubmitHandler<TLoginSchema> = (formData) => {
-    mutate(formData);
-  };
+   return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-100">
+         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+            {/* Left Illustration */}
+            <div className="hidden lg:flex items-center justify-center">
+               <img
+                  src={LoginFrame}
+                  alt="Login illustration"
+                  className="w-full max-w-md drop-shadow-xl"
+               />
+            </div>
 
-  return (
-    <div className="flex flex-col items-center justify-center max-w-screen-xl min-h-screen px-4 mx-auto">
-      {/* Logo & Title */}
-      <div className="flex items-center mb-3 gap-x-2">
-        <img src={Logo} alt="Nest Flow Logo" className="w-12 sm:w-14" />
-        <h1 className="text-xl sm:text-2xl font-semibold text-[#333333]">
-          Nest Flow
-        </h1>
+            {/* Login Card */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl p-8 sm:p-10">
+               {/* Logo & Brand */}
+               <div className="flex flex-col items-center mb-8">
+                  <img src={Logo} alt="Nest Flow Logo" className="w-14 mb-2" />
+                  <h1 className="text-2xl font-bold text-gray-800">Nest Flow</h1>
+                  <p className="text-sm text-gray-500 mt-1">
+                     Manage, Monitor and Measure
+                  </p>
+               </div>
+
+               <h2 className="text-xl font-semibold text-center text-gray-700 mb-6">
+                  Login to your account
+               </h2>
+
+               <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+                  <Input
+                     type="email"
+                     placeholder="Email address"
+                     variant="bordered"
+                     radius="md"
+                     size="lg"
+                     classNames={{
+                        inputWrapper: [
+                           "border-gray-300",
+                           "hover:border-primary",
+                           "focus-within:border-primary",
+                        ],
+                     }}
+                     {...register("email")}
+                     isInvalid={!!errors.email}
+                     errorMessage={errors.email?.message}
+                     disabled={isPending}
+                  />
+
+                  <Input
+                     type="password"
+                     placeholder="Password"
+                     variant="bordered"
+                     radius="md"
+                     size="lg"
+                     classNames={{
+                        inputWrapper: [
+                           "border-gray-300",
+                           "hover:border-primary",
+                           "focus-within:border-primary",
+                        ],
+                     }}
+                     {...register("password")}
+                     isInvalid={!!errors.password}
+                     errorMessage={errors.password?.message}
+                     disabled={isPending}
+                  />
+
+                  {/* Forgot password */}
+                  <div className="text-right text-sm">
+                     <a href="#" className="text-primary hover:underline">
+                        Forgot password?
+                     </a>
+                  </div>
+
+                  <Button
+                     type="submit"
+                     size="lg"
+                     color="primary"
+                     className="w-full font-medium tracking-wide"
+                     isLoading={isPending}
+                     spinner={<Spinner color="white" size="sm" />}
+                     radius="md"
+                  >
+                     Login
+                  </Button>
+               </form>
+            </div>
+         </div>
       </div>
-
-      <h2 className="mb-10 text-2xl sm:text-3xl font-semibold text-center text-[#333333]">
-        Manage, Monitor and Measure
-      </h2>
-
-      {/* Content Section */}
-      <div className="grid items-center max-w-4xl grid-cols-1 gap-5 lg:gap-10 lg:grid-cols-2 ">
-        {/* Left Image */}
-        <img src={LoginFrame} alt="" className="w-full max-w-md " />
-
-        {/* Right Form */}
-        <div className="w-full max-w-sm mx-auto lg:mx-0">
-          <h1 className="mb-8 text-2xl sm:text-3xl font-semibold text-center text-[#333333]">
-            Login Your Account
-          </h1>
-
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              type="email"
-              placeholder="Enter Your Email"
-              variant="bordered"
-              radius="sm"
-              size="lg"
-              classNames={{
-                inputWrapper: ["border border-[#333333] ps-5"],
-              }}
-              {...register("email")}
-              isInvalid={!!errors.email}
-              errorMessage={errors.email?.message}
-              disabled={isPending}
-            />
-
-            <Input
-              type="password"
-              placeholder="Enter Your Password"
-              variant="bordered"
-              radius="sm"
-              size="lg"
-              classNames={{
-                inputWrapper: ["border border-[#333333] ps-5"],
-              }}
-              {...register("password")}
-              isInvalid={!!errors.password}
-              errorMessage={errors.password?.message}
-              disabled={isPending}
-            />
-
-            <Button
-              type="submit"
-              size="lg"
-              color="primary"
-              className="flex items-center justify-center w-full text-sm mb-"
-              isLoading={isPending}
-              spinner={<Spinner color="white" size="sm" />}
-              radius="sm"
-            >
-              Login
-            </Button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+   );
 }
